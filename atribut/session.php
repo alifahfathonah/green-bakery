@@ -1,5 +1,5 @@
 <?php
-    class Session {
+    class session {
 
         static function exists($name){
             return (!empty($_SESSION[$name]) ? true : false);
@@ -11,6 +11,10 @@
 
         static function get($name){
             return $_SESSION[$name];
+        }
+
+        static function destroy(){
+            session_destroy();
         }
 
     }

@@ -1,16 +1,21 @@
 <?php
     include_once('./config/config.php');
-    class Redirect {
+
+    class redirect {
 
         private $host, $conf;
 
         function __construct(){
             $this->conf = new config();
-            $this->host = 'http://'.$this->conf->curExpPageURL()[2].'/'.$this->conf->curExpPageURL()[3];
+            $this->host = 'http://'.$this->conf->curExpPageURL()[2].'/'.$this->conf->curExpPageURL()[3].'/'.$this->conf->curExpPageURL()[4];
         }
 
         function to($destination){
             header('location: '.$this->host.'/'.$destination.'/');
+        }
+
+        function get_url($destination){
+            return $this->host.'/'.$destination.'/';
         }
     }
 ?>

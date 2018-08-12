@@ -1,4 +1,5 @@
 <?php
+
 include_once ('config/config.php');
 include_once ('config/database.php');
 
@@ -14,7 +15,7 @@ class Front {
         session_start();
         $this->db = new database();
         $this->host = new config();
-        $this->redirect = new Redirect();
+        $this->redirect = new redirect();
         $this->host = 'http://'.$this->host->curExpPageURL()[2].'/'.$this->host->curExpPageURL()[3];
     }
 
@@ -133,16 +134,16 @@ class Front {
         $this->redirect->to('index');
     }
 	
-	function counting_cart(){
-		
-	}
-
     function kategori(){
-        $id_kategori = Input::get('id_kategori');
+        $id_kategori = input::get('id_kategori');
+
+        $data_kue = $this->db->query("SELECT * FROM tbl_barang WHERE id_kategori = '$id_kategori'");
+        $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
         
-        $query = "SELECT * FROM tbl_barang WHERE id_kategori = '$id_kategori'";
-        $query_exec = $this->db->query($query); 
-        
-        print_r($query_exec); die;
+        include './view/front/kategori/daftar_kue.php';
+    }
+
+    function detail_kue(){
+        $id_kue = input::get("id_kue");
     }
 }

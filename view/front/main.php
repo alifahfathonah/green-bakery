@@ -1,6 +1,6 @@
 <?php
-$conf = new config();
-$host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
+    $conf = new config();
+    $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,15 +74,10 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
                                 <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
                             </ul>
                             <ul class="top_right">
-                                <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
-                                <li class="cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
-                                <li class="h_price">
-                                    <select class="selectpicker">
-                                        <option>$0.00</option>
-                                        <option>$0.00</option>
-                                        <option>$0.00</option>
-                                    </select>
-                                </li>
+                                <?php if (session::exists('email')) { ?>
+                                    <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
+                                    <li class="cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>
@@ -101,57 +96,29 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav categories">
-                            <li class="nav-item">
-                                <select class="selectpicker">
-                                    <option>Kue Kering</option>
-                                    <option>Kue Basa</option>
-                                    <option>Kue Tradisional</option>
-                                </select>
-                            </li>
-                        </ul>
                         <ul class="navbar-nav">
-                            <li class="nav-item dropdown submenu active">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Home
-                                </a>
-                            </li>
+                            <li class="nav-item active"><a class="nav-link" href="#">Beranda</a></li>
                             <li class="nav-item dropdown submenu">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Pages <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="compare.html">Compare</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout Method</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="register.html">Checkout Register</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="track.html">Track</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="404.html">404</a></li>
+                                <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
+                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]?>"><?php echo $column['nama']; ?></a></li>
+                                <?php } ?>
                                 </ul>
                             </li>
-                            <li class="nav-item dropdown submenu">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Shop <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="categories-no-sidebar-2column.html">Prodcut No Sidebar</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="categories-no-sidebar-3column.html">Prodcut Two Column</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="categories-no-sidebar-4column.html">Product Grid</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="categories-left-sidebar.html">Categories Left Sidebar</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="categories-right-sidebar.html">Categories Right Sidebar</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="categories-grid-left-sidebar.html">Categories Grid Sidebar</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="product-details.html">Prodcut Details 01</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="product-details2.html">Prodcut Details 02</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="product-details3.html">Prodcut Details 03</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="shopping-cart.html">Shopping Cart 01</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="shopping-cart2.html">Shopping Cart 02</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="empty-cart.html">Empty Cart</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">lookbook</a></li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link" href="contact.html">Hubungi Kami</a></li>
                         </ul>
+                        <?php if (!session::exists('email')) { ?>
+                            <ul class="navbar-nav navbar-right ml-auto mr-2">
+                                <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
+                            </ul>
+                        <?php } else { ?>
+                            <ul class="navbar-nav navbar-right ml-auto mr-2">
+                                <li class="nav-item"><a href="<?=$host?>/front/logout" class="nav-link"><?=print Session::get('nama_pelanggan');?> Keluar</a></li>
+                            </ul>
+                        <?php } ?>
                     </div>
                 </nav>
             </div>

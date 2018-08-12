@@ -1,5 +1,5 @@
 <?php
-class database{
+class database {
   var $host   = "localhost";
 	var $uname  = "root";
 	var $pass   = "";

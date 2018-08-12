@@ -1,5 +1,5 @@
 <?php
-    class Input {
+    class input {
 
         static function get($name){
         	return $_GET[$name];
