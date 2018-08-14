@@ -74,7 +74,7 @@
                                 <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
                             </ul>
                             <ul class="top_right">
-                                <?php if (session::exists('email')) { ?>
+                                <?php if (Session::exists('email')) { ?>
                                     <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
                                     <li class="cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
                                 <?php } ?>
@@ -97,26 +97,27 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav">
-                            <li class="nav-item active"><a class="nav-link" href="#">Beranda</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="<?=$host."/front";?>">Beranda</a></li>
                             <li class="nav-item dropdown submenu">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                 <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
-                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]?>"><?php echo $column['nama']; ?></a></li>
+                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
                                 <?php } ?>
                                 </ul>
                             </li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Hubungi Kami</a></li>
                         </ul>
-                        <?php if (!session::exists('email')) { ?>
+                        <?php if (!Session::exists('email')) { ?>
                             <ul class="navbar-nav navbar-right ml-auto mr-2">
                                 <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
                             </ul>
                         <?php } else { ?>
                             <ul class="navbar-nav navbar-right ml-auto mr-2">
-                                <li class="nav-item"><a href="<?=$host?>/front/logout" class="nav-link"><?=print Session::get('nama_pelanggan');?> Keluar</a></li>
+                                <li class="nav-item mr-2"><a href="#" class="nav-link"><?php echo Session::get('nama_pelanggan');?></a></li>
+                                <li class="nav-item"><a href="<?=$host?>/front/logout" class="nav-link">[ Keluar ]</a></li>
                             </ul>
                         <?php } ?>
                     </div>
@@ -256,32 +257,26 @@
                     <h2>Kue Terbaru Green Bakery</h2>
                 </div>
                 <div class="l_product_slider owl-carousel">
-                    <?php
-                    while($row = mysqli_fetch_array($execute_get_all_barang)){
-                    ?>
+                    <?php while($column = mysqli_fetch_array($execute_get_all_barang)): ?>
                     <div class="item">
                         <div class="l_product_item">
                             <div class="l_p_img">
-                                <img src="<?=$host;?>/uploads/<?=$row[5];?>">
-
+                                <a href="<?=$host."/front/detail_kue/?id_kue=".$column[0]."&id_kategori=".$column[1];?>">
+                                <img src="<?=$host;?>/uploads/<?=$column[5];?>">
+                                </a>
                             </div>
                             <div class="l_p_text">
                                 <ul>
                                     <li class="p_icon"><a href="#"><i class="icon_piechart"></i></a></li>
-                                    <li><a class="add_cart_btn" href="#">Add To Cart</a></li>
+                                    <li><a class="add_cart_btn" href="#">Tambahkan</a></li>
                                     <li class="p_icon"><a href="#"><i class="icon_heart_alt"></i></a></li>
                                 </ul>
-                                <h4><?=$row[2];?></h4>
-                                <h5>IDR <?=$row[4];?></h5>
+                                <h4><?=$column[2];?></h4>
+                                <h5>IDR <?=$column[4];?></h5>
                             </div>
                         </div>
                     </div>
-                    <?php
-                    }
-                    ?>
-
-
-
+                    <?php endwhile ?>
                 </div>
             </div>
         </section>

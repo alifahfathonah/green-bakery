@@ -42,50 +42,87 @@
     </head>
     <body>
         
-        <!--================Menu Area =================-->
-        <header class="shop_header_area carousel_menu_area">
-            <div class="carousel_top_header row m0">
-                <div class="container">
-                    <div class="carousel_top_h_inner">
-                        <div class="top_header_middle">
-                            <a href="#"><i class="fa fa-phone"></i> Call Us: <span>+84 987 654 321</span></a>
-                            <a href="#"><i class="fa fa-envelope"></i> Email: <span>support@yourdomain.com</span></a>
+        <!--================Top Header Area =================-->
+        <div class="header_top_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="top_header_left">
+
+
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+                                <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button"><i class="icon-magnifier"></i></button>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="carousel_menu_inner">
-                <div class="container">
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                        <a class="navbar-brand" href="#"><img src="img/logo.png" alt=""></a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-
-                        </button>
-
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-auto">
-                                <li class="nav-item"><a class="nav-link" href="<?=$host;?>">Home</a></li>
-                                <li class="nav-item dropdown submenu active">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </a>
-                                    <ul class="dropdown-menu">
-                                    <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
-                                        <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]?>"><?php echo $column['nama']; ?></a></li>
-                                    <?php } ?>
-                                    </ul>
-                                </li>
+                    <div class="col-lg-6">
+                        <div class="top_header_middle">
+                            <a href="#"><i class="fa fa-phone"></i> Call Us: <span>+84 987 654 321</span></a>
+                            <a href="#"><i class="fa fa-envelope"></i> Email: <span>support@greenbakery.com</span></a>
+                            <img src="<?=$host;?>/assets/front/img/logo2.png" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="top_right_header">
+                            <ul class="header_social">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
                             </ul>
                             <ul class="top_right">
-                                <?php if (session::exists('email')) { ?>
+                                <?php if (Session::exists('email')) { ?>
                                     <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
                                     <li class="cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
                                 <?php } ?>
                             </ul>
                         </div>
-                    </nav>
+                    </div>
                 </div>
+            </div>
+        </div>
+        <!--================End Top Header Area =================-->
+
+        <!--================Menu Area =================-->
+        <header class="shop_header_area">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#"><img src="img/logo2.png" alt=""></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active"><a class="nav-link" href="<?=$host."/front";?>">Beranda</a></li>
+                            <li class="nav-item dropdown submenu">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
+                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
+                                <?php } ?>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="contact.html">Hubungi Kami</a></li>
+                        </ul>
+                        <?php if (!Session::exists('email')) { ?>
+                            <ul class="navbar-nav navbar-right ml-auto mr-2">
+                                <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
+                            </ul>
+                        <?php } else { ?>
+                            <ul class="navbar-nav navbar-right ml-auto mr-2">
+                                <li class="nav-item mr-2"><a href="#" class="nav-link"><?php echo Session::get('nama_pelanggan');?></a></li>
+                                <li class="nav-item"><a href="<?=$host?>/front/logout" class="nav-link">[ Keluar ]</a></li>
+                            </ul>
+                        <?php } ?>
+                    </div>
+                </nav>
             </div>
         </header>
         <!--================End Menu Area =================-->
@@ -94,12 +131,7 @@
         <section class="categories_banner_area">
             <div class="container">
                 <div class="c_banner_inner">
-                    <h3>shop grid with left sidebar</h3>
-                    <ul>
-                        <li><a href="">Home</a></li>
-                        <li><a href="#">Shop</a></li>
-                        <li class="current"><a href="#">Shop Grid with Left Sidebar</a></li>
-                    </ul>
+                    <h3>Kategori <?php echo Input::get('jenis_kategori');?></h3>
                 </div>
             </div>
         </section>
@@ -142,8 +174,9 @@
                         <div class="col-lg-3 col-sm-6">
                             <div class="l_product_item">
                                 <div class="l_p_img">
-                                    <img class="img-fluid" src="<?=$host."/uploads/".$column["foto"];?>" alt="<?=$column["nama_barang"]?>">
-                                    <!-- <h5 class="sale">Sale</h5> -->
+                                    <a href="<?=$host."/front/detail_kue/?id_kue=".$column["id"]."&id_kategori=".$column["id_kategori"];?>">
+                                        <img class="img-fluid" src="<?=$host."/uploads/".$column["foto"];?>" alt="<?=$column["nama_barang"]?>">
+                                    </a>
                                 </div>
                                 <div class="l_p_text">
                                    <ul>
@@ -152,7 +185,7 @@
                                         <li class="p_icon"><a href="#"><i class="icon_heart_alt"></i></a></li>
                                     </ul>
                                     <h4><?=$column["nama_barang"];?></h4>
-                                    <h5>Rp.<?=$column["harga"];?></h5>
+                                    <h5>IDR <?=$column["harga"];?></h5>
                                 </div>
                             </div>
                         </div>

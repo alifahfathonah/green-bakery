@@ -182,7 +182,7 @@ class Panel {
                 */
 		function pelanggan(){
 			$query_kategori = "SELECT * FROM tbl_kategori";
-			$execute = $this->db->query($query);
+			$execute = $this->db->query($query_kategori);
 
 			$query_pelanggan = "SELECT * FROM tbl_pelanggan";
 			$execute_pelanggan = $this->db->query($query_pelanggan);
@@ -190,42 +190,10 @@ class Panel {
 			include './view/back/pelanggan.php';
         }
 
-        function tambah_pelanggan(){
-
-			$kategori     = $_POST['kategori'];
-			$nama_lengkap = $_POST['nama_lengkap'];
-			$username     = $_POST['username'];
-			$password     = md5($_POST['password']);
-
-			$query = "INSERT INTO tbl_pengguna (level, nama_lengkap, username, password, status) VALUES ('$kategori','$nama_lengkap','$username','$password','1')";
-			$execute = $this->db->query($query);
-			header("Location: $this->host/panel/pengguna");
-
-        }
-
-        function ubah_pelanggan(){
-
-			$id_pengguna  = $_POST['id_pengguna'];
-			$kategori     = $_POST['kategori'];
-			$nama_lengkap = $_POST['nama_lengkap'];
-			$username     = $_POST['username'];
-
-			if($_POST['password']==null || $_POST['password']==''){
-				$query = "UPDATE tbl_pengguna SET level='$kategori', nama_lengkap='$nama_lengkap', username='$username', status=1 WHERE id=$id_pengguna";
-				$execute = $this->db->query($query);
-			}else{
-				$password = md5($_POST['password']);
-				$query = "UPDATE tbl_pengguna SET level='$kategori', nama_lengkap='$nama_lengkap', username='$username', password='$password', status=1 WHERE id=$id_pengguna";
-				$execute = $this->db->query($query);
-			}
-
-			header("Location: $this->host/panel/pengguna");
-
-        }
 
         function hapus_pelanggan(){
-			$id    = $_POST['id_pengguna'];
-			$query = "DELETE FROM tbl_pengguna WHERE id=$id";
+			$id    = $_POST['id_pelanggan'];
+			$query = "DELETE FROM tbl_pelanggan WHERE id = $id";
 			$this->db->query($query);
         }
 

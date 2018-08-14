@@ -58,6 +58,7 @@ class Front {
         }
 
         if ($data_ok){
+
             $query = "INSERT INTO `tbl_pelanggan`(`nama_lengkap`, `email`, `no_telp`, `password`) VALUES ('$nama_lengkap','$email','$no_telepon','$password')";
 
             if(Input::post('password') == Input::post('re_password')){
@@ -110,6 +111,7 @@ class Front {
 
             if($login->num_rows > 0){
                 while($column = mysqli_fetch_assoc($login)){
+                    Session::set('id_pelanggan', $column['id']);
                     Session::set('email', $column['email']);
                     Session::set('nama_pelanggan', $column['nama_lengkap']);
                 }
@@ -135,15 +137,40 @@ class Front {
     }
 	
     function kategori(){
-        $id_kategori = input::get('id_kategori');
+        $id_kategori = Input::get('id_kategori');
 
         $data_kue = $this->db->query("SELECT * FROM tbl_barang WHERE id_kategori = '$id_kategori'");
         $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
-        
+
         include './view/front/kategori/daftar_kue.php';
     }
 
     function detail_kue(){
-        $id_kue = input::get("id_kue");
+        $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
+        $detail = $this->db->query("SELECT * FROM tbl_barang WHERE id =".Input::get("id_kue"))->fetch_assoc();
+
+        include "./view/front/kategori/detail_kue.php";
+    }
+
+    function tambah_keranjang(){
+        if(Session::exists('email')){
+            
+            $id_pelanggan = Session::get('id_pelanggan');
+            $id_barang = Input::get('id_kue');
+            $qty = Input::post('qty');
+
+            $data = $this->db->query("SELECT harga FROM tbl_barang WHERE id = $id_barang")->fetch_array();
+
+           
+            $subtotal = $data[0] * $qty;
+
+            $query = "INSERT INTO tbl_keranjang(id_pelanggan, id_barang, qty, subtotal) VALUES (".Session::get('id_pelanggan').", ".Input::get('id_kue').", $qty, $subtotal)";
+
+        } else {
+            print " <script>
+                        window.location='".$this->redirect->get_url('login')."';
+                        alert('Anda Harus Login Terlebih Dahulu.');
+                    </script>";
+        }
     }
 }

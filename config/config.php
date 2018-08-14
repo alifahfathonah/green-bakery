@@ -6,8 +6,8 @@ class Config {
 
     function __construct(){
         spl_autoload_register(function($filename){
-            if(file_exists("./atribut/".$filename.".php")){
-                include_once ("./atribut/".$filename.".php");
+            if(file_exists("./atribut/".strtolower($filename).".php")){
+                include_once ("./atribut/".strtolower($filename).".php");
             } else {
                 print "Sorry class does'nt load properly!";
             }

@@ -1,5 +1,5 @@
 <?php
-    class session {
+    class Session {
 
         static function exists($name){
             return (!empty($_SESSION[$name]) ? true : false);
