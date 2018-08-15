@@ -38,6 +38,7 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <style> .top_right li.cart a::before { content: "<?=$keranjang['pesanan'];?>"; } </style>
     </head>
     <body>
 
@@ -74,10 +75,10 @@
                                 <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
                             </ul>
                             <ul class="top_right">
-                                <?php if (Session::exists('email')) { ?>
+                                <?php if (Session::exists('email')): ?>
                                     <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
                                     <li class="cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
-                                <?php } ?>
+                                <?php endif ?>
                             </ul>
                         </div>
                     </div>

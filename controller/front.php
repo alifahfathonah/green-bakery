@@ -8,14 +8,14 @@ include_once ('config/database.php');
  */
 class Front {
 
-    public $db, $host, $redirect;
+    protected $db, $host, $redirect;
 
     function __construct() {
         // code...
         session_start();
         $this->db = new database();
         $this->host = new config();
-        $this->redirect = new redirect();
+        $this->redirect = new Redirect();
         $this->host = 'http://'.$this->host->curExpPageURL()[2].'/'.$this->host->curExpPageURL()[3];
     }
 
@@ -23,6 +23,8 @@ class Front {
 
         $execute_get_all_barang = $this->db->query("SELECT * FROM tbl_barang");
         $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
+
+        $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
 
         include './view/front/main.php';
         //echo 'HALO';
@@ -36,7 +38,7 @@ class Front {
             include './view/front/register.php';
 
         } else {
-            $this->redirect->to('front');
+            $this->redirect->to('front/');
         }
     }
 
@@ -66,24 +68,24 @@ class Front {
             
                 if($result){
                     print " <script>
-                                window.location='".$this->redirect->get_url('login')."';
+                                window.location='".$this->redirect->get_url('front/login')."';
                                 alert('Registrasi Berhasil!');
                             </script>";
                 } else {
                     print " <script>
-                                window.location='".$this->redirect->get_url('index')."';
+                                window.location='".$this->redirect->get_url('front')."';
                                 alert('Registrasi Gagal!');
                             </script>";
                 }
             } else {
                 print " <script>
-                            window.location='".$this->redirect->get_url('register')."';
+                            window.location='".$this->redirect->get_url('front/register')."';
                             alert('Password Konfirmasi tidak sesuai');
                         </script>";
             }
         } else {
             print " <script>
-                        window.location='".$this->redirect->get_url('register')."';
+                        window.location='".$this->redirect->get_url('front/register')."';
                         alert('Data Registrasi Belum Lengkap');
                     </script>";
         }
@@ -110,30 +112,29 @@ class Front {
             $login = $this->db->query($query);
 
             if($login->num_rows > 0){
-                while($column = mysqli_fetch_assoc($login)){
-                    Session::set('id_pelanggan', $column['id']);
-                    Session::set('email', $column['email']);
-                    Session::set('nama_pelanggan', $column['nama_lengkap']);
-                }
+                    Session::set('id_pelanggan', $login->fetch_assoc()['id']);
+                    Session::set('email', $login->fetch_assoc()['email']);
+                    Session::set('nama_pelanggan', $login->fetch_assoc()['nama_lengkap']);
+
                 print " <script>
-                            window.location='".$this->redirect->get_url('index')."';
+                            window.location='".$this->redirect->get_url('front')."';
                             alert('Login Berhasil!');
                         </script>";
             } else {
                 print " <script>
-                            window.location='".$this->redirect->get_url('login')."';
+                            window.location='".$this->redirect->get_url('front/login')."';
                             alert('email atau Password Salah!');
                         </script>";
             }
             
         } else {
-            $this->redirect->to('login');
+            $this->redirect->to('front/login');
         }
     }
 
     function logout(){
         session_destroy();
-        $this->redirect->to('index');
+        $this->redirect->to('front');
     }
 	
     function kategori(){
@@ -141,6 +142,7 @@ class Front {
 
         $data_kue = $this->db->query("SELECT * FROM tbl_barang WHERE id_kategori = '$id_kategori'");
         $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
+        $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
 
         include './view/front/kategori/daftar_kue.php';
     }
@@ -148,6 +150,7 @@ class Front {
     function detail_kue(){
         $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
         $detail = $this->db->query("SELECT * FROM tbl_barang WHERE id =".Input::get("id_kue"))->fetch_assoc();
+        $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
 
         include "./view/front/kategori/detail_kue.php";
     }
@@ -159,16 +162,26 @@ class Front {
             $id_barang = Input::get('id_kue');
             $qty = Input::post('qty');
 
-            $data = $this->db->query("SELECT harga FROM tbl_barang WHERE id = $id_barang")->fetch_array();
+            $data = $this->db->query("SELECT harga, qty FROM tbl_barang WHERE id = $id_barang")->fetch_array();
 
-           
+            $qty_update = $data[1] - $qty;
+            $query_update = "UPDATE tbl_barang SET qty = $qty_update WHERE id = $id_barang";
+            $update_data = $this->db->query($query_update);
+
             $subtotal = $data[0] * $qty;
+            $query_insert = "INSERT INTO tbl_keranjang(id_pelanggan, id_barang, qty, subtotal) VALUES (".Session::get('id_pelanggan').", ".Input::get('id_kue').", $qty, $subtotal)";
+            $insert_data = $this->db->query($query_insert);
 
-            $query = "INSERT INTO tbl_keranjang(id_pelanggan, id_barang, qty, subtotal) VALUES (".Session::get('id_pelanggan').", ".Input::get('id_kue').", $qty, $subtotal)";
+            if(!empty($insert_data)) {
+                print " <script>
+                            window.location='".$this->redirect->get_url('keranjang')."';
+                            alert('Berhasil di simpan');
+                        </script>";
+            }
 
         } else {
             print " <script>
-                        window.location='".$this->redirect->get_url('login')."';
+                        window.location='".$this->redirect->get_url('front/login')."';
                         alert('Anda Harus Login Terlebih Dahulu.');
                     </script>";
         }

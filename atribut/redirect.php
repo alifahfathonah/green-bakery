@@ -7,7 +7,7 @@
 
         function __construct(){
             $this->conf = new config();
-            $this->host = 'http://'.$this->conf->curExpPageURL()[2].'/'.$this->conf->curExpPageURL()[3].'/'.$this->conf->curExpPageURL()[4];
+            $this->host = 'http://'.$this->conf->curExpPageURL()[2].'/'.$this->conf->curExpPageURL()[3];
         }
 
         function to($destination){

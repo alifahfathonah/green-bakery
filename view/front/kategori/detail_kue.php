@@ -34,6 +34,7 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <style> .top_right li.cart a::before { content: "<?=$keranjang['pesanan'];?>"; } </style>
     </head>
     <body>
         
@@ -147,7 +148,7 @@
                             <p>Curabitur semper varius lectus sed consequat. Nam accumsan dapibus sem, sed lobortis nisi porta vitae. Ut quam tortor, facilisis nec laoreet consequat, malesuada a massa. Proin pretium tristique leo et imperdiet.</p>
                             </div>
                             <div class="quantity">
-                            <form action="<?=$host."/front/tambah_keranjang/"?>" method="POST">
+                            <form action="<?=$host."/front/tambah_keranjang/?id_kue=".Input::get('id_kue')?>" method="POST">
                                 <div class="custom">
                                     <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;" class="reduced items-count" type="button"><i class="icon_minus-06"></i></button>
                                         <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
