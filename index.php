@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include 'config/config.php';
 $conf = new config();
 $main_url = $conf->curExpPageURL()[4];

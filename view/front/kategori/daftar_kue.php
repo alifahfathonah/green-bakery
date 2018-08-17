@@ -78,7 +78,7 @@
                             <ul class="top_right">
                                 <?php if (Session::exists('email')) { ?>
                                     <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
-                                    <li class="cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
+                                    <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -182,7 +182,7 @@
                                 <div class="l_p_text">
                                    <ul>
                                         <li class="p_icon"><a href="#"><i class="icon_piechart"></i></a></li>
-                                        <li><a class="add_cart_btn" href="#">Tambahkan</a></li>
+                                        <li><a class="add_cart_btn" href="<?=$host."/front/detail_kue/?id_kue=".$column["id"]."&id_kategori=".$column["id_kategori"];?>">Lihat Detail</a></li>
                                         <li class="p_icon"><a href="#"><i class="icon_heart_alt"></i></a></li>
                                     </ul>
                                     <h4><?=$column["nama_barang"];?></h4>

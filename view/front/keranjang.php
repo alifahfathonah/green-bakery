@@ -39,235 +39,210 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <style> .top_right li.cart a::before { content: "<?=$keranjang['pesanan'];?>"; } </style>
     </head>
     <body>
-        
-        <!--================Menu Area =================-->
-        <header class="shop_header_area carousel_menu_area">
-            <div class="carousel_top_header row m0">
-                <div class="container">
-                    <div class="carousel_top_h_inner">
-                        <div class="float-md-left">
-                            <div class="top_header_left">
-                                <div class="selector">
-                                    <select class="language_drop" name="countries" id="countries" style="width:300px;">
-                                      <option value='yt' data-image="img/icon/flag-1.png" data-imagecss="flag yt" data-title="English">English</option>
-                                      <option value='yu' data-image="img/icon/flag-1.png" data-imagecss="flag yu" data-title="Bangladesh">Bangla</option>
-                                      <option value='yt' data-image="img/icon/flag-1.png" data-imagecss="flag yt" data-title="English">English</option>
-                                      <option value='yu' data-image="img/icon/flag-1.png" data-imagecss="flag yu" data-title="Bangladesh">Bangla</option>
-                                    </select>
-                                </div>
-                                <select class="selectpicker usd_select">
-                                    <option>USD</option>
-                                    <option>$</option>
-                                    <option>$</option>
-                                </select>
+
+        <!--================Top Header Area =================-->
+        <div class="header_top_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="top_header_left">
+
+
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+                                <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button"><i class="icon-magnifier"></i></button>
+                                </span>
                             </div>
                         </div>
-                        <div class="float-md-right">
-                            <div class="top_header_middle">
-                                <a href="#"><i class="fa fa-phone"></i> Call Us: <span>+84 987 654 321</span></a>
-                                <a href="#"><i class="fa fa-envelope"></i> Email: <span>support@yourdomain.com</span></a>
-                            </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="top_header_middle">
+                            <a href="#"><i class="fa fa-phone"></i> Call Us: <span>+84 987 654 321</span></a>
+                            <a href="#"><i class="fa fa-envelope"></i> Email: <span>support@greenbakery.com</span></a>
+                            <img src="<?=$host;?>/assets/front/img/logo2.png" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="top_right_header">
+                            <ul class="header_social">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                            </ul>
+                            <ul class="top_right">
+                                <?php if (Session::exists('email')): ?>
+                                    <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
+                                    <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
+                                <?php endif ?>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="carousel_menu_inner">
-                <div class="container">
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                        <a class="navbar-brand" href="#"><img src="img/logo.png" alt=""></a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+        </div>
+        <!--================End Top Header Area =================-->
 
-                        </button>
+        <!--================Menu Area =================-->
+        <header class="shop_header_area">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#"><img src="img/logo2.png" alt=""></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-auto">
-                                <li class="nav-item dropdown submenu">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Home <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item"><a class="nav-link" href="index.html">Home Simple</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-carousel.html">Home Carousel</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-fullwidth.html">Home Full Width</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-parallax.html">Home Parallax</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-sidebar.html">Home Boxed</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-fixed-menu.html">Home Fixed</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown submenu">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Pages <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item"><a class="nav-link" href="compare.html">Compare</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout Method</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="register.html">Checkout Register</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="track.html">Track</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="404.html">404</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown submenu active">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Shop <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item"><a class="nav-link" href="categories-no-sidebar-2column.html">Prodcut No Sidebar</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-no-sidebar-3column.html">Prodcut Two Column</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-no-sidebar-4column.html">Product Grid</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-left-sidebar.html">Categories Left Sidebar</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-right-sidebar.html">Categories Right Sidebar</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-grid-left-sidebar.html">Categories Grid Sidebar</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="product-details.html">Prodcut Details 01</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="product-details2.html">Prodcut Details 02</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="product-details3.html">Prodcut Details 03</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="shopping-cart.html">Shopping Cart 01</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="shopping-cart2.html">Shopping Cart 02</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="empty-cart.html">Empty Cart</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">lookbook</a></li>
-                                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active"><a class="nav-link" href="<?=$host."/front";?>">Beranda</a></li>
+                            <li class="nav-item dropdown submenu">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
+                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
+                                <?php } ?>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="contact.html">Hubungi Kami</a></li>
+                        </ul>
+                        <?php if (!Session::exists('id_pelanggan')) { ?>
+                            <ul class="navbar-nav navbar-right ml-auto mr-2">
+                                <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
                             </ul>
-                            <ul class="navbar-nav justify-content-end">
-                                <li class="search_icon"><a href="#"><i class="icon-magnifier icons"></i></a></li>
-                                <li class="user_icon"><a href="#"><i class="icon-user icons"></i></a></li>
-                                <li class="cart_cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
+                        <?php } else { ?>
+                            <ul class="navbar-nav navbar-right ml-auto mr-2">
+                                <li class="nav-item mr-2"><a href="#" class="nav-link"><?php echo Session::get('nama_pelanggan');?></a></li>
+                                <li class="nav-item"><a href="<?=$host?>/front/logout" class="nav-link">[ Keluar ]</a></li>
                             </ul>
-                        </div>
-                    </nav>
-                </div>
+                        <?php } ?>
+                    </div>
+                </nav>
             </div>
         </header>
         <!--================End Menu Area =================-->
         
-        <!--================Categories Banner Area =================-->
-        <section class="solid_banner_area">
-            <div class="container">
-                <div class="solid_banner_inner">
-                    <h3>shopping cart</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="shopping-cart.html">Shopping cart</a></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        <!--================End Categories Banner Area =================-->
-        
-        <!--================Shopping Cart Area =================-->
-        <section class="shopping_cart_area p_100">
+         <!--================Shopping Cart Area =================-->
+         <?php if($keranjang['pesanan'] != 0){ ?>
+         <section class="shopping_cart_area p_100">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8">
-                        <div class="cart_product_list">
-                            <h3 class="cart_single_title">Discount Cupon</h3>
+                        <div class="cart_items">
+                            <h3>Keranjang Belanja Anda</h3>
                             <div class="table-responsive-md">
                                 <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col"></th>
-                                            <th scope="col">product</th>
-                                            <th scope="col">price</th>
-                                            <th scope="col">qunatity</th>
-                                            <th scope="col">total</th>
-                                        </tr>
-                                    </thead>
                                     <tbody>
+                                        <?php while($column = $data_pembelian->fetch_assoc()): ?>
                                         <tr>
                                             <th scope="row">
-                                                <img src="img/icon/close-icon.png" alt="">
+                                                <a href="<?=$host."/keranjang/hapus_item/?id_barang=".$column['id_barang']."&qty_barang=".$column['qty'];?>">
+                                                    <img src="<?=$host."/assets/front/";?>img/icon/close-icon.png" alt="">
+                                                </a>
                                             </th>
                                             <td>
                                                 <div class="media">
                                                     <div class="d-flex">
-                                                        <img src="img/product/cart-product/cart-1.jpg" alt="">
+                                                        <img width="99px" height="131px" src="<?=$host."/uploads/".$column['foto'];?>" alt="<?=$column['nama_barang'];?>">
                                                     </div>
                                                     <div class="media-body">
-                                                        <h4>Mens Nike Bag</h4>
+                                                        <h4><?=$column['nama_barang'];?></h4>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td><p>$150</p></td>
-                                            <td><input type="text" placeholder="01"></td>
-                                            <td><p>$150</p></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">
-                                                <img src="img/icon/close-icon.png" alt="">
-                                            </th>
-                                            <td>
-                                                <div class="media">
-                                                    <div class="d-flex">
-                                                        <img src="img/product/cart-product/cart-2.jpg" alt="">
+                                            <td><p class="red">IDR <?=$column['harga'];?></p></td>
+                                            <!-- <form action="" method="GET"> -->
+                                                <td>
+                                                    <div class="quantity">
+                                                        <h6>Quantity</h6>
+                                                        <div class="custom">
+                                                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 0) result.value--; return false;" class="reduced items-count" type="button"><i class="icon_minus-06"></i></button>
+                                                            <input type="text" name="qty" id="sst" maxlength="12" value="<?=$column['qty'];?>" title="Quantity:" class="input-text qty">
+                                                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++; return false;" class="increase items-count" type="button"><i class="icon_plus"></i></button>
+                                                        </div>
                                                     </div>
-                                                    <div class="media-body">
-                                                        <h4>Mens Nike Bag</h4>
+                                                </td>
+                                                <td><p>IDR <?=$column['subtotal'];?></p></td>
+                                                <td>
+                                                    <div class="quantity" style="padding: 0.5em;">
+                                                        <div class="custom">
+                                                            <button onclick="window.location = '<?=$host.'/keranjang/update_qty/?id_produk='.$column['id_barang'].'&qty_awal='.$column['qty'].'&qty_baru=';?>'+document.getElementById('sst').value;" style="background-color: transparent; border: none;" type="submit">Update</button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td><p>$150</p></td>
-                                            <td><input type="text" placeholder="01"></td>
-                                            <td><p>$250</p></td>
+                                                </td>
+                                            <!-- </form> -->
+                                            <?php $total += $column['subtotal']; ?>
                                         </tr>
+                                        <?php endwhile ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="calculate_shoping_area">
-                            <h3 class="cart_single_title">Calculate Shoping <span><i class="icon_minus-06"></i></span></h3>
-                            <div class="calculate_shop_inner">
-                                <form class="calculate_shoping_form row" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
-                                    <div class="form-group col-lg-12">
-                                        <select class="selectpicker">
-                                            <option>United State America (USA)</option>
-                                            <option>United State America (USA)</option>
-                                            <option>United State America (USA)</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input type="text" class="form-control" id="state" name="state" placeholder="State / Country">
-                                    </div>
-                                    <div class="form-group col-lg-6">
-                                        <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode / Zip">
-                                    </div>
-                                    <div class="form-group col-lg-12">
-                                        <button type="submit" value="submit" class="btn submit_btn form-control">update totals</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
                     </div>
                     <div class="col-lg-4">
-                        <div class="total_amount_area">
-                            <div class="cupon_box">
-                                <h3 class="cart_single_title">Discount Cupon</h3>
-                                <div class="cupon_box_inner">
-                                    <input type="text" placeholder="Enter your code here">
-                                    <button type="submit" class="btn btn-primary subs_btn">apply cupon</button>
+                        <div class="cart_totals_area">
+                            <h4>Cart Totals</h4>
+                            <div class="cart_t_list">
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Subtotal</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6>$14</h6>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Shipping</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model tex</p>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        
+                                    </div>
+                                    <div class="media-body">
+                                        <select class="selectpicker">
+                                            <option>Calculate Shipping</option>
+                                            <option>Calculate Shipping</option>
+                                            <option>Calculate Shipping</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="cart_totals">
-                                <h3 class="cart_single_title">Discount Cupon</h3>
-                                <div class="cart_total_inner">
-                                    <ul>
-                                        <li><a href="#"><span>Cart Subtotal</span> $400.00</a></li>
-                                        <li><a href="#"><span>Shipping</span> Free</a></li>
-                                        <li><a href="#"><span>Totals</span> $400.00</a></li>
-                                    </ul>
+                            <div class="total_amount row m0 row_disable">
+                                <div class="float-left">
+                                    Total
                                 </div>
-                                <button type="submit" class="btn btn-primary update_btn">update cart</button>
-                                <button type="submit" class="btn btn-primary checkout_btn">proceed to checkout</button>
+                                <div class="float-right">
+                                    IDR <?php echo $total; ?>
+                                </div>
                             </div>
                         </div>
+                        <button type="submit" value="submit" class="btn subs_btn form-control">Proceed to checkout</button>
                     </div>
                 </div>
             </div>
         </section>
+        <?php } else { ?>
+        <section class="emty_cart_area p_100">
+            <div class="container">
+                <div class="emty_cart_inner">
+                    <i class="icon-handbag icons"></i>
+                    <h3>Keranjang Anda Masih Kosong</h3>
+                    <h4>back to <a href="#">shopping</a></h4>
+                </div>
+            </div>
+        </section>
+        <?php } ?>
         <!--================End Shopping Cart Area =================-->
         
         <!--================Footer Area =================-->

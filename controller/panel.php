@@ -1,7 +1,8 @@
 <?php
-session_start();
+
 include_once ('config/config.php');
 include_once ('config/database.php');
+
 /**
  * Class Panel
  */

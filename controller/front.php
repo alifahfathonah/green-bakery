@@ -12,7 +12,6 @@ class Front {
 
     function __construct() {
         // code...
-        session_start();
         $this->db = new database();
         $this->host = new config();
         $this->redirect = new Redirect();
@@ -24,10 +23,12 @@ class Front {
         $execute_get_all_barang = $this->db->query("SELECT * FROM tbl_barang");
         $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
 
-        $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
+        if(Session::exists('id_pelanggan')){
+            $query = "SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan');
+            $keranjang = $this->db->query($query)->fetch_assoc();
+        }
 
         include './view/front/main.php';
-        //echo 'HALO';
     }
 
     function register(){
@@ -112,9 +113,12 @@ class Front {
             $login = $this->db->query($query);
 
             if($login->num_rows > 0){
-                    Session::set('id_pelanggan', $login->fetch_assoc()['id']);
-                    Session::set('email', $login->fetch_assoc()['email']);
-                    Session::set('nama_pelanggan', $login->fetch_assoc()['nama_lengkap']);
+
+                $data_pelanggan = $login->fetch_assoc();
+
+                Session::set('id_pelanggan', $data_pelanggan['id']);
+                Session::set('email', $data_pelanggan['email']);
+                Session::set('nama_pelanggan', $data_pelanggan['nama_lengkap']);
 
                 print " <script>
                             window.location='".$this->redirect->get_url('front')."';
@@ -163,14 +167,21 @@ class Front {
             $qty = Input::post('qty');
 
             $data = $this->db->query("SELECT harga, qty FROM tbl_barang WHERE id = $id_barang")->fetch_array();
-
+            
             $qty_update = $data[1] - $qty;
             $query_update = "UPDATE tbl_barang SET qty = $qty_update WHERE id = $id_barang";
             $update_data = $this->db->query($query_update);
 
-            $subtotal = $data[0] * $qty;
-            $query_insert = "INSERT INTO tbl_keranjang(id_pelanggan, id_barang, qty, subtotal) VALUES (".Session::get('id_pelanggan').", ".Input::get('id_kue').", $qty, $subtotal)";
-            $insert_data = $this->db->query($query_insert);
+            $data_keranjang = $this->db->query("SELECT id_barang, id_pelanggan, qty FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
+
+            if(empty($data_keranjang)){
+                $subtotal = $data[0] * $qty;
+                $query_insert = "INSERT INTO tbl_keranjang(id_pelanggan, id_barang, qty, subtotal) VALUES (".Session::get('id_pelanggan').", ".Input::get('id_kue').", $qty, $subtotal)";
+                $insert_data = $this->db->query($query_insert);
+            } else {
+                $total_qty = $data_keranjang['qty'] + $qty;
+                $insert_data = $this->db->query("UPDATE tbl_keranjang SET qty = $total_qty WHERE id_barang = ".$data_keranjang['id_barang']." AND id_pelanggan = ".$data_keranjang['id_pelanggan']);
+            }   
 
             if(!empty($insert_data)) {
                 print " <script>

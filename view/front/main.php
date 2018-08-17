@@ -77,7 +77,7 @@
                             <ul class="top_right">
                                 <?php if (Session::exists('email')): ?>
                                     <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
-                                    <li class="cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
+                                    <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
                                 <?php endif ?>
                             </ul>
                         </div>
@@ -111,7 +111,7 @@
                             </li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Hubungi Kami</a></li>
                         </ul>
-                        <?php if (!Session::exists('email')) { ?>
+                        <?php if (!Session::exists('id_pelanggan')) { ?>
                             <ul class="navbar-nav navbar-right ml-auto mr-2">
                                 <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
                             </ul>
@@ -269,7 +269,7 @@
                             <div class="l_p_text">
                                 <ul>
                                     <li class="p_icon"><a href="#"><i class="icon_piechart"></i></a></li>
-                                    <li><a class="add_cart_btn" href="#">Tambahkan</a></li>
+                                    <li><a class="add_cart_btn" href="<?=$host."/front/detail_kue/?id_kue=".$column[0]."&id_kategori=".$column[1];?>">Lihat Detail</a></li>
                                     <li class="p_icon"><a href="#"><i class="icon_heart_alt"></i></a></li>
                                 </ul>
                                 <h4><?=$column[2];?></h4>
