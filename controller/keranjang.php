@@ -75,6 +75,38 @@ class Keranjang {
 
     }
 
+    function checkout(){
+
+        $id_pelanggan = Session::get('id_pelanggan');
+        
+        $date = new DateTime();
+
+        $get_id = $this->db->query('SELECT id_transaksi FROM tbl_transaksi ORDER BY id_transaksi')->fetch_array();
+
+        $no_urut = explode("-", $get_id[0])[2] + 1;
+
+        if(!empty($get_id[0])){
+
+            $total = 0;
+
+            $subtotal = $this->db->query("SELECT subtotal FROM tbl_keranjang WHERE id_pelanggan = $id_pelanggan");
+
+            while($value = $subtotal->fetch_array()){ $total += $value[0]; }
+
+            $query_trans = "INSERT INTO tbl_transaksi(id_transaksi, id_pelanggan, total, status) VALUES('TRX-".$date->format('ymd-'.$no_urut)."', $id_pelanggan, $total, 0)";
+
+            die($query_trans);
+
+            $simpan_trans = $this->db->query($query_trans);
+
+        } else {
+
+            $id_transaksi = 'TRX-'.$date->format('ymd-1');
+
+        }
+
+    }
+
 }
 
 ?>

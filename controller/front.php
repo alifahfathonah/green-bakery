@@ -172,7 +172,7 @@ class Front {
             $query_update = "UPDATE tbl_barang SET qty = $qty_update WHERE id = $id_barang";
             $update_data = $this->db->query($query_update);
 
-            $data_keranjang = $this->db->query("SELECT id_barang, id_pelanggan, qty FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
+            $data_keranjang = $this->db->query("SELECT id_barang, id_pelanggan, qty FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan')." AND id_barang = $id_barang")->fetch_assoc();
 
             if(empty($data_keranjang)){
                 $subtotal = $data[0] * $qty;

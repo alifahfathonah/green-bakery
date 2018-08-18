@@ -25,7 +25,7 @@ class Panel {
 			if(!isset($_SESSION["isLogin"])){
 				if($isLoginURL==FALSE){
 					header("Location: $this->host/panel/login");
-				}
+			}
         }
     }
 

@@ -227,7 +227,8 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" value="submit" class="btn subs_btn form-control">Proceed to checkout</button>
+                        <a href="<?=$host."/keranjang/checkout"?>" class="btn subs_btn form-control">Proses Pesanan</a>
+                        <!-- <button type="submit" value="submit" class="btn subs_btn form-control">Proceed to checkout</button> -->
                     </div>
                 </div>
             </div>
@@ -238,7 +239,7 @@
                 <div class="emty_cart_inner">
                     <i class="icon-handbag icons"></i>
                     <h3>Keranjang Anda Masih Kosong</h3>
-                    <h4>back to <a href="#">shopping</a></h4>
+                    <h4>Silahkan <a href="<?=$host;?>">Kembali</a></h4>
                 </div>
             </div>
         </section>
