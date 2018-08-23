@@ -8,11 +8,12 @@ include_once ('config/database.php');
  */
 class Panel {
 
-    public $db,$host;
+    public $db,$host, $redirect;
 
     function __construct() {
         $this->db = new database();
         $this->host = new config();
+        $this->redirect = new Redirect();
 
         $isLoginURL=FALSE;
 
@@ -258,6 +259,7 @@ class Panel {
                 */
 
     function transaksi(){
+
         $query = "SELECT * FROM tbl_transaksi";
         $execute = $this->db->query($query);
 
@@ -267,65 +269,19 @@ class Panel {
         include './view/back/transaksi.php';
     }
 
-    function tambah_transaksi(){
-
-        $kategori     = $_POST['kategori'];
-        $nama_barang  = $_POST['nama_barang'];
-        $qty          = $_POST['qty'];
-        $harga_satuan = $_POST['harga_satuan'];
-
-        $upload_dir   = "./uploads";
-
-        if(!$_FILES["file"]["error"]){
-        $tmp_name = $_FILES["file"]["tmp_name"];
-        $name = basename($_FILES["file"]["name"]);
-        move_uploaded_file($tmp_name, "$upload_dir/$name");
-
-        $query = "INSERT INTO tbl_barang (id_kategori, nama_barang, qty, harga, foto, status) VALUES ('$kategori','$nama_barang','$qty','$harga_satuan','$name','1')";
-        $execute = $this->db->query($query);
-        header("Location: $this->host/barang");
-        }else{
-            //gagal upload
-
-            if($_FILES["file"]["error"]==4){
-            $query = "INSERT INTO tbl_barang (id_kategori, nama_barang, qty, harga, status) VALUES ('$kategori','$nama_barang','$qty','$harga_satuan','1')";
-            $execute = $this->db->query($query);
-            header("Location: $this->host/barang");
-            }
-        }
-
-        }
 
     function ubah_transaksi(){
 
-        $id_barang    = $_POST['id_barang'];
-        $kategori     = $_POST['kategori'];
-        $nama_barang  = $_POST['nama_barang'];
-        $qty          = $_POST['qty'];
-        $harga_satuan = $_POST['harga_satuan'];
+        $id_transaksi = Input::post('id_transaksi');
+        $status = Input::post('status');
 
-        $upload_dir   = "./uploads";
+        $query = "UPDATE tbl_transaksi SET status = $status WHERE id_transaksi = '$id_transaksi'";
 
-        if(!$_FILES["file"]["error"]){
-        $tmp_name = $_FILES["file"]["tmp_name"];
-        $name = basename($_FILES["file"]["name"]);
+        $this->db->query($query);
 
-        $query = "UPDATE tbl_barang SET id_kategori='$kategori', nama_barang='$nama_barang', qty='$qty', harga='$harga_satuan', foto='$name', status=2 WHERE id=$id_barang";
+        $this->redirect->to('panel/transaksi');
 
-        move_uploaded_file($tmp_name, "$upload_dir/$name");
-        $execute = $this->db->query($query);
-        header("Location: $this->host/barang");
-        }else{
-
-            if($_FILES["file"]["error"]==4){
-            $query = "UPDATE tbl_barang SET id_kategori='$kategori', nama_barang='$nama_barang', qty='$qty', harga='$harga_satuan', status=2 WHERE id=$id_barang";
-
-            $execute = $this->db->query($query);
-            header("Location: $this->host/panel/barang");
-            }
-        }
-
-        }
+    }
 
     function hapus_transaksi(){
         $id    = $_POST['id_barang'];
@@ -333,9 +289,10 @@ class Panel {
         $this->db->query($query);
     }
 
+
     function ambil_data_transaksi(){
-        $id    = $_POST['id_barang'];
-        $query = "SELECT * FROM tbl_barang WHERE id=$id";
+        $id    = $_POST['id_transaksi'];
+        $query = "SELECT id_transaksi FROM tbl_transaksi WHERE id_transaksi=$id";
         echo json_encode(mysqli_fetch_row($this->db->query($query)));
     }
 
@@ -343,12 +300,6 @@ class Panel {
     MODUL LOGIN
                 */
     function login(){
-        // $query = "SELECT * FROM tbl_transaksi";
-        // $execute = $this->db->query($query);
-        //
-        // $query_get_all_transaksi = "SELECT a.* FROM tbl_transaksi a";
-        // $execute_get_all_transaksi  = $this->db->query($query_get_all_transaksi);
-
         include './view/back/login.php';
     }
 
@@ -370,6 +321,12 @@ class Panel {
     function do_logout(){
         session_destroy();
         header("Location: $this->host/panel");
+    }
+
+    function pengiriman(){
+
+        $nama_penerima = "Muhammad Iqbal";
+
     }
 
 }

@@ -75,6 +75,25 @@ class Keranjang {
 
     }
 
+    function detail_checkout(){
+
+        (empty(Session::get('id_pelanggan')) ? $this->redirect->to('front') : true);
+
+        $subtotal = 0;
+        $ongkir = 15000;
+
+        $query_data_keranjang = "SELECT keranjang.*, barang.nama_barang FROM `tbl_keranjang` AS keranjang JOIN tbl_barang AS barang
+                                ON barang.id = keranjang.id_barang WHERE keranjang.id_pelanggan = ".Session::get('id_pelanggan');
+        $data_keranjang = $this->db->query($query_data_keranjang);
+
+        $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
+
+        $query = "SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan');
+        $keranjang = $this->db->query($query)->fetch_assoc();
+
+        include "./view/front/detail_checkout.php";
+    }
+
     function checkout(){
 
         $id_pelanggan = Session::get('id_pelanggan');
@@ -83,21 +102,9 @@ class Keranjang {
 
         $get_id = $this->db->query('SELECT id_transaksi FROM tbl_transaksi ORDER BY id_transaksi')->fetch_array();
 
-        $no_urut = explode("-", $get_id[0])[2] + 1;
-
         if(!empty($get_id[0])){
 
-            $total = 0;
-
-            $subtotal = $this->db->query("SELECT subtotal FROM tbl_keranjang WHERE id_pelanggan = $id_pelanggan");
-
-            while($value = $subtotal->fetch_array()){ $total += $value[0]; }
-
-            $query_trans = "INSERT INTO tbl_transaksi(id_transaksi, id_pelanggan, total, status) VALUES('TRX-".$date->format('ymd-'.$no_urut)."', $id_pelanggan, $total, 0)";
-
-            die($query_trans);
-
-            $simpan_trans = $this->db->query($query_trans);
+            $id_transaksi = "TRX-".$date->format('ymd-').explode("-", $get_id[0])[1] + 1;
 
         } else {
 
@@ -105,6 +112,54 @@ class Keranjang {
 
         }
 
+        $total = 15000;
+
+        $subtotal = $this->db->query("SELECT subtotal FROM tbl_keranjang WHERE id_pelanggan = $id_pelanggan");
+
+        while($value = $subtotal->fetch_array()){ $total += $value[0]; }
+
+        $query_trans = "INSERT INTO tbl_transaksi(id_transaksi, id_pelanggan, total, status) VALUES('$id_transaksi', $id_pelanggan, $total, 0)";
+
+        $this->db->query($query_trans);
+
+        $keranjang = $this->db->query("SELECT tbl_keranjang.*, tbl_barang.nama_barang FROM tbl_keranjang JOIN tbl_barang 
+                                      ON tbl_barang.id = tbl_keranjang.id_barang WHERE tbl_keranjang.id_pelanggan = $id_pelanggan");
+
+        while($value = $keranjang->fetch_assoc()){
+
+            $query_detail_trans = "INSERT INTO tbl_detail_transaksi(id_transaksi, nama_barang, qty, subtotal) VALUES ('$id_transaksi', '".$value['nama_barang']."', ".$value['qty'].", ".$value['subtotal'].")";
+            $this->db->query($query_detail_trans);
+        }
+
+        $get_id_pengiriman = $this->db->query('SELECT id_pengiriman FROM tbl_pengiriman ORDER BY id_pengiriman')->fetch_array();
+
+        if(!empty($get_id_pengiriman[0])){
+
+            $id_pengiriman = "KPN-".$date->format('ymd-').explode("-", $get_id_pengiriman[0])[1] + 1;
+
+        } else {
+
+            $id_pengiriman = 'KPN-'.$date->format('ymd-1');
+
+        }
+
+        $nama_penerima = Input::post('nama_penerima');
+        $alamat = Input::post('alamat');
+        $no_telp = Input::post('no_telp');
+        $email = Input::post('email');
+        $catatan = Input::post('catatan');
+
+        $query_insert_pengiriman = "INSERT INTO `tbl_pengiriman`(`id_pengiriman`, `id_transaksi`, `nama_penerima`, `alamat`, `no_telp`, `email`, `catatan`) 
+                                    VALUES ('$id_pengiriman','$id_transaksi','$nama_penerima','$alamat','$no_telp','$email', '$catatan')";
+
+        $this->db->query($query_insert_pengiriman);
+
+        $this->db->query("DELETE FROM tbl_keranjang WHERE id_pelanggan = '$id_pelanggan'");
+
+        print " <script>
+                    window.location='".$this->redirect->get_url('front')."';
+                    alert('Berhasil Menyimpan Pesanan.');
+                </script>";
     }
 
 }

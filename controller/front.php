@@ -146,7 +146,9 @@ class Front {
 
         $data_kue = $this->db->query("SELECT * FROM tbl_barang WHERE id_kategori = '$id_kategori'");
         $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
-        $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
+        if(Session::exists('id_pelanggan')){
+            $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
+        }
 
         include './view/front/kategori/daftar_kue.php';
     }
@@ -154,7 +156,9 @@ class Front {
     function detail_kue(){
         $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
         $detail = $this->db->query("SELECT * FROM tbl_barang WHERE id =".Input::get("id_kue"))->fetch_assoc();
-        $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
+        if(Session::exists('id_pelanggan')){
+            $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
+        }
 
         include "./view/front/kategori/detail_kue.php";
     }
