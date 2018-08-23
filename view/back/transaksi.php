@@ -209,13 +209,12 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="transaksi" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                  <th>Id Transaksi</th>
                   <th>Tgl Transaksi</th>
                   <th>ID Pelanggan</th>
-                  <th>ID Barang</th>
-                  <th>QTY</th>
                   <th>Status</th>
                   <th>Aksi</th>
                 </tr>
@@ -223,33 +222,29 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
                 <tbody>
 
                 <?php
-                while($row = mysqli_fetch_array($execute_get_all_transaksi)){
+                while($row = $execute_get_all_transaksi->fetch_assoc()){
                   ?>
                   <tr>
-                    <td><?=$row[3];?></td>
-                    <td><?=$row[2];?></td>
-                    <td><?=$row[1];?></td>
-                    <td><?=$row[4];?></td>
+                    <td><?=$row['id_transaksi'];?></td>
+                    <td><?=$row['tgl_transaksi'];?></td>
+                    <td><?=$row['id_pelanggan'];?></td>
                     <td>
                         <?php
-                        if($row[5]==1){
+                        if($row['status']==0){
                           echo '<span class="label label-default">Belum Di Proses</span>';
-                        }else if($row[5]==2){
+                        }else if($row['status']==1){
                           echo '<span class="label label-primary">Sedang Di Proses</span>';
-                        }else{
-                          echo '<span class="label label-success">Selesai</span>';
+                        } else {
+                          echo '<span class="label label-danger">Selesai</span>';
                         }
                         ?>
                     </td>
                     <td>
-                        <button id="<?=$row[0];?>" class="btn btn-xs btn-primary edit">Edit</button>
-                        <button id="<?=$row[0];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
+                        <button id="<?=$row['id_transaksi'];?>" class="btn btn-xs btn-primary edit">Edit</button>
+                        <button id="<?=$row['id_transaksi'];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
                     </td>
                   </tr>
-                  <?php
-                }
-                ?>
-
+                  <?php } ?>
 
                 </tbody>
 
@@ -280,46 +275,26 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
   </div>
 
   <div class="modal fade" id="modal-default">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="txtTitleModalBarang">Master Tambah Barang</h4>
+          <h4 class="modal-title" id="txtTitleModalTransaksi">Edit Transaksi</h4>
         </div>
         <div class="modal-body">
 
-          <form role="form" id="idFormModalBarang" method="post" action="<?=$host;?>/panel/tambah_barang" enctype="multipart/form-data">
+          <form role="form" id="idFormModalTransaksi" method="POST" action="<?=$host;?>/panel/ubah_transaksi">
             <div class="box-body">
               <div class="form-group">
-                  <label>Pilih Kategori</label>
-                  <select class="form-control" name="kategori" id="idSelectKategori">
-                    <?php
-                    while($row = mysqli_fetch_array($execute)){
-                      echo '<option value="'.$row[0].'">'.$row[1].'</option>';
-                    }
-                    ?>
+                <input type="hidden" name="id_transaksi" id="idTxtIDTransaksi">
+                  <label>Pilih Status</label>
+                  <select class="form-control" name="status" id="idSelectStatus">
+                      <option value="0">Belum Di Proses</option>
+                      <option value="1">Sedang Di Proses</option>
+                      <option value="2">Selesai Di Proses</option>
                   </select>
-                </div>
-              <div class="form-group">
-                <label>Nama Barang</label>
-                <input type="hidden" name="id_barang" id="idTxtBarang">
-                <input type="text" name="nama_barang" class="form-control" id="idTxtNamaBarang" placeholder="Ketikan Nama Barang">
               </div>
-              <div class="form-group">
-                <label>QTY</label>
-                <input type="number" name="qty" class="form-control" id="idTxtQTY" placeholder="Masukkan Jumlah Barang">
-              </div>
-              <div class="form-group">
-                <label>Harga Satuan</label>
-                <input type="number" name="harga_satuan" class="form-control" id="idTxtHargaSatuan" placeholder="Masukkan Harga Satuan Barang">
-              </div>
-              <div class="form-group">
-                <label>Foto Barang</label>
-                <input type="file" name="file">
-                <p class="help-block">*Pilih file gambar jpg/jpeg/png</p>
-              </div>
-
             </div>
             <!-- /.box-body -->
 
@@ -361,10 +336,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 <!-- DataTables -->
 <script src="<?=$host;?>/assets/back/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?=$host;?>/assets/back/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<!-- Morris.js charts -->
-<script src="<?=$host;?>/assets/back/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-<!-- datepicker -->
-<script src="<?=$host;?>/assets/back/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- Slimscroll -->
 <script src="<?=$host;?>/assets/back/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -377,22 +348,14 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
 <script>
   $(function () {
-    $('#example1').DataTable()
-    $('#example2').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    })
+    $('#transaksi').DataTable()
   })
 
   $(".hapus").click(function(){
     var id = this.id;
     var x = confirm("Apakah anda yakin?");
     if(x){
-      $.post('<?=$host;?>/panel/hapus_barang',{id_barang:id}).done(function(){
+      $.post('<?=$host;?>/panel/hapus_transaksi',{id_transaksi:id}).done(function(){
         alert('Berhasil');
         location.reload();
       })
@@ -403,22 +366,9 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
   $('.edit').click(function(){
     var id = this.id;
     $('#modal-default').modal();
-    $("#txtTitleModalBarang").html("Ubah Barang");
-    $("#idFormModalBarang").attr("action", "<?=$host;?>/panel/ubah_barang");
-    $.post("<?=$host;?>/panel/ambil_data_barang",{id_barang:id}).done(function(data){
-      var data = jQuery.parseJSON(data);
-      // console.log(data);
-      $("#idTxtBarang").val(data[0]);
-      $("#idTxtNamaBarang").val(data[2]);
-      $("#idTxtQTY").val(data[3]);
-      $("#idTxtHargaSatuan").val(data[4]);
-      $("#idSelectKategori").val(data[1]).change();
-    })
-  })
-
-  $('.tambah').click(function(){
-      $("#idFormModalBarang").attr("action", "<?=$host;?>/panel/tambah_barang");
-      $("#txtTitleModalBarang").html("Tambah Barang");
+    $("#txtTitleModalTransaksi").html("Ubah Barang");
+    $("#idFormModalTransaksi").attr("action", "<?=$host;?>/panel/ubah_transaksi");
+    $("#idTxtIDTransaksi").val(id);
   })
 </script>
 

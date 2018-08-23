@@ -609,7 +609,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     $('#modal-default').modal();
     $("#txtTitleModalBarang").html("Ubah Barang");
     $("#idFormModalBarang").attr("action", "<?=$host;?>/panel/ubah_barang");
-    $.post("<?=$host;?>/panel/ambil_data_barang",{id_barang:id}).done(function(data){
+    $.post("<?=$host;?>/panel/ambil_data_barang",{id_barang: id}).done(function(data){
       var data = jQuery.parseJSON(data);
       // console.log(data);
       $("#idTxtBarang").val(data[0]);
