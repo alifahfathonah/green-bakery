@@ -14,24 +14,23 @@
         <title>Green Bakery</title>
 
         <!-- Icon css link -->
-        <link href="<?=$host."/assets/front/";?>css/font-awesome.min.css" rel="stylesheet">
-        <link href="<?=$host."/assets/front/";?>vendors/line-icon/css/simple-line-icons.css" rel="stylesheet">
-        <link href="<?=$host."/assets/front/";?>vendors/elegant-icon/style.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>css/font-awesome.min.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>vendors/line-icon/css/simple-line-icons.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>vendors/elegant-icon/style.css" rel="stylesheet">
         <!-- Bootstrap -->
-        <link href="<?=$host."/assets/front/";?>css/bootstrap.min.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>css/bootstrap.min.css" rel="stylesheet">
         
         <!-- Rev slider css -->
-        <link href="<?=$host."/assets/front/";?>vendors/revolution/css/settings.css" rel="stylesheet">
-        <link href="<?=$host."/assets/front/";?>vendors/revolution/css/layers.css" rel="stylesheet">
-        <link href="<?=$host."/assets/front/";?>vendors/revolution/css/navigation.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>vendors/revolution/css/settings.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>vendors/revolution/css/layers.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>vendors/revolution/css/navigation.css" rel="stylesheet">
         
         <!-- Extra plugin css -->
-        <link href="<?=$host."/assets/front/";?>vendors/owl-carousel/owl.carousel.min.css" rel="stylesheet">
-        <link href="<?=$host."/assets/front/";?>vendors/bootstrap-selector/css/bootstrap-select.min.css" rel="stylesheet">
-        <link href="<?=$host."/assets/front/";?>vendors/jquery-ui/jquery-ui.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>vendors/bootstrap-selector/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>vendors/jquery-ui/jquery-ui.css" rel="stylesheet">
         
-        <link href="<?=$host."/assets/front/";?>css/style.css" rel="stylesheet">
-        <link href="<?=$host."/assets/front/";?>css/responsive.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>css/style.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/"?>css/responsive.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -42,9 +41,9 @@
         <style> .top_right li.cart a::before { content: "<?=$keranjang['pesanan'];?>"; } </style>
     </head>
     <body>
-
-        <!--================Top Header Area =================-->
-        <div class="header_top_area">
+        
+         <!--================Top Header Area =================-->
+         <div class="header_top_area">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3">
@@ -128,112 +127,88 @@
         </header>
         <!--================End Menu Area =================-->
         
-         <!--================Shopping Cart Area =================-->
-         <?php if($keranjang['pesanan'] != 0){ ?>
-         <section class="shopping_cart_area p_100">
+        <!--================Register Area =================-->
+        <section class="register_area p_100">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="cart_items">
-                            <h3>Keranjang Belanja Anda</h3>
-                            <div class="table-responsive-md">
-                                <table class="table">
-                                    <tbody>
-                                        <?php while($column = $data_pembelian->fetch_assoc()): ?>
-                                        <tr>
-                                            <th scope="row">
-                                                <a href="<?=$host."/keranjang/hapus_item/?id_barang=".$column['id_barang']."&qty_barang=".$column['qty'];?>">
-                                                    <img src="<?=$host."/assets/front/";?>img/icon/close-icon.png" alt="">
-                                                </a>
-                                            </th>
-                                            <td>
-                                                <div class="media">
-                                                    <div class="d-flex">
-                                                        <img width="99px" height="131px" src="<?=$host."/uploads/".$column['foto'];?>" alt="<?=$column['nama_barang'];?>">
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <h4><?=$column['nama_barang'];?></h4>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td><p class="red">IDR <?=$column['harga'];?></p></td>
-                                            <!-- <form action="" method="GET"> -->
-                                                <td>
-                                                    <div class="quantity">
-                                                        <h6>Quantity</h6>
-                                                        <div class="custom">
-                                                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 0) result.value--; return false;" class="reduced items-count" type="button"><i class="icon_minus-06"></i></button>
-                                                            <input type="text" name="qty" id="sst" maxlength="12" value="<?=$column['qty'];?>" title="Quantity:" class="input-text qty">
-                                                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++; return false;" class="increase items-count" type="button"><i class="icon_plus"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td><p>IDR <?=$column['subtotal'];?></p></td>
-                                                <td>
-                                                    <div class="quantity" style="padding: 0.5em;">
-                                                        <div class="custom">
-                                                            <button onclick="window.location = '<?=$host.'/keranjang/update_qty/?id_produk='.$column['id_barang'].'&qty_awal='.$column['qty'].'&qty_baru=';?>'+document.getElementById('sst').value;" style="background-color: transparent; border: none;" type="submit">Update</button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            <!-- </form> -->
-                                            <?php $total += $column['subtotal']; ?>
-                                        </tr>
+                <form action="<?=$host;?>/keranjang/checkout" method="POST">
+                <div class="register_inner">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="billing_details">
+                                <h2 class="reg_title">Detail Penerima</h2>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="name">Nama Penerima <span>*</span></label>
+                                        <input type="text" class="form-control" name="nama_penerima" id="name" data-validation="required custom" data-validation-regexp="^([a-zA-Z\s]+)$">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="address">Alamat <span>*</span></label>
+                                        <textarea class="form-control" id="" name="alamat" cols="30" rows="10" data-validation="required"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="email">Email <span>*</span></label>
+                                        <input type="email" class="form-control" name="email" id="email" data-validation="required email">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="phone">No Telepon <span>*</span></label>
+                                        <input type="text" class="form-control" name="no_telp" id="phone" data-validation="required custom" data-validation-regexp="^([0-9\s\-\+]+)$">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="name2">Catatan Untuk Penjual <span>*</span></label>
+                                        <input type="text" class="form-control" name="catatan" id="catatan">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="order_box_price">
+                                <h2 class="reg_title">Pesanan Anda</h2>
+                                <div class="payment_list">
+                                    <div class="price_single_cost">
+                                        <?php while ($column = $data_keranjang->fetch_assoc()): ?>
+                                        <h5><?=$column['nama_barang']." x ".$column['qty'];?> <span>IDR <?=$column['subtotal'];?></span></h5>
+                                        <?php $subtotal += $column['subtotal']; ?>
                                         <?php endwhile ?>
-                                    </tbody>
-                                </table>
+                                        <h5><b>Biaya Kirim <span>IDR 15000</span></b></h5>
+                                        <h5><b>Subtotal<span>IDR <?=$subtotal?></span></b></h5>
+                                        <h3><span class="normal_text">Total Pembayaran</span> <span>IDR <?=$subtotal+$ongkir;?></span></h3>
+                                    </div>
+                                    <div id="accordion" role="tablist" class="price_method">
+                                        <div class="card">
+                                            <div class="card-header" role="tab" id="headingOne">
+                                                <h5 class="mb-0">
+                                                    <a data-toggle="collapse" href="#collapseOne" role="button" aria-expanded="true" aria-controls="collapseOne">
+                                                    Transfer Bank Langsung
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>Bank Mandiri : (N/A) 123-456-789</p>
+                                                    <p>Bank BCA     : (N/A) 123-456-789</p>
+                                                    <p>Bank BRI     : (N/A) 123-456-789</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" value="submit" class="btn subs_btn form-control">Process Pesanan</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="cart_totals_area">
-                            <h4>Subtotal Keranjang</h4>
-                            <div class="cart_t_list">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <h5>Subtotal</h5>
-                                    </div>
-                                    <div class="media-body">
-                                        <h6>IDR <?php echo $total; ?></h6>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <h5>Pengiriman</h5>
-                                    </div>
-                                    <div class="media-body">
-                                        <p>Saat ini Green Bakery hanya menerima pengiriman di wilayah JABODETABEK</p><hr>
-                                        <p><b>Biaya Ongkir : IDR 15.000</b></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="total_amount row m0 row_disable">
-                                <div class="float-left">
-                                    Total
-                                </div>
-                                <div class="float-right">
-                                    IDR <?php echo $total + 15000; ?>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="<?=$host."/keranjang/detail_checkout/"?>" class="btn subs_btn form-control">Checkout Pesanan</a>
-                        <!-- <button type="submit" value="submit" class="btn subs_btn form-control">Proceed to checkout</button> -->
-                    </div>
                 </div>
+                </form>
             </div>
         </section>
-        <?php } else { ?>
-        <section class="emty_cart_area p_100">
-            <div class="container">
-                <div class="emty_cart_inner">
-                    <i class="icon-handbag icons"></i>
-                    <h3>Keranjang Anda Masih Kosong</h3>
-                    <h4>Silahkan <a href="<?=$host;?>">Kembali</a></h4>
-                </div>
-            </div>
-        </section>
-        <?php } ?>
-        <!--================End Shopping Cart Area =================-->
+        <!--================End Register Area =================-->
         
         <!--================Footer Area =================-->
         <footer class="footer_area">
@@ -321,35 +296,31 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <!--================End Footer Area =================-->
         
         
-        
-        
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="<?=$host."/assets/front/";?>js/jquery-3.2.1.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/jquery-3.2.1.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="<?=$host."/assets/front/";?>js/popper.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>js/bootstrap.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/popper.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/bootstrap.min.js"></script>
+        <script src="<?=$host?>/assets/front/js/jquery.form-validator.min.js"></script>
+
         <!-- Rev slider js -->
-        <script src="<?=$host."/assets/front/";?>vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/revolution/js/extensions/revolution.extension.video.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
         <!-- Extra plugin css -->
-        <script src="<?=$host."/assets/front/";?>vendors/counterup/jquery.waypoints.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/counterup/jquery.counterup.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/owl-carousel/owl.carousel.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/image-dropdown/jquery.dd.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>js/smoothscroll.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/isotope/imagesloaded.pkgd.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/isotope/isotope.pkgd.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/magnify-popup/jquery.magnific-popup.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/vertical-slider/js/jQuery.verticalCarousel.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/jquery-ui/jquery-ui.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/counterup/jquery.waypoints.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/counterup/jquery.counterup.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/image-dropdown/jquery.dd.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/smoothscroll.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/isotope/imagesloaded.pkgd.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/isotope/isotope.pkgd.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/magnify-popup/jquery.magnific-popup.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/vertical-slider/js/jQuery.verticalCarousel.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/jquery-ui/jquery-ui.js"></script>
         
-        <script src="<?=$host."/assets/front/";?>js/theme.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/theme.js"></script>
+        <script>$.validate();</script>
     </body>
 </html>

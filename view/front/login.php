@@ -104,7 +104,7 @@
                                 Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
+                                <?php while($column = $kategori->fetch_assoc() ) { ?>
                                     <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
                                 <?php } ?>
                                 </ul>
