@@ -16,6 +16,7 @@ class Front {
         $this->host = new config();
         $this->redirect = new Redirect();
         $this->host = 'http://'.$this->host->curExpPageURL()[2].'/'.$this->host->curExpPageURL()[3];
+        
     }
 
     function index() {
@@ -200,5 +201,21 @@ class Front {
                         alert('Anda Harus Login Terlebih Dahulu.');
                     </script>";
         }
+    }
+
+    function pesanan(){
+
+        $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
+
+        $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
+
+        $query_pesanan = "SELECT pengiriman.id_transaksi, transaksi.tgl_transaksi, pengiriman.nama_penerima, pengiriman.alamat, transaksi.status, transaksi.total 
+                          FROM tbl_transaksi AS transaksi JOIN tbl_pengiriman AS pengiriman ON pengiriman.id_transaksi = transaksi.id_transaksi 
+                          WHERE transaksi.id_pelanggan = ".Session::get('id_pelanggan');
+
+        $list_pemesanan = $this->db->query($query_pesanan);
+
+        include './view/front/list_pesanan.php';
+
     }
 }

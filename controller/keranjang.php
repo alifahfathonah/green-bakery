@@ -100,11 +100,13 @@ class Keranjang {
         
         $date = new DateTime();
 
-        $get_id = $this->db->query('SELECT id_transaksi FROM tbl_transaksi ORDER BY id_transaksi')->fetch_array();
+        $get_id = $this->db->query('SELECT MAX(id_transaksi) FROM tbl_transaksi ORDER BY id_transaksi')->fetch_array();
 
         if(!empty($get_id[0])){
 
-            $id_transaksi = "TRX-".$date->format('ymd-').explode("-", $get_id[0])[1] + 1;
+            $urut_id_transaksi = explode("-", $get_id[0])[2] + 1;
+
+            $id_transaksi = "TRX-".$date->format('ymd-').$urut_id_transaksi;
 
         } else {
 
@@ -119,7 +121,7 @@ class Keranjang {
         while($value = $subtotal->fetch_array()){ $total += $value[0]; }
 
         $query_trans = "INSERT INTO tbl_transaksi(id_transaksi, id_pelanggan, total, status) VALUES('$id_transaksi', $id_pelanggan, $total, 0)";
-
+        
         $this->db->query($query_trans);
 
         $keranjang = $this->db->query("SELECT tbl_keranjang.*, tbl_barang.nama_barang FROM tbl_keranjang JOIN tbl_barang 
@@ -131,11 +133,13 @@ class Keranjang {
             $this->db->query($query_detail_trans);
         }
 
-        $get_id_pengiriman = $this->db->query('SELECT id_pengiriman FROM tbl_pengiriman ORDER BY id_pengiriman')->fetch_array();
+        $get_id_pengiriman = $this->db->query('SELECT MAX(id_pengiriman) FROM tbl_pengiriman ORDER BY id_pengiriman')->fetch_array();
 
         if(!empty($get_id_pengiriman[0])){
 
-            $id_pengiriman = "KPN-".$date->format('ymd-').explode("-", $get_id_pengiriman[0])[1] + 1;
+            $urut_id_pengiriman = explode("-", $get_id_pengiriman[0])[2] + 1;
+
+            $id_pengiriman = "KPN-".$date->format('ymd-').$urut_id_pengiriman;
 
         } else {
 
@@ -151,7 +155,7 @@ class Keranjang {
 
         $query_insert_pengiriman = "INSERT INTO `tbl_pengiriman`(`id_pengiriman`, `id_transaksi`, `nama_penerima`, `alamat`, `no_telp`, `email`, `catatan`) 
                                     VALUES ('$id_pengiriman','$id_transaksi','$nama_penerima','$alamat','$no_telp','$email', '$catatan')";
-
+                                    
         $this->db->query($query_insert_pengiriman);
 
         $this->db->query("DELETE FROM tbl_keranjang WHERE id_pelanggan = '$id_pelanggan'");

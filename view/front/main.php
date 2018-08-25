@@ -109,7 +109,9 @@
                                 <?php } ?>
                                 </ul>
                             </li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Hubungi Kami</a></li>
+                            <?php if(Session::exists('id_pelanggan')) : ?>
+                                <li class="nav-item"><a class="nav-link" href="<?=$host.'/front/pesanan';?>">Pesanan</a></li>
+                            <?php endif ?>
                         </ul>
                         <?php if (!Session::exists('id_pelanggan')) { ?>
                             <ul class="navbar-nav navbar-right ml-auto mr-2">
