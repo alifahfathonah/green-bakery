@@ -118,9 +118,16 @@
                                 <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
                             </ul>
                         <?php } else { ?>
-                            <ul class="navbar-nav navbar-right ml-auto mr-2">
-                                <li class="nav-item mr-2"><a href="#" class="nav-link"><?php echo Session::get('nama_pelanggan');?></a></li>
-                                <li class="nav-item"><a href="<?=$host?>/front/logout" class="nav-link">[ Keluar ]</a></li>
+                            <ul class="navbar-nav navbar-right ml-auto mr-4">
+                                <li class="nav-item dropdown submenu">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <?php echo Session::get('nama_pelanggan');?> <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item"><a class="nav-link" href=""">Ganti Password</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?=$host?>/front/logout">Logout</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         <?php } ?>
                     </div>

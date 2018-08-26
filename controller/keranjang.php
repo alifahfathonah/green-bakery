@@ -23,7 +23,7 @@ class Keranjang {
 
             $id_pelanggan = Session::get('id_pelanggan');
 
-            $query = "SELECT tbl_keranjang.id_pelanggan, tbl_barang.id AS id_barang , tbl_barang.nama_barang, tbl_barang.harga, tbl_barang.foto, tbl_keranjang.qty, tbl_keranjang.subtotal 
+            $query = "SELECT tbl_keranjang.id_pelanggan, tbl_barang.qty AS stok, tbl_barang.id AS id_barang , tbl_barang.nama_barang, tbl_barang.harga, tbl_barang.foto, tbl_keranjang.qty, tbl_keranjang.subtotal 
                     FROM tbl_keranjang INNER JOIN tbl_barang ON tbl_barang.id = tbl_keranjang.id_barang WHERE tbl_keranjang.id_pelanggan = $id_pelanggan";
 
             $data_pembelian = $this->db->query($query);
@@ -31,7 +31,7 @@ class Keranjang {
 
             $query = "SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan');
             $keranjang = $this->db->query($query)->fetch_assoc();
-
+            
             include './view/front/keranjang.php';
         } else {
             header('location:  /green-bakery/');
