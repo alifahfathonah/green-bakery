@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 17, 2018 at 09:00 AM
+-- Generation Time: Aug 26, 2018 at 03:29 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -31,10 +31,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `tbl_barang` (
   `id` int(11) NOT NULL,
   `id_kategori` int(11) NOT NULL,
-  `nama_barang` varchar(250) NOT NULL,
+  `nama_barang` varchar(30) NOT NULL,
   `qty` int(11) NOT NULL,
-  `harga` varchar(200) NOT NULL,
-  `foto` varchar(250) NOT NULL,
+  `harga` int(11) NOT NULL,
+  `foto` varchar(50) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -43,13 +43,37 @@ CREATE TABLE `tbl_barang` (
 --
 
 INSERT INTO `tbl_barang` (`id`, `id_kategori`, `nama_barang`, `qty`, `harga`, `foto`, `status`) VALUES
-(8, 1, 'Lemper', 5, '5000', 'lemper.jpg', 1),
-(9, 1, 'Kue Lapis Pelangi', 44, '2500', 'kue-lapis.jpg', 1),
-(10, 1, 'Brownies Kukus', 30, '4000', 'brownies-kukus.jpg', 1),
-(11, 2, 'Kue Nastar', 84, '500', 'kue-nastar.jpg', 1),
-(12, 2, 'Kue Putri Salju', 25, '2000', 'putri-salju.jpg', 1),
-(13, 2, 'Kue Semprit', 50, '2000', 'kue-semprit.jpg', 1),
-(14, 3, 'Kue Putu Tegal', 50, '2000', 'putu-tegal.jpg', 1);
+(8, 1, 'Lemper', 5, 5000, 'lemper.jpg', 1),
+(9, 1, 'Kue Lapis Pelangi', 30, 2500, 'kue-lapis.jpg', 1),
+(10, 1, 'Brownies Kukus', 30, 4000, 'brownies-kukus.jpg', 2),
+(11, 2, 'Kue Nastar', 60, 500, 'kue-nastar.jpg', 2),
+(12, 2, 'Kue Putri Salju', 22, 2000, 'putri-salju.jpg', 1),
+(13, 2, 'Kue Semprit', 44, 2000, 'kue-semprit.jpg', 1),
+(14, 3, 'Kue Putu Tegal', 44, 2000, 'putu-tegal.jpg', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_detail_transaksi`
+--
+
+CREATE TABLE `tbl_detail_transaksi` (
+  `id_transaksi` varchar(20) NOT NULL,
+  `nama_barang` varchar(30) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `subtotal` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_detail_transaksi`
+--
+
+INSERT INTO `tbl_detail_transaksi` (`id_transaksi`, `nama_barang`, `qty`, `subtotal`) VALUES
+('TRX-180825-1', 'Kue Lapis Pelangi', 5, 12500),
+('TRX-180825-1', 'Brownies Kukus', 10, 40000),
+('TRX-180825-2', 'Kue Putri Salju', 4, 8000),
+('TRX-180825-2', 'Kue Putri Salju', 4, 8000),
+('TRX-180825-3', 'Kue Nastar', 5, 2500);
 
 -- --------------------------------------------------------
 
@@ -85,13 +109,6 @@ CREATE TABLE `tbl_keranjang` (
   `subtotal` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `tbl_keranjang`
---
-
-INSERT INTO `tbl_keranjang` (`id_pelanggan`, `id_barang`, `qty`, `subtotal`) VALUES
-(1, 11, 5, 40);
-
 -- --------------------------------------------------------
 
 --
@@ -112,6 +129,18 @@ CREATE TABLE `tbl_pelanggan` (
 
 INSERT INTO `tbl_pelanggan` (`id`, `nama_lengkap`, `email`, `no_telp`, `password`) VALUES
 (1, 'Muhammad Iqbal', 'miqbal.1337@gmail.com', '082298277709', 'e10adc3949ba59abbe56e057f20f883e');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_pembayaran`
+--
+
+CREATE TABLE `tbl_pembayaran` (
+  `id_transaksi` varchar(20) NOT NULL,
+  `foto_bukti` varchar(50) NOT NULL,
+  `disetujui` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -138,24 +167,50 @@ INSERT INTO `tbl_pengguna` (`id`, `level`, `nama_lengkap`, `username`, `password
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_pengiriman`
+--
+
+CREATE TABLE `tbl_pengiriman` (
+  `id_pengiriman` varchar(20) NOT NULL,
+  `id_transaksi` varchar(20) NOT NULL,
+  `nama_penerima` varchar(50) NOT NULL,
+  `alamat` text NOT NULL,
+  `no_telp` varchar(18) NOT NULL,
+  `email` varchar(20) NOT NULL,
+  `catatan` text,
+  `tanggal_dikirim` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_pengiriman`
+--
+
+INSERT INTO `tbl_pengiriman` (`id_pengiriman`, `id_transaksi`, `nama_penerima`, `alamat`, `no_telp`, `email`, `catatan`, `tanggal_dikirim`) VALUES
+('KPN-180825-1', 'TRX-180825-1', 'Lukman hakim', 'Pal, Depok', '+62 081-3947-2392', 'lukman.hakim@email.c', 'Di Kirim ke bu efi', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_transaksi`
 --
 
 CREATE TABLE `tbl_transaksi` (
-  `id` int(11) NOT NULL,
-  `id_barang` int(11) NOT NULL,
+  `id_transaksi` varchar(20) NOT NULL,
   `id_pelanggan` int(11) NOT NULL,
-  `tgl_transaksi` datetime NOT NULL,
-  `qty` int(11) NOT NULL,
-  `status` int(11) NOT NULL
+  `tgl_transaksi` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `total` double NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `status_pembayaran` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_transaksi`
 --
 
-INSERT INTO `tbl_transaksi` (`id`, `id_barang`, `id_pelanggan`, `tgl_transaksi`, `qty`, `status`) VALUES
-(1, 10, 1, '2018-07-12 00:00:00', 5, 1);
+INSERT INTO `tbl_transaksi` (`id_transaksi`, `id_pelanggan`, `tgl_transaksi`, `total`, `status`, `status_pembayaran`) VALUES
+('TRX-180825-1', 1, '2018-08-25 11:10:56', 67500, 0, 0),
+('TRX-180825-2', 1, '2018-08-25 11:19:13', 23000, 0, 0),
+('TRX-180825-3', 1, '2018-08-25 11:28:39', 17500, 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -166,6 +221,12 @@ INSERT INTO `tbl_transaksi` (`id`, `id_barang`, `id_pelanggan`, `tgl_transaksi`,
 --
 ALTER TABLE `tbl_barang`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_detail_transaksi`
+--
+ALTER TABLE `tbl_detail_transaksi`
+  ADD KEY `id_transaksi` (`id_transaksi`);
 
 --
 -- Indexes for table `tbl_kategori`
@@ -187,16 +248,31 @@ ALTER TABLE `tbl_pelanggan`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_pembayaran`
+--
+ALTER TABLE `tbl_pembayaran`
+  ADD UNIQUE KEY `id_transaksi` (`id_transaksi`),
+  ADD KEY `disetujui` (`disetujui`);
+
+--
 -- Indexes for table `tbl_pengguna`
 --
 ALTER TABLE `tbl_pengguna`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_pengiriman`
+--
+ALTER TABLE `tbl_pengiriman`
+  ADD PRIMARY KEY (`id_pengiriman`),
+  ADD UNIQUE KEY `id_transaksi` (`id_transaksi`);
+
+--
 -- Indexes for table `tbl_transaksi`
 --
 ALTER TABLE `tbl_transaksi`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_transaksi`),
+  ADD KEY `status_pembayaran` (`status_pembayaran`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -227,14 +303,14 @@ ALTER TABLE `tbl_pengguna`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `tbl_transaksi`
---
-ALTER TABLE `tbl_transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tbl_detail_transaksi`
+--
+ALTER TABLE `tbl_detail_transaksi`
+  ADD CONSTRAINT `tbl_detail_transaksi_ibfk_1` FOREIGN KEY (`id_transaksi`) REFERENCES `tbl_transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_keranjang`
@@ -242,6 +318,18 @@ ALTER TABLE `tbl_transaksi`
 ALTER TABLE `tbl_keranjang`
   ADD CONSTRAINT `tbl_keranjang_ibfk_1` FOREIGN KEY (`id_pelanggan`) REFERENCES `tbl_pelanggan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_keranjang_ibfk_2` FOREIGN KEY (`id_barang`) REFERENCES `tbl_barang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_pembayaran`
+--
+ALTER TABLE `tbl_pembayaran`
+  ADD CONSTRAINT `tbl_pembayaran_ibfk_1` FOREIGN KEY (`id_transaksi`) REFERENCES `tbl_transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_pengiriman`
+--
+ALTER TABLE `tbl_pengiriman`
+  ADD CONSTRAINT `tbl_pengiriman_ibfk_1` FOREIGN KEY (`id_transaksi`) REFERENCES `tbl_transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
