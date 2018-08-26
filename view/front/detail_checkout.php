@@ -312,24 +312,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <script src="<?=$host."/assets/front/"?>js/bootstrap.min.js"></script>
         <script src="<?=$host?>/assets/front/js/jquery.form-validator.min.js"></script>
 
-        <!-- Rev slider js -->
-        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
         <!-- Extra plugin css -->
-        <script src="<?=$host."/assets/front/"?>vendors/counterup/jquery.waypoints.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/counterup/jquery.counterup.min.js"></script>
         <script src="<?=$host."/assets/front/"?>vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
         <script src="<?=$host."/assets/front/"?>vendors/image-dropdown/jquery.dd.min.js"></script>
         <script src="<?=$host."/assets/front/"?>js/smoothscroll.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/isotope/imagesloaded.pkgd.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/isotope/isotope.pkgd.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/magnify-popup/jquery.magnific-popup.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/vertical-slider/js/jQuery.verticalCarousel.js"></script>
         <script src="<?=$host."/assets/front/"?>vendors/jquery-ui/jquery-ui.js"></script>
         
         <script src="<?=$host."/assets/front/"?>js/theme.js"></script>
+        
         <script>$.validate();</script>
     </body>
 </html>

@@ -17,13 +17,13 @@
         <link href="<?=$host."/assets/front/";?>css/font-awesome.min.css" rel="stylesheet">
         <link href="<?=$host."/assets/front/";?>vendors/line-icon/css/simple-line-icons.css" rel="stylesheet">
         <link href="<?=$host."/assets/front/";?>vendors/elegant-icon/style.css" rel="stylesheet">
-
+    
         <!-- Bootstrap -->
         <link href="<?=$host."/assets/front/";?>css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Data tables-->
         <link href="<?=$host."/assets/front/";?>vendors/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-        
+
         <!-- Extra plugin css -->
         <link href="<?=$host."/assets/front/";?>vendors/jquery-ui/jquery-ui.css" rel="stylesheet">
         
@@ -102,9 +102,9 @@
                                 Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                <?php while($column = $kategori->fetch_array()) : ?>
+                                <?php while($column = mysqli_fetch_array($kategori)) { ?>
                                     <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
-                                <?php endwhile ?>
+                                <?php } ?>
                                 </ul>
                             </li>
                             <?php if(Session::exists('id_pelanggan')) : ?>
@@ -135,43 +135,93 @@
         <!--================End Menu Area =================-->
         
          <!--================Shopping Cart Area =================-->
-         <section class="shopping_cart_area" style="padding-top: 50px;">
+         <section class="shopping_cart_area p_100">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
-                    <h3>Daftar Pesanan Anda</h3><hr>
-                        <table id="list_pesanan" class="display table">
-                            <thead>
-                                <tr>
-                                    <th>ID Transaksi</th>
-                                    <th>Tanggal Transaksi</th>
-                                    <th>Nama Penerima</th>
-                                    <th>Tujuan</th>
-                                    <th>Status</th>
-                                    <th>Total Biaya</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php while ($column = $list_pemesanan->fetch_assoc()) : ?>
-                                <tr>
-                                    <td><a href="<?=$host.'/front/detail_pesanan/?id='.$column['id_transaksi'];?>"><?=$column['id_transaksi'];?></a></td>
-                                    <td><?=$column['tgl_transaksi'];?></td>
-                                    <td><?=$column['nama_penerima'];?></td>
-                                    <td><?=$column['alamat'];?></td>
-                                    <td>
-                                        <?php if($column['status'] == 0) : ?>
+                    <div class="col-lg-8">
+                        <div class="cart_items">
+                            <h3>Daftar Pesanan</h3>
+                            <div class="table-responsive-md">
+                            <table id="list_pesanan" class="display table">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Barang</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while($column = $detail_pesanan->fetch_assoc()): ?>
+                                    <tr>
+                                        <td class="text-left"><?=$column['nama_barang'].' x'.$column['qty'];?></td>
+                                        <td class="text-left">IDR <?=$column['subtotal'];?></td>
+                                        <?php $total += $column['subtotal']; ?>
+                                    </tr>
+                                    <?php endwhile ?>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="cart_totals_area">
+                            <h4>Detail Pesanan</h4>
+                            <div class="cart_t_list">
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Penerima</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6><?=$transaksi['nama_penerima'];?></h6>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Tujuan</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6><?=$transaksi['alamat'];?></h6>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Subtotal</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6>IDR <?php echo $total; ?></h6>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Ongkir</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6>IDR 15000</h6>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Status</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <?php if($transaksi['status'] == 0) : ?>
                                             <span class="badge badge-secondary">Belum DI Proses</span>
                                         <?php elseif ($column['status'] == 1) :?>
                                             <span class="badge badge-primary">Sedang DI Proses</span>
                                         <?php else : ?>
                                             <span class="badge badge-danger">Selesai DI Proses</span>
                                         <?php endif ?>
-                                    </td>
-                                    <td><?=$column['total'];?></td>
-                                </tr>
-                                <?php endwhile ?>
-                            </tbody>
-                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="total_amount row m0 row_disable">
+                                <div class="float-left">
+                                    Total
+                                </div>
+                                <div class="float-right">
+                                    IDR <?php echo $total + 15000; ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -264,23 +314,22 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <!--================End Footer Area =================-->
         
         
-        
-        
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="<?=$host."/assets/front/";?>js/jquery-3.2.1.min.js"></script>
-
+        <script src="<?=$host."/assets/front/"?>js/jquery-3.2.1.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="<?=$host."/assets/front/";?>js/popper.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>js/bootstrap.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/popper.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/bootstrap.min.js"></script>
+
+        <!-- Extra plugin css -->
+        <script src="<?=$host."/assets/front/"?>vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/image-dropdown/jquery.dd.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/smoothscroll.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/jquery-ui/jquery-ui.js"></script>
+
         <script src="<?=$host."/assets/front/";?>vendors/datatables.net/js/jquery.dataTables.js"></script>
         <script src="<?=$host."/assets/front/";?>vendors/datatables.net-bs4/js/dataTables.bootstrap4.js"></script>
-
-
-        <script src="<?=$host."/assets/front/";?>vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/image-dropdown/jquery.dd.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>js/smoothscroll.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/jquery-ui/jquery-ui.js"></script>
-    
+        
+        <script src="<?=$host."/assets/front/"?>js/theme.js"></script>
 
         <script>
         $(document).ready(function(){
