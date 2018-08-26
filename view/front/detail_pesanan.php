@@ -74,7 +74,6 @@
                             </ul>
                             <ul class="top_right">
                                 <?php if (Session::exists('email')): ?>
-                                    <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
                                     <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
                                 <?php endif ?>
                             </ul>
@@ -138,7 +137,7 @@
          <section class="shopping_cart_area p_100">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-7">
                         <div class="cart_items">
                             <h3>Daftar Pesanan</h3>
                             <div class="table-responsive-md">
@@ -162,16 +161,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                         <div class="cart_totals_area">
                             <h4>Detail Pesanan</h4>
                             <div class="cart_t_list">
                                 <div class="media">
                                     <div class="d-flex">
+                                        <h5>ID</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <p><?=$transaksi['id_pengiriman'];?></p>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
                                         <h5>Penerima</h5>
                                     </div>
                                     <div class="media-body">
-                                        <h6><?=$transaksi['nama_penerima'];?></h6>
+                                        <p><?=$transaksi['nama_penerima'];?></p>
                                     </div>
                                 </div>
                                 <div class="media">
@@ -179,7 +186,7 @@
                                         <h5>Tujuan</h5>
                                     </div>
                                     <div class="media-body">
-                                        <h6><?=$transaksi['alamat'];?></h6>
+                                        <p><?=$transaksi['alamat'];?></p>
                                     </div>
                                 </div>
                                 <div class="media">
@@ -187,7 +194,7 @@
                                         <h5>Subtotal</h5>
                                     </div>
                                     <div class="media-body">
-                                        <h6>IDR <?php echo $total; ?></h6>
+                                        <p>IDR <?php echo $total; ?></p>
                                     </div>
                                 </div>
                                 <div class="media">
@@ -195,7 +202,7 @@
                                         <h5>Ongkir</h5>
                                     </div>
                                     <div class="media-body">
-                                        <h6>IDR 15000</h6>
+                                        <p>IDR 15000</p>
                                     </div>
                                 </div>
                                 <div class="media">
@@ -208,7 +215,7 @@
                                         <?php elseif ($column['status'] == 1) :?>
                                             <span class="badge badge-primary">Sedang DI Proses</span>
                                         <?php else : ?>
-                                            <span class="badge badge-danger">Selesai DI Proses</span>
+                                            <span class="badge badge-warning">Telah DI Kirim</span>
                                         <?php endif ?>
                                     </div>
                                 </div>
@@ -222,6 +229,9 @@
                                 </div>
                             </div>
                         </div>
+                        <?php if($transaksi['status_pembayaran'] == 0) : ?>
+                        <a href="<?=$host.'/front/verifikasi_pembayaran/?id='.$transaksi['id_transaksi'];?>" class="btn subs_btn form-control">Verifikasi Pembayaran</a>
+                        <?php endif ?>
                     </div>
                 </div>
             </div>
@@ -328,12 +338,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
         <script src="<?=$host."/assets/front/";?>vendors/datatables.net/js/jquery.dataTables.js"></script>
         <script src="<?=$host."/assets/front/";?>vendors/datatables.net-bs4/js/dataTables.bootstrap4.js"></script>
-        
-        <script src="<?=$host."/assets/front/"?>js/theme.js"></script>
 
         <script>
         $(document).ready(function(){
-            $('#list_pesanan').DataTable();
+            $('#list_pesanan').DataTable({
+                'lengthChange': false,
+                'length': 10,
+                'searching': false
+            });
         });     
         </script>
     </body>
