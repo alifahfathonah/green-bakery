@@ -130,7 +130,7 @@
                                 </li>
                             </ul>
                         <?php } ?>
-                    </div>
+                     </div>
                 </nav>
             </div>
         </header>
