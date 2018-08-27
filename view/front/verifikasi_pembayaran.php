@@ -4,7 +4,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,8 +38,8 @@
     </head>
     <body>
         
-        <!--================Top Header Area =================-->
-        <div class="header_top_area">
+   <!--================Top Header Area =================-->
+   <div class="header_top_area">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3">
@@ -99,7 +99,7 @@
                                 Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
+                                <?php while($column = mysqli_fetch_array($kategori)) { ?>
                                     <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
                                 <?php } ?>
                                 </ul>
@@ -131,78 +131,27 @@
         </header>
         <!--================End Menu Area =================-->
         
-        <!--================Product Details Area =================-->
-        <section class="product_details_area">
+        <!--================Track Area =================-->
+        <section class="track_area p_100">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="product_details_slider">
-                            <div id="product_slider" class="rev_slider" data-version="5.3.1.6">
-                                <ul>	<!-- SLIDE  -->
-                                    <li>
-                                        <!-- MAIN IMAGE -->
-                                        <img src="<?=$host."/uploads/".$detail['foto'];?>"  alt="<?=$detail['nama_barang'];?>" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
-                                        <!-- LAYERS -->
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                <div class="track_inner">
+                    <div class="track_title">
+                        <h2>Verifikasi Pembayaran</h2>
+                        <p> Silahkan masukan foto struk bukti transfer pada form dibawah ini </p>
                     </div>
-                    <div class="col-lg-8">
-                        <div class="product_details_text">
-                            <h2><?php echo $detail['nama_barang'];?></h2>
-                            <h6>Status : <?php ($detail['qty'] != 0 ? print "<span>Tersedia</span>" : print "<b>Kosong</b>");?> - Stok   : <?=$detail['qty']; ?></h6>
-                            <h4>IDR <?=$detail['harga'];?></h4>
-                            <p>Curabitur semper varius lectus sed consequat. Nam accumsan dapibus sem, sed lobortis nisi porta vitae. Ut quam tortor, facilisis nec laoreet consequat, malesuada a massa. Proin pretium tristique leo et imperdiet.</p>
-                            </div>
-                            <div class="quantity">
-                            <form action="<?php echo $host."/front/tambah_keranjang/?id_kue=".Input::get('id_kue')?>" method="POST">
-                                <div class="custom">
-                                    <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 0 ) result.value--;return false;" class="reduced items-count" type="button"><i class="icon_minus-06"></i></button>
-                                        <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
-                                    <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst < <?=$detail['qty'];?>) result.value++;return false;" class="increase items-count" type="button"><i class="icon_plus"></i></button>
-                                </div>
-                                <?php if ($detail['qty'] != 0){ ?>
-                                    <button type="submit" class="add_cart_btn">Tambahkan Ke Keranjang</button>
-                                <?php } else { ?>
-                                    <button onclick="alert('Stok Kosong');" type="button" class="add_cart_btn">STOK KOSONG</button>
-                                <?php } ?>
-                            </form>
-                            </div>
-                            <div class="shareing_icon">
-                                <h5>share :</h5>
-                                <ul>
-                                    <li><a href="#"><i class="social_facebook"></i></a></li>
-                                    <li><a href="#"><i class="social_twitter"></i></a></li>
-                                    <li><a href="#"><i class="social_pinterest"></i></a></li>
-                                    <li><a href="#"><i class="social_instagram"></i></a></li>
-                                    <li><a href="#"><i class="social_youtube"></i></a></li>
-                                </ul>
-                            </div>
+                    <form action="<?=$host.'/front/verifikasi_bukti/?id='.Input::get('id');?>" method="POST" class="track_form row" enctype="multipart/form-data">
+                        <div class="col-lg-12 form-group">
+                            <label class="mb-3">Upload Bukti Pembayaran</label>
+                            <input type="file" name="foto" class="form-control" style="border: none;">
                         </div>
-                    </div>
+                        <div class="col-lg-12 form-group">
+                            <button type="submit" value="submit" class="btn subs_btn form-control">Kirim Bukti Pembayaran</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>
-        <!--================End Product Details Area =================-->
-        
-        <!--================Product Description Area =================-->
-        <section class="product_description_area">
-            <div class="container">
-                <nav class="tab_menu">
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Product Description</a>
-                    </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.  Emo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--================End Product Details Area =================-->
-        
+        <!--================End Track Area =================-->
         
         <!--================Footer Area =================-->
         <footer class="footer_area">
@@ -289,13 +238,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         </footer>
         <!--================End Footer Area =================-->
         
-        
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="<?=$host;?>/assets/front/js/jquery-3.2.1.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="<?=$host;?>/assets/front/js/popper.min.js"></script>
         <script src="<?=$host;?>/assets/front/js/bootstrap.min.js"></script>
-        
-        <script src="<?=$host;?>/assets/front/js/theme.js"></script>
     </body>
 </html>

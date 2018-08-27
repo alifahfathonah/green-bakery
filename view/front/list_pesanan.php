@@ -74,7 +74,6 @@
                             </ul>
                             <ul class="top_right">
                                 <?php if (Session::exists('email')): ?>
-                                    <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
                                     <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
                                 <?php endif ?>
                             </ul>
@@ -135,7 +134,7 @@
         <!--================End Menu Area =================-->
         
          <!--================Shopping Cart Area =================-->
-         <section class="shopping_cart_area" style="padding-top: 50px;">
+         <section class="shopping_cart_area mb-5" style="padding-top: 50px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -146,9 +145,9 @@
                                     <th>ID Transaksi</th>
                                     <th>Tanggal Transaksi</th>
                                     <th>Nama Penerima</th>
-                                    <th>Tujuan</th>
                                     <th>Status</th>
                                     <th>Total Biaya</th>
+                                    <th>Status Pembayaran</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -157,17 +156,23 @@
                                     <td><a href="<?=$host.'/front/detail_pesanan/?id='.$column['id_transaksi'];?>"><?=$column['id_transaksi'];?></a></td>
                                     <td><?=$column['tgl_transaksi'];?></td>
                                     <td><?=$column['nama_penerima'];?></td>
-                                    <td><?=$column['alamat'];?></td>
                                     <td>
                                         <?php if($column['status'] == 0) : ?>
                                             <span class="badge badge-secondary">Belum DI Proses</span>
                                         <?php elseif ($column['status'] == 1) :?>
                                             <span class="badge badge-primary">Sedang DI Proses</span>
                                         <?php else : ?>
-                                            <span class="badge badge-danger">Selesai DI Proses</span>
+                                            <span class="badge badge-warning">Telah DI Kirim</span>
                                         <?php endif ?>
                                     </td>
-                                    <td><?=$column['total'];?></td>
+                                    <td>IDR <?=$column['total'];?></td>
+                                    <td>
+                                        <?php if($column['status_pembayaran'] == 0) : ?>
+                                            <span class="badge badge-secondary">Belum Terverifikasi</span>
+                                        <?php else : ?>
+                                            <span class="badge badge-success">Terverifikasi</span>
+                                        <?php endif ?>
+                                    </td>
                                 </tr>
                                 <?php endwhile ?>
                             </tbody>

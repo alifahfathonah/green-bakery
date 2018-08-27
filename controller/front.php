@@ -211,8 +211,7 @@ class Front {
 
         $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
 
-        $query_pesanan = "SELECT pengiriman.id_transaksi, transaksi.tgl_transaksi, pengiriman.nama_penerima, pengiriman.alamat, transaksi.status, transaksi.total 
-                          FROM tbl_transaksi AS transaksi JOIN tbl_pengiriman AS pengiriman ON pengiriman.id_transaksi = transaksi.id_transaksi
+        $query_pesanan = "SELECT pengiriman.*, transaksi.* FROM tbl_transaksi AS transaksi JOIN tbl_pengiriman AS pengiriman ON pengiriman.id_transaksi = transaksi.id_transaksi
                           WHERE transaksi.id_pelanggan = ".Session::get('id_pelanggan');
 
         $list_pemesanan = $this->db->query($query_pesanan);
@@ -253,6 +252,50 @@ class Front {
                         window.location='".$this->redirect->get_url('front/login')."';
                         alert('Anda Harus Login Terlebih Dahulu.');
                     </script>";
+        }
+
+    }
+
+    function verifikasi_pembayaran() {
+
+        $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
+
+        include "./view/front/verifikasi_pembayaran.php";
+
+    }
+
+    function verifikasi_bukti(){
+
+        $id_transaksi = Input::get('id');
+
+        $check = $this->db->query("SELECT status FROM tbl_pembayaran WHERE id_transaksi = '$id_transaksi'");
+
+        if(empty($check)) {
+            
+            $direktori_upload   = "./uploads/bukti_pembayaran";
+
+            if(!$_FILES["foto"]["error"]) {
+
+                $direktori_sementara= $_FILES["foto"]["tmp_name"];
+                $nama_file = basename($_FILES["foto"]["name"]);
+
+                move_uploaded_file($direktori_sementara, "$direktori_upload/$nama_file");
+                
+                $this->db->query("INSERT INTO tbl_pembayaran (id_transaksi, foto_bukti, status) VALUES ('$id_transaksi', '$name', 0)");
+                
+                print " <script>
+                            window.location='".$this->redirect->get_url("front/detail_pesanan/?id=$id_transaksi")."';
+                            alert('Bukti pembayaran dengan id '.$id_transaksi.' sudah terkirim.');
+                        </script>";
+            }
+
+        } else if ($check[0] != 0) {
+
+            print " <script>
+                        window.location='".$this->redirect->get_url("front/detail_pesanan/?id=$id_transaksi")."';
+                        alert('Pembayaran telah di setujui.');
+                    </script>";
+
         }
 
     }

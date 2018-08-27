@@ -76,7 +76,6 @@
                             </ul>
                             <ul class="top_right">
                                 <?php if (Session::exists('email')): ?>
-                                    <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
                                     <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
                                 <?php endif ?>
                             </ul>
