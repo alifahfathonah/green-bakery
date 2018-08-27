@@ -109,7 +109,6 @@
                                 <?php } ?>
                                 </ul>
                             </li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Hubungi Kami</a></li>
                         </ul>
                         <?php if (!Session::exists('email')) { ?>
                             <ul class="navbar-nav navbar-right ml-auto mr-2">
@@ -154,10 +153,10 @@
                                     <input class="form-control" type="password" name="re_password" data-validation="required" placeholder="Password Konfirmasi">
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <button type="submit" value="submit" class="btn subs_btn form-control">register now</button>
+                                    <button type="submit" value="submit" class="btn subs_btn form-control">Daftar Sekarang</button>
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    Have an account ? <a href="<?=$host."/front/login"?>">Login Here</a>
+                                    Sudah punya akun ? <a href="<?=$host."/front/login"?>">Masuk</a>
                                 </div>
                             </form>
                         </div>

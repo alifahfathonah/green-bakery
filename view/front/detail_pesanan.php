@@ -212,7 +212,7 @@
                                     <div class="media-body">
                                         <?php if($transaksi['status'] == 0) : ?>
                                             <span class="badge badge-secondary">Belum DI Proses</span>
-                                        <?php elseif ($column['status'] == 1) :?>
+                                        <?php elseif ($transaksi['status'] == 1) :?>
                                             <span class="badge badge-primary">Sedang DI Proses</span>
                                         <?php else : ?>
                                             <span class="badge badge-warning">Telah DI Kirim</span>
