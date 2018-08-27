@@ -109,7 +109,6 @@
                                 <?php } ?>
                                 </ul>
                             </li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Hubungi Kami</a></li>
                         </ul>
                         <?php if (!Session::exists('email')) { ?>
                             <ul class="navbar-nav navbar-right ml-auto mr-2">
@@ -135,8 +134,8 @@
                         <div class="col-lg-3"></div>
                         <div class="col-lg-6">
                             <div class="login_title">
-                                <h2>log in your account</h2>
-                                <p>Log in to your account to discovery all great features in this template.</p>
+                                <h2>Masuk</h2>
+                                <p>Silahkan login dengan akun tang telah terdaftar.</p>
                             </div>
                             <form action="<?=$host?>/front/process_login" method="POST" class="login_form row">
                                 <div class="col-lg-12 form-group">
@@ -146,12 +145,12 @@
                                     <input class="form-control" name="password" type="password" data-validation="required" placeholder="Password">
                                 </div>
                                 <div class="col-lg-12 form-group">
-                                    <h4>Forgot your password ?</h4>
+                                    <h4>Lupa password ?</h4>
                                 </div>
                                 <div class="col-lg-12 form-group">
                                     <input type="submit" class="btn update_btn form-control" name="submit" value="Login">
                                 </div>
-                                <div class="text-center">Dont have an account ? <a href="<?=$host."/front/register"?>">Register Here</a></div>
+                                <div class="text-center">Belum mempunyai akun ? <a href="<?=$host."/front/register"?>">Daftar Disinie</a></div>
                             </form>
                         </div>
                         <div class="col-lg-3"></div>
