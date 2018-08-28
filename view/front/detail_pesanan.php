@@ -1,4 +1,4 @@
-<?php
+<?php 
     $conf = new config();
     $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 ?>
@@ -9,24 +9,26 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="icon" href="<?=$host;?>/assets/front/img/fav-icon.png" type="image/x-icon" />
+        <link rel="icon" href="img/fav-icon.png" type="image/x-icon" />
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <title>Green Bakery</title>
 
         <!-- Icon css link -->
-        <link href="<?=$host;?>/assets/front/css/font-awesome.min.css" rel="stylesheet">
-        <link href="<?=$host;?>/assets/front/vendors/line-icon/css/simple-line-icons.css" rel="stylesheet">
-        <link href="<?=$host;?>/assets/front/vendors/elegant-icon/style.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/";?>css/font-awesome.min.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/";?>vendors/line-icon/css/simple-line-icons.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/";?>vendors/elegant-icon/style.css" rel="stylesheet">
+    
         <!-- Bootstrap -->
-        <link href="<?=$host;?>/assets/front/css/bootstrap.min.css" rel="stylesheet">
-        
-        
+        <link href="<?=$host."/assets/front/";?>css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Data tables-->
+        <link href="<?=$host."/assets/front/";?>vendors/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+
         <!-- Extra plugin css -->
-        <link href="<?=$host;?>/assets/front/vendors/bootstrap-selector/css/bootstrap-select.min.css" rel="stylesheet">
-        <link href="<?=$host;?>/assets/front/vendors/jquery-ui/jquery-ui.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/";?>vendors/jquery-ui/jquery-ui.css" rel="stylesheet">
         
-        <link href="<?=$host;?>/assets/front/css/style.css" rel="stylesheet">
-        <link href="<?=$host;?>/assets/front/css/responsive.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/";?>css/style.css" rel="stylesheet">
+        <link href="<?=$host."/assets/front/";?>css/responsive.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,7 +39,7 @@
         <style> .top_right li.cart a::before { content: "<?=$keranjang['pesanan'];?>"; } </style>
     </head>
     <body>
-        
+
         <!--================Top Header Area =================-->
         <div class="header_top_area">
             <div class="container">
@@ -71,9 +73,9 @@
                                 <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
                             </ul>
                             <ul class="top_right">
-                                <?php if (Session::exists('email')) { ?>
+                                <?php if (Session::exists('email')): ?>
                                     <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
-                                <?php } ?>
+                                <?php endif ?>
                             </ul>
                         </div>
                     </div>
@@ -99,7 +101,7 @@
                                 Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
+                                <?php while($column = mysqli_fetch_array($kategori)) { ?>
                                     <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
                                 <?php } ?>
                                 </ul>
@@ -108,7 +110,7 @@
                                 <li class="nav-item"><a class="nav-link" href="<?=$host.'/front/pesanan';?>">Pesanan</a></li>
                             <?php endif ?>
                         </ul>
-                        <?php if (!Session::exists('email')) { ?>
+                        <?php if (!Session::exists('id_pelanggan')) { ?>
                             <ul class="navbar-nav navbar-right ml-auto mr-2">
                                 <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
                             </ul>
@@ -131,78 +133,110 @@
         </header>
         <!--================End Menu Area =================-->
         
-        <!--================Product Details Area =================-->
-        <section class="product_details_area">
+         <!--================Shopping Cart Area =================-->
+         <section class="shopping_cart_area p_100">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3">
-                        <div class="product_details_slider">
-                            <div id="product_slider" class="rev_slider" data-version="5.3.1.6">
-                                <ul>	<!-- SLIDE  -->
-                                    <li>
-                                        <!-- MAIN IMAGE -->
-                                        <img src="<?=$host."/uploads/".$detail['foto'];?>"  alt="<?=$detail['nama_barang'];?>" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
-                                        <!-- LAYERS -->
-                                    </li>
-                                </ul>
+                    <div class="col-lg-7">
+                        <div class="cart_items">
+                            <h3>Daftar Pesanan</h3>
+                            <div class="table-responsive-md">
+                            <table id="list_pesanan" class="display table">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Barang</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while($column = $detail_pesanan->fetch_assoc()): ?>
+                                    <tr>
+                                        <td class="text-left"><?=$column['nama_barang'].' x'.$column['qty'];?></td>
+                                        <td class="text-left">IDR <?=$column['subtotal'];?></td>
+                                        <?php $total += $column['subtotal']; ?>
+                                    </tr>
+                                    <?php endwhile ?>
+                                </tbody>
+                            </table>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8">
-                        <div class="product_details_text">
-                            <h2><?php echo $detail['nama_barang'];?></h2>
-                            <h6>Status : <?php ($detail['qty'] != 0 ? print "<span>Tersedia</span>" : print "<b>Kosong</b>");?> - Stok   : <?=$detail['qty']; ?></h6>
-                            <h4>IDR <?=$detail['harga'];?></h4>
-                            <p>Curabitur semper varius lectus sed consequat. Nam accumsan dapibus sem, sed lobortis nisi porta vitae. Ut quam tortor, facilisis nec laoreet consequat, malesuada a massa. Proin pretium tristique leo et imperdiet.</p>
-                            </div>
-                            <div class="quantity">
-                            <form action="<?php echo $host."/front/tambah_keranjang/?id_kue=".Input::get('id_kue')?>" method="POST">
-                                <div class="custom">
-                                    <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 0 ) result.value--;return false;" class="reduced items-count" type="button"><i class="icon_minus-06"></i></button>
-                                        <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
-                                    <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst < <?=$detail['qty'];?>) result.value++;return false;" class="increase items-count" type="button"><i class="icon_plus"></i></button>
+                    <div class="col-lg-5">
+                        <div class="cart_totals_area">
+                            <h4>Detail Pesanan</h4>
+                            <div class="cart_t_list">
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>ID</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <p><?=$transaksi['id_pengiriman'];?></p>
+                                    </div>
                                 </div>
-                                <?php if ($detail['qty'] != 0){ ?>
-                                    <button type="submit" class="add_cart_btn">Tambahkan Ke Keranjang</button>
-                                <?php } else { ?>
-                                    <button onclick="alert('Stok Kosong');" type="button" class="add_cart_btn">STOK KOSONG</button>
-                                <?php } ?>
-                            </form>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Penerima</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <p><?=$transaksi['nama_penerima'];?></p>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Tujuan</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <p><?=$transaksi['alamat'];?></p>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Subtotal</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <p>IDR <?php echo $total; ?></p>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Ongkir</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <p>IDR 15000</p>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <h5>Status</h5>
+                                    </div>
+                                    <div class="media-body">
+                                        <?php if($transaksi['status'] == 0) : ?>
+                                            <span class="badge badge-secondary">Belum DI Proses</span>
+                                        <?php elseif ($transaksi['status'] == 1) :?>
+                                            <span class="badge badge-primary">Sedang DI Proses</span>
+                                        <?php else : ?>
+                                            <span class="badge badge-warning">Telah DI Kirim</span>
+                                        <?php endif ?>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="shareing_icon">
-                                <h5>share :</h5>
-                                <ul>
-                                    <li><a href="#"><i class="social_facebook"></i></a></li>
-                                    <li><a href="#"><i class="social_twitter"></i></a></li>
-                                    <li><a href="#"><i class="social_pinterest"></i></a></li>
-                                    <li><a href="#"><i class="social_instagram"></i></a></li>
-                                    <li><a href="#"><i class="social_youtube"></i></a></li>
-                                </ul>
+                            <div class="total_amount row m0 row_disable">
+                                <div class="float-left">
+                                    Total
+                                </div>
+                                <div class="float-right">
+                                    IDR <?php echo $total + 15000; ?>
+                                </div>
                             </div>
                         </div>
+                        <?php if($transaksi['status_pembayaran'] == 0) : ?>
+                        <a href="<?=$host.'/front/verifikasi_pembayaran/?id='.$transaksi['id_transaksi'];?>" class="btn subs_btn form-control">Verifikasi Pembayaran</a>
+                        <?php endif ?>
                     </div>
                 </div>
             </div>
         </section>
-        <!--================End Product Details Area =================-->
-        
-        <!--================Product Description Area =================-->
-        <section class="product_description_area">
-            <div class="container">
-                <nav class="tab_menu">
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Product Description</a>
-                    </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.  Emo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--================End Product Details Area =================-->
-        
+        <!--================End Shopping Cart Area =================-->
         
         <!--================Footer Area =================-->
         <footer class="footer_area">
@@ -291,11 +325,28 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         
         
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="<?=$host;?>/assets/front/js/jquery-3.2.1.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/jquery-3.2.1.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="<?=$host;?>/assets/front/js/popper.min.js"></script>
-        <script src="<?=$host;?>/assets/front/js/bootstrap.min.js"></script>
-        
-        <script src="<?=$host;?>/assets/front/js/theme.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/popper.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/bootstrap.min.js"></script>
+
+        <!-- Extra plugin css -->
+        <script src="<?=$host."/assets/front/"?>vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/image-dropdown/jquery.dd.min.js"></script>
+        <script src="<?=$host."/assets/front/"?>js/smoothscroll.js"></script>
+        <script src="<?=$host."/assets/front/"?>vendors/jquery-ui/jquery-ui.js"></script>
+
+        <script src="<?=$host."/assets/front/";?>vendors/datatables.net/js/jquery.dataTables.js"></script>
+        <script src="<?=$host."/assets/front/";?>vendors/datatables.net-bs4/js/dataTables.bootstrap4.js"></script>
+
+        <script>
+        $(document).ready(function(){
+            $('#list_pesanan').DataTable({
+                'lengthChange': false,
+                'length': 10,
+                'searching': false
+            });
+        });     
+        </script>
     </body>
 </html>

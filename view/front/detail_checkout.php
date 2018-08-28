@@ -76,7 +76,6 @@
                             </ul>
                             <ul class="top_right">
                                 <?php if (Session::exists('email')): ?>
-                                    <li class="user"><a href="#"><i class="icon-user icons"></i></a></li>
                                     <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
                                 <?php endif ?>
                             </ul>
@@ -109,16 +108,25 @@
                                 <?php } ?>
                                 </ul>
                             </li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Hubungi Kami</a></li>
+                            <?php if(Session::exists('id_pelanggan')) : ?>
+                                <li class="nav-item"><a class="nav-link" href="<?=$host.'/front/pesanan';?>">Pesanan</a></li>
+                            <?php endif ?>
                         </ul>
                         <?php if (!Session::exists('id_pelanggan')) { ?>
                             <ul class="navbar-nav navbar-right ml-auto mr-2">
                                 <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
                             </ul>
                         <?php } else { ?>
-                            <ul class="navbar-nav navbar-right ml-auto mr-2">
-                                <li class="nav-item mr-2"><a href="#" class="nav-link"><?php echo Session::get('nama_pelanggan');?></a></li>
-                                <li class="nav-item"><a href="<?=$host?>/front/logout" class="nav-link">[ Keluar ]</a></li>
+                            <ul class="navbar-nav navbar-right ml-auto mr-4">
+                                <li class="nav-item dropdown submenu">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <?php echo Session::get('nama_pelanggan');?> <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item"><a class="nav-link" href=""">Ganti Password</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?=$host?>/front/logout">Logout</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         <?php } ?>
                     </div>
@@ -303,24 +311,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <script src="<?=$host."/assets/front/"?>js/bootstrap.min.js"></script>
         <script src="<?=$host?>/assets/front/js/jquery.form-validator.min.js"></script>
 
-        <!-- Rev slider js -->
-        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
         <!-- Extra plugin css -->
-        <script src="<?=$host."/assets/front/"?>vendors/counterup/jquery.waypoints.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/counterup/jquery.counterup.min.js"></script>
         <script src="<?=$host."/assets/front/"?>vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
         <script src="<?=$host."/assets/front/"?>vendors/image-dropdown/jquery.dd.min.js"></script>
         <script src="<?=$host."/assets/front/"?>js/smoothscroll.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/isotope/imagesloaded.pkgd.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/isotope/isotope.pkgd.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/magnify-popup/jquery.magnific-popup.min.js"></script>
-        <script src="<?=$host."/assets/front/"?>vendors/vertical-slider/js/jQuery.verticalCarousel.js"></script>
         <script src="<?=$host."/assets/front/"?>vendors/jquery-ui/jquery-ui.js"></script>
         
         <script src="<?=$host."/assets/front/"?>js/theme.js"></script>
+        
         <script>$.validate();</script>
     </body>
 </html>

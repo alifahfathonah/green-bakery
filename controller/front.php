@@ -16,6 +16,7 @@ class Front {
         $this->host = new config();
         $this->redirect = new Redirect();
         $this->host = 'http://'.$this->host->curExpPageURL()[2].'/'.$this->host->curExpPageURL()[3];
+        
     }
 
     function index() {
@@ -200,5 +201,116 @@ class Front {
                         alert('Anda Harus Login Terlebih Dahulu.');
                     </script>";
         }
+    }
+
+    function pesanan(){
+
+        if(Session::exists('email')) {
+
+        $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
+
+        $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
+
+        $query_pesanan = "SELECT pengiriman.*, transaksi.* FROM tbl_transaksi AS transaksi JOIN tbl_pengiriman AS pengiriman ON pengiriman.id_transaksi = transaksi.id_transaksi
+                          WHERE transaksi.id_pelanggan = ".Session::get('id_pelanggan');
+
+        $list_pemesanan = $this->db->query($query_pesanan);
+
+        include './view/front/list_pesanan.php';
+
+        } else {
+            print " <script>
+                        window.location='".$this->redirect->get_url('front/login')."';
+                        alert('Anda Harus Login Terlebih Dahulu.');
+                    </script>";
+        }
+
+    }
+
+    function detail_pesanan() {
+
+        if(Session::exists('email')) {
+
+            $total = 0;
+
+            $id_transaksi = Input::get('id');
+
+            $query = "SELECT tbl_barang.foto, tbl_detail_transaksi.* FROM tbl_detail_transaksi JOIN tbl_barang ON tbl_barang.nama_barang = tbl_detail_transaksi.nama_barang 
+                      WHERE tbl_detail_transaksi.id_transaksi = '$id_transaksi'";
+
+            $detail_pesanan = $this->db->query($query);
+
+            $transaksi = $this->db->query("SELECT tbl_transaksi.*, tbl_pengiriman.* FROM tbl_transaksi JOIN tbl_pengiriman ON tbl_transaksi.id_transaksi = tbl_pengiriman.id_transaksi
+                                           WHERE tbl_transaksi.id_transaksi = '$id_transaksi'")->fetch_assoc();
+
+            $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
+
+            include './view/front/detail_pesanan.php';
+
+        } else {
+            print " <script>
+                        window.location='".$this->redirect->get_url('front/login')."';
+                        alert('Anda Harus Login Terlebih Dahulu.');
+                    </script>";
+        }
+
+    }
+
+    function verifikasi_pembayaran() {
+
+        $id_transaksi = Input::get('id');
+
+        $check = $this->db->query("SELECT disetujui FROM tbl_pembayaran WHERE id_transaksi = '$id_transaksi'")->fetch_array();
+
+        if ($check[0] == 0 || empty($check)) {
+
+            $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
+
+            include "./view/front/verifikasi_pembayaran.php";
+
+        } else {
+
+            print " <script>
+                        window.location='$this->host/front/detail_pesanan/?id=$id_transaksi';
+                        alert('Pembayaran telah di setujui.');
+                    </script>";
+        }
+
+
+    }
+
+    function verifikasi_bukti(){
+
+        $id_transaksi = Input::get('id');
+
+        $check = $this->db->query("SELECT disetujui FROM tbl_pembayaran WHERE id_transaksi = '$id_transaksi'")->fetch_array();
+
+        if($check[0] == 0 || empty($check)) {
+            
+            $direktori_upload   = "./uploads/bukti_pembayaran";
+
+            if(!$_FILES["foto"]["error"]) {
+
+                $direktori_sementara= $_FILES["foto"]["tmp_name"];
+                $nama_file = basename($_FILES["foto"]["name"]);
+
+                move_uploaded_file($direktori_sementara, "$direktori_upload/$nama_file");
+
+                $query = "INSERT INTO tbl_pembayaran (id_transaksi, foto_bukti, disetujui) VALUES ('$id_transaksi', '$nama_file', 0)";
+
+                $this->db->query($query);
+                
+                $this->redirect->to("front/detail_pesanan/?id=$id_transaksi");
+            }
+
+        } else if ($check[0] != 0 || !empty($check)) {
+
+            print " <script>
+                        window.location='$this->host/front/detail_pesanan/?id=$id_transaksi';
+                        alert('Pembayaran telah di setujui.');
+                    </script>";
+
+        }
+
     }
 }
