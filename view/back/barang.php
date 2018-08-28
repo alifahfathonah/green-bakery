@@ -607,7 +607,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
         location.reload();
       })
     }
-
   })
 
   $('.edit').click(function(){

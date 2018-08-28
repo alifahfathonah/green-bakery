@@ -184,18 +184,20 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
                 </thead>
                 <tbody>
 
-                <?php
-                while($row = $data_pembayaran->fetch_assoc()){
-                  ?>
+                <?php while($row = $data_pembayaran->fetch_assoc()) : ?>
                   <tr>
                     <td><a href="<?=$host.'/panel/detail_transaksi/?id_transaksi='.$row['id_transaksi'];?>"><?=$row['id_transaksi'];?></a></td>
                     <td><button type="button" id="<?=$row['id_transaksi'];?>" class="btn btn-xs btn-flat btn-success lihat-bukti">Lihat Bukti Transfer</button></td>
                     <td><?=$row['tgl_dikirim'];?></td>
                     <td>
-                        <button id="<?=$row['id_transaksi'];?>" class="btn btn-xs btn-success edit">Setujui</button>
+                      <?php if ($row['disetujui'] == 0) : ?>
+                        <button id="<?=$row['id_transaksi'];?>" type="button" class="btn btn-xs btn-success setujui">Setujui</button>
+                      <?php else : ?>
+                        <button id="<?=$row['id_transaksi'];?>" type="button" class="btn btn-xs btn-danger batalkan">Batalkan</button>
+                      <?php endif ?>
                     </td>
                   </tr>
-                  <?php } ?>
+                  <?php endwhile ?>
 
                 </tbody>
 
@@ -234,7 +236,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
           <h4 class="modal-title">Bukti Transfer</h4>
         </div>
         <div class="modal-body">
-            <img class="img-responsive" id="bukti" src="<?=$host.'/uploads/bukti_pembayaran/admin.jpg';?>">
+            <img class="img-responsive" id="bukti" src="">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -291,21 +293,34 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     $('#modal-default').modal();
     $.post("<?=$host;?>/panel/ambil_foto_bukti",{id_transaksi: id}).done(function(data){
       var data = jQuery.parseJSON(data);
-      // console.log(data);
+      console.log(id);
+      console.log("<?=$host;?>/uploads/bukti_pembayaran/"+data[0]);
       $("#bukti").attr('src', "<?=$host;?>/uploads/bukti_pembayaran/"+data[0]);
     })
   })
 
-    $(".edit").click(function(){
+  $(".setujui").click(function(){
     var id = this.id;
+    var status = 1;
     var x = confirm("Apakah anda yakin?");
     if(x){
-      $.post('<?=$host;?>/panel/status_pembayaran',{id_pembayaran:id}).done(function(){
-        alert('Berhasil');
+      $.post('<?=$host;?>/panel/rubah_status_pembayaran',{id_transaksi:id, status_pembayaran: status}).done(function(){
+        alert('Pembayaran telah di setujui');
         location.reload();
       })
     }
+  })
 
+  $(".batalkan").click(function(){
+    var id = this.id;
+    var status = 0;
+    var x = confirm("Apakah anda yakin?");
+    if(x){
+      $.post('<?=$host;?>/panel/rubah_status_pembayaran',{id_transaksi:id, status_pembayaran: status}).done(function(){
+        alert('Pembayaran di batalkan');
+        location.reload();
+      })
+    }
   })
 </script>
 

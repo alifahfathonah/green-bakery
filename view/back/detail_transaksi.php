@@ -217,33 +217,33 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
       $row = $ambil_transaksi->fetch_assoc();
       ?>
       <div class="box-body">
-               <table id="example1" class="table table-bordered table-hover">
-            <thead>
-            <tr>
-              <th>ID TRANSAKSI</th>
-              <td><?=$row['id_transaksi'];?></td>
-              <th>NO TELPON</th>
-              <td><?=$row['no_telp'];?></td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <th>NAMA PENERIMA</th>
-              <td><?=$row['nama_penerima'];?></td>
-              <th>EMAIL PENERIMA</th>
-              <td><?=$row['email'];?></td>
-            </tr>
-            </tbody>
-            <thead>
-            <tr>
-              <th>ALAMAT PENERIMA</th>
-              <td><?=$row['alamat'];?></td>
-              <th>CATATAN PENERIMA</th>
-              <td><?=$row['catatan'];?></td>
-            </tr>
-            </thead>
-          </table>
-            </div>
+        <table id="example1" class="table table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>ID TRANSAKSI</th>
+            <td><?=$row['id_transaksi'];?></td>
+            <th>NO TELPON</th>
+            <td><?=$row['no_telp'];?></td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th>NAMA PENERIMA</th>
+            <td><?=$row['nama_penerima'];?></td>
+            <th>EMAIL PENERIMA</th>
+            <td><?=$row['email'];?></td>
+          </tr>
+          </tbody>
+          <thead>
+          <tr>
+            <th>ALAMAT PENERIMA</th>
+            <td><?=$row['alamat'];?></td>
+            <th>CATATAN PENERIMA</th>
+            <td><?=$row['catatan'];?></td>
+          </tr>
+          </thead>
+        </table>
+      </div>
 
           <!-- /.box-body -->
           <!-- general form elements -->
