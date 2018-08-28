@@ -289,7 +289,7 @@ class Front {
             
             $direktori_upload   = "./uploads/bukti_pembayaran";
 
-            if(!$_FILES["foto"]["error"]) {
+            if(!$_FILES["foto"]["error"] && $_FILES['foto']['error'] != 4) {
 
                 $direktori_sementara= $_FILES["foto"]["tmp_name"];
                 $nama_file = basename($_FILES["foto"]["name"]);
@@ -301,9 +301,17 @@ class Front {
                 $this->db->query($query);
                 
                 print " <script>
-                        window.location='$this->host/front/detail_pesanan/?id=$id_transaksi';
-                        alert('Pembayaran telah di simpan.');
-                    </script>";
+                            window.location='$this->host/front/detail_pesanan/?id=$id_transaksi';
+                            alert('Pembayaran telah di simpan.');
+                        </script>";
+
+            } else {
+
+                print " <script>
+                            window.location='$this->host/front/verifikasi_bukti/?id=$id_transaksi';
+                            alert('Pembayaran gagal di simpan.');
+                        </script>";
+
             }
 
         } else if ($check[0] != 0 || !empty($check)) {
