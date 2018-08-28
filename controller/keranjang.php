@@ -91,7 +91,7 @@ class Keranjang {
         $query = "SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan');
         $keranjang = $this->db->query($query)->fetch_assoc();
 
-        include "./view/front/detail_checkout.php";
+        include "./view/front/keranjang/detail_checkout.php";
     }
 
     function checkout(){
