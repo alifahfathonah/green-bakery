@@ -300,7 +300,10 @@ class Front {
 
                 $this->db->query($query);
                 
-                $this->redirect->to("front/detail_pesanan/?id=$id_transaksi");
+                print " <script>
+                        window.location='$this->host/front/detail_pesanan/?id=$id_transaksi';
+                        alert('Pembayaran telah di simpan.');
+                    </script>";
             }
 
         } else if ($check[0] != 0 || !empty($check)) {

@@ -11,7 +11,7 @@
         }
 
         function to($destination){
-            header('location: '.$this->host.'/'.$destination.'/');
+            header('location: '.$this->host.'/'.$destination);
         }
 
         function get_url($destination){
