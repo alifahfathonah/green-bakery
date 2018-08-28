@@ -225,9 +225,9 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
                 while($row = $execute_get_all_transaksi->fetch_assoc()){
                   ?>
                   <tr>
-                    <td><?=$row['id_transaksi'];?></td>
+                    <td><a href="<?=$host.'/panel/detail_transaksi/?id_transaksi='.$row['id_transaksi']?>"><?=$row['id_transaksi'];?></a></td>
                     <td><?=$row['tgl_transaksi'];?></td>
-                    <td><?=$row['id_pelanggan'];?></td>
+                    <td><?=$row['id'];?></td>
                     <td>
                         <?php
                         if($row['status']==0){

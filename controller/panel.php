@@ -297,6 +297,20 @@ class Panel {
     }
 
     /*
+    MODUL DETAIL TRANSAKSI
+                        */
+                       
+    function detail_transaksi(){
+        $id_trans = Input::get('id_transaksi');
+
+        $ambil_transaksi = $this->db->query("SELECT tbl_transaksi.*, tbl_pengiriman.* FROM tbl_transaksi JOIN tbl_pengiriman ON tbl_transaksi.id_transaksi = tbl_pengiriman.id_transaksi WHERE tbl_transaksi.id_transaksi = '$id_trans'");
+
+        $ambil_detail_transaksi = $this->db->query("SELECT tbl_transaksi.*, tbl_detail_transaksi.* FROM tbl_transaksi JOIN tbl_detail_transaksi ON tbl_transaksi.id_transaksi = tbl_detail_transaksi.id_transaksi WHERE tbl_transaksi.id_transaksi = '$id_trans'");
+
+        include './view/back/detail_transaksi.php';
+    }
+
+    /*
     MODUL LOGIN
                 */
     function login(){
