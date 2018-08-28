@@ -31,6 +31,12 @@ class Panel {
     }
 
     function index() {
+
+        $data_transaksi = $this->db->query("SELECT COUNT(id_transaksi) FROM tbl_transaksi")->fetch_array();
+        $data_kategori  = $this->db->query("SELECT COUNT(id) FROM tbl_kategori")->fetch_array();
+        $data_pelanggan = $this->db->query("SELECT COUNT(id) FROM tbl_pelanggan")->fetch_array();
+        $data_barang    = $this->db->query("SELECT COUNT(id) FROM tbl_barang")->fetch_array(); 
+
         include './view/back/main.php';
     }
 
@@ -333,10 +339,14 @@ class Panel {
     MODUL LOGIN
                 */
     function login(){
+        if(Session::exists('isLogin')){
+            $this->redirect->to('panel/');
+        }
         include './view/back/login.php';
     }
 
     function do_login(){
+        
         $username = $_POST['username'];
         $password = md5($_POST['password']);
 
@@ -346,7 +356,7 @@ class Panel {
             $_SESSION["isLogin"]=TRUE;
             // header("Location: $this->host/panel");
         }else{
-        echo 'TIDAK ADA';
+            echo 'TIDAK ADA';
         }
         header("Location: $this->host/panel");
     }

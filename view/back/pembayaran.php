@@ -188,7 +188,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
                 while($row = $data_pembayaran->fetch_assoc()){
                   ?>
                   <tr>
-                    <td><a href="<?=$host.'/panel/detail_pembayaran/?id='.$row['id_transaksi'];?>"><?=$row['id_transaksi'];?></a></td>
+                    <td><a href="<?=$host.'/panel/detail_transaksi/?id_transaksi='.$row['id_transaksi'];?>"><?=$row['id_transaksi'];?></a></td>
                     <td><button type="button" id="<?=$row['id_transaksi'];?>" class="btn btn-xs btn-flat btn-success lihat-bukti">Lihat Bukti Transfer</button></td>
                     <td><?=$row['tgl_dikirim'];?></td>
                     <td>

@@ -37,7 +37,7 @@ class Front {
 
             $kategori = $this->db->query("SELECT nama FROM tbl_kategori");
 
-            include './view/front/register.php';
+            include './view/front/autentikasi/register.php';
 
         } else {
             $this->redirect->to('front/');
@@ -98,7 +98,7 @@ class Front {
 
             $kategori = $this->db->query("SELECT nama FROM tbl_kategori");
 
-            include './view/front/login.php';
+            include './view/front/autentikasi/login.php';
         } else {
             $this->redirect->to('front');
         }
@@ -216,7 +216,7 @@ class Front {
 
         $list_pemesanan = $this->db->query($query_pesanan);
 
-        include './view/front/list_pesanan.php';
+        include './view/front/pesanan/list_pesanan.php';
 
         } else {
             print " <script>
@@ -245,7 +245,7 @@ class Front {
 
             $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
 
-            include './view/front/detail_pesanan.php';
+            include './view/front/pesanan/detail_pesanan.php';
 
         } else {
             print " <script>

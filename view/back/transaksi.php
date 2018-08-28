@@ -172,6 +172,12 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             <span>Transaksi</span>
           </a>
         </li>
+        <li>
+          <a href="<?=$host;?>/panel/pembayaran">
+            <i class="fa fa-folder-open"></i>
+            <span>Pembayaran</span>
+          </a>
+        </li>
         <li class="header">SETTINGS</li>
         <li><a href="<?=$host;?>/panel/pengguna"><i class="fa fa-folder-open"></i> <span>Pengguna</span></a></li>
 		<li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
@@ -227,7 +233,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
                   <tr>
                     <td><a href="<?=$host.'/panel/detail_transaksi/?id_transaksi='.$row['id_transaksi']?>"><?=$row['id_transaksi'];?></a></td>
                     <td><?=$row['tgl_transaksi'];?></td>
-                    <td><?=$row['id'];?></td>
+                    <td><?=$row['id_pelanggan'];?></td>
                     <td>
                         <?php
                         if($row['status']==0){

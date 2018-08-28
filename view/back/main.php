@@ -179,6 +179,12 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             <span>Transaksi</span>
           </a>
         </li>
+        <li>
+          <a href="<?=$host;?>/panel/pembayaran">
+            <i class="fa fa-folder-open"></i>
+            <span>Pembayaran</span>
+          </a>
+        </li>
         <li class="header">SETTINGS</li>
         <li><a href="<?=$host;?>/panel/pengguna"><i class="fa fa-folder-open"></i> <span>Pengguna</span></a></li>
 		<li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
@@ -210,7 +216,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3><?=$data_transaksi[0];?></h3>
 
               <p>Penjualan</p>
             </div>
@@ -225,12 +231,12 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
+              <h3><?=$data_kategori[0];?></h3>
 
-              <p>Bounce Rate</p>
+              <p>Kategori</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="ion ion-android-clipboard"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -240,12 +246,12 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>44</h3>
+              <h3><?=$data_pelanggan[0];?></h3>
 
-              <p>Customers</p>
+              <p>Pelanggan</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="ion ion-android-contacts"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -255,12 +261,12 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>65</h3>
+              <h3><?=$data_barang[0];?></h3>
 
               <p>Total Barang</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="ion ion-clipboard"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
