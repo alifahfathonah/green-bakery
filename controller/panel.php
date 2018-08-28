@@ -297,6 +297,28 @@ class Panel {
     }
 
     /*
+    MODUL PEMBAYARAN
+                */
+    function pembayaran(){
+        
+        $data_pembayaran = $this->db->query("SELECT * FROM tbl_pembayaran");
+
+        include './view/back/pembayaran.php';
+
+    }
+
+    
+
+    function ambil_foto_bukti(){
+
+        $id    = Input::post('id_transaksi');
+        $query = "SELECT foto_bukti FROM tbl_pembayaran WHERE id_transaksi = '$id'";
+        json_encode($this->db->query($query)->fetch_array());
+        
+    }
+    
+
+    /*
     MODUL LOGIN
                 */
     function login(){
