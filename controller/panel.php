@@ -297,7 +297,6 @@ class Panel {
     }
 
     /*
-<<<<<<< HEAD
     MODUL PEMBAYARAN
                 */
     function pembayaran(){
@@ -308,8 +307,6 @@ class Panel {
 
     }
 
-    
-
     function ambil_foto_bukti(){
 
         $id    = Input::post('id_transaksi');
@@ -318,8 +315,8 @@ class Panel {
         
     }
     
-=======
-    MODUL DETAIL TRANSAKSI
+    /**
+     * MODUL DETAIL TRANSAKSI
                         */
                        
     function detail_transaksi(){
@@ -331,7 +328,6 @@ class Panel {
 
         include './view/back/detail_transaksi.php';
     }
->>>>>>> fa6ad07fec8448be6dc8123889596c4e2b25324b
 
     /*
     MODUL LOGIN
