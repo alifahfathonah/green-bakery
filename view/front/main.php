@@ -1,3 +1,4 @@
+
 <?php
     $conf = new config();
     $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
@@ -123,7 +124,7 @@
                                     <?php echo Session::get('nama_pelanggan');?> <i class="fa fa-angle-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item"><a class="nav-link" href=""">Ganti Password</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?=$host?>/front/ganti_password">Ganti Password</a></li>
                                         <li class="nav-item"><a class="nav-link" href="<?=$host?>/front/logout">Logout</a></li>
                                     </ul>
                                 </li>

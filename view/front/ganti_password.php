@@ -41,121 +41,97 @@
     <body>
         
         <!--================Menu Area =================-->
-        <header class="shop_header_area carousel_menu_area">
-            <div class="carousel_top_header row m0">
-                <div class="container">
-                    <div class="carousel_top_h_inner">
-                        <div class="float-md-left">
-                            <div class="top_header_left">
-                                <div class="selector">
-                                    <select class="language_drop" name="countries" id="countries" style="width:300px;">
-                                      <option value='yt' data-image="img/icon/flag-1.png" data-imagecss="flag yt" data-title="English">English</option>
-                                      <option value='yu' data-image="img/icon/flag-1.png" data-imagecss="flag yu" data-title="Bangladesh">Bangla</option>
-                                      <option value='yt' data-image="img/icon/flag-1.png" data-imagecss="flag yt" data-title="English">English</option>
-                                      <option value='yu' data-image="img/icon/flag-1.png" data-imagecss="flag yu" data-title="Bangladesh">Bangla</option>
-                                    </select>
-                                </div>
-                                <select class="selectpicker usd_select">
-                                    <option>USD</option>
-                                    <option>$</option>
-                                    <option>$</option>
-                                </select>
+        <div class="header_top_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="top_header_left">
+
+
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+                                <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button"><i class="icon-magnifier"></i></button>
+                                </span>
                             </div>
                         </div>
-                        <div class="float-md-right">
-                            <div class="top_header_middle">
-                                <a href="#"><i class="fa fa-phone"></i> Call Us: <span>+v 84 987 654 321</span></a>
-                                <a href="#"><i class="fa fa-envelope"></i> Email: <span>support@yourdomain.com</span></a>
-                            </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="top_header_middle">
+                            <a href="#"><i class="fa fa-phone"></i> Call Us: <span>+84 987 654 321</span></a>
+                            <a href="#"><i class="fa fa-envelope"></i> Email: <span>support@greenbakery.com</span></a>
+                            <img src="<?=$host;?>/assets/front/img/logo2.png" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="top_right_header">
+                            <ul class="header_social">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                            </ul>
+                            <ul class="top_right">
+                                <?php if (Session::exists('email')) { ?>
+                                    <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
+                                <?php } ?>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="carousel_menu_inner">
-                <div class="container">
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                        <a class="navbar-brand" href="#"><img src="img/logo.png" alt=""></a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+        </div>
+        <!--================End Top Header Area =================-->
 
-                        </button>
+        <!--================Menu Area =================-->
+        <header class="shop_header_area">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#"><img src="img/logo2.png" alt=""></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-auto">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active"><a class="nav-link" href="<?=$host."/front";?>">Beranda</a></li>
+                            <li class="nav-item dropdown submenu">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <?php while($column = mysqli_fetch_array($kategori)) { ?>
+                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
+                                <?php } ?>
+                                </ul>
+                            </li>
+                            <?php if(Session::exists('id_pelanggan')) : ?>
+                                <li class="nav-item"><a class="nav-link" href="<?=$host.'/front/pesanan';?>">Pesanan</a></li>
+                            <?php endif ?>
+                        </ul>
+                        <?php if (!Session::exists('email')) { ?>
+                            <ul class="navbar-nav navbar-right ml-auto mr-2">
+                                <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
+                            </ul>
+                        <?php } else { ?>
+                            <ul class="navbar-nav navbar-right ml-auto mr-4">
                                 <li class="nav-item dropdown submenu">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    <?php echo Session::get('nama_pelanggan');?> <i class="fa fa-angle-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item"><a class="nav-link" href="index.html">Home Simple</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-carousel.html">Home Carousel</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-fullwidth.html">Home Full Width</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-parallax.html">Home Parallax</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-sidebar.html">Home Boxed</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="home-fixed-menu.html">Home Fixed</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?=$host."/front/ganti_password"?>">Ganti Password</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?=$host?>/front/logout">Logout</a></li>
                                     </ul>
                                 </li>
-                                <li class="nav-item dropdown submenu active">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Pages <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item"><a class="nav-link" href="compare.html">Compare</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout Method</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="register.html">Checkout Register</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="track.html">Track</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="404.html">404</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown submenu">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Shop <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item"><a class="nav-link" href="categories-no-sidebar-2column.html">Prodcut No Sidebar</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-no-sidebar-3column.html">Prodcut Two Column</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-no-sidebar-4column.html">Product Grid</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-left-sidebar.html">Categories Left Sidebar</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-right-sidebar.html">Categories Right Sidebar</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="categories-grid-left-sidebar.html">Categories Grid Sidebar</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="product-details.html">Prodcut Details 01</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="product-details2.html">Prodcut Details 02</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="product-details3.html">Prodcut Details 03</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="shopping-cart.html">Shopping Cart 01</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="shopping-cart2.html">Shopping Cart 02</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="empty-cart.html">Empty Cart</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">lookbook</a></li>
-                                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                             </ul>
-                            <ul class="navbar-nav justify-content-end">
-                                <li class="search_icon"><a href="#"><i class="icon-magnifier icons"></i></a></li>
-                                <li class="user_icon"><a href="#"><i class="icon-user icons"></i></a></li>
-                                <li class="cart_cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
+                        <?php } ?>
+                    </div>
+                </nav>
             </div>
         </header>
         <!--================End Menu Area =================-->
-        
-        <!--================Categories Banner Area =================-->
-        <section class="solid_banner_area">
-            <div class="container">
-                <div class="solid_banner_inner">
-                    <h3>track item</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="track.html">Track Item</a></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        <!--================End Categories Banner Area =================-->
         
         <!--================Track Area =================-->
         <section class="track_area p_100">
@@ -163,19 +139,24 @@
                 <div class="track_inner">
                     <div class="track_title">
                         <h2>Ganti Password</h2>
-                        <p> Donec sed tortor eros. Mauris varius commodo nisi, quis vestibulum est pellen-tesque quis. Vivamus nulla arcu, </p>
+                        <p> Masukan password baru anda yang mudah anda ingat, jika anda ingin merubahnya. </p>
                     </div>
-                    <form class="track_form row">
-                        <div class="col-lg-12 form-group">
-                            <label for="text">Email</label>
-                            <input class="form-control" type="text" id="text">
+                    <form action="<?=$host?>/front/proses_gantipassword" method="POST" id="regis" class="login_form row">
+                        
+                        <div class="col-lg-6 form-group">
+                            <input class="form-control" type="password" name="password_lama" data-validation="required custom" data-validation-regexp="^([a-zA-Z\s]+)$" placeholder="password lama">
                         </div>
-                        <div class="col-lg-12 form-group">
-                            <label for="email">Password</label>
-                            <input class="form-control" type="email" id="email">
+                        <div class="col-lg-6 form-group">
+                            <input class="form-control" type="password" name="password_baru" data-validation="required custom"  placeholder="password baru">
                         </div>
-                        <div class="col-lg-12 form-group">
-                            <button type="submit" value="submit" class="btn subs_btn form-control">place order</button>
+                        <div class="col-lg-6 form-group">
+                            <input class="form-control" type="password" name="konfirmasi_password" data-validation="required custom" data-validation-regexp="^([0-9\s\-\+]+)$" placeholder="konfirmasi password">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <button type="submit" value="submit" class="btn subs_btn form-control">ganti password</button>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            Jika batal dirubah ? <a href="<?=$host."/front/login"?>">Kembali keberanda</a>
                         </div>
                     </form>
                 </div>

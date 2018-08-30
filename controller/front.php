@@ -313,4 +313,85 @@ class Front {
         }
 
     }
+
+
+    function ganti_password(){
+        if(Session::exists('id_pelanggan')){
+
+            $kategori = $this->db->query("SELECT nama FROM tbl_kategori");
+
+            include './view/front/ganti_password.php';
+         } else {
+            $this->redirect->to('front');
+        }
+    }
+
+
+    // function proses_gantipassword(){
+    //     $data_ok = true;
+    //     $id    = $_POST['id'];
+
+    //     $email                  = Input::post('email');
+    //     $password               = Input::post('password_lama');
+    //     $password_baru          = Input::post('password_baru');
+    //     $konfirmasi_password    = Input::post('konfirmasi_password');
+
+    //     $check_data = [$password, $password_baru, $konfirmasi_password];
+        
+    //     for($i = 0; $i < count($check_data); $i++){
+    //         if(empty($check_data[$i])){
+    //             $data_ok = false;
+    //         }
+    //     }
+
+    //     if ($data_ok){
+
+    //         $query = "UPDATE tbl_pelanggan SET password='$password', WHERE id = $id";
+
+    //         if(Input::post('password') == Input::post('re_password')){
+    //             $result = $this->db->query($query);
+            
+    //             if($result){
+                    
+    //                 print " <script>
+    //                             window.location='".$this->redirect->get_url('front/ganti_password')."';
+    //                             alert('ganti password Berhasil!');
+    //                         </script>";
+    //             } else {
+    //                 print " <script>
+    //                             window.location='".$this->redirect->get_url('front')."';
+    //                             alert('ganti password Gagal!');
+    //                         </script>";
+    //             }
+    //         } 
+    //     } 
+    // }
+
+    // proses ganti_password
+
+    function proses_gantipassword(){
+        $id_pelanggan           = Session::get('id_pelanggan');
+        $password               = Input::post('password_lama');
+        $password_baru          = Input::post('password_baru');
+        $konfirmasi_password    = Input::post('konfirmasi_password');
+
+    
+    $query = "SELECT * FROM tbl_pelanggan WHERE id = $id_pelanggan AND password = '".md5($password)."'";
+    $result = $this->db->query($query);
+
+        if ($result->num_rows > 0){
+            
+            if($password_baru === $konfirmasi_password){
+                $query = "UPDATE tbl_pelanggan SET password='".md5($password_baru)."' WHERE id='$id_pelanggan'";
+
+                $result = $this->db->query($query);
+
+                print " <script>
+                        window.location='".$this->redirect->get_url('front/ganti_password')."';
+                        alert('ganti password Berhasil!');
+                        </script>";
+            }
+        }
+    }
+
 }
