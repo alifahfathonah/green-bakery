@@ -37,7 +37,7 @@ class Front {
 
             $kategori = $this->db->query("SELECT nama FROM tbl_kategori");
 
-            include './view/front/register.php';
+            include './view/front/autentikasi/register.php';
 
         } else {
             $this->redirect->to('front/');
@@ -98,7 +98,7 @@ class Front {
 
             $kategori = $this->db->query("SELECT nama FROM tbl_kategori");
 
-            include './view/front/login.php';
+            include './view/front/autentikasi/login.php';
         } else {
             $this->redirect->to('front');
         }
@@ -216,7 +216,7 @@ class Front {
 
         $list_pemesanan = $this->db->query($query_pesanan);
 
-        include './view/front/list_pesanan.php';
+        include './view/front/pesanan/list_pesanan.php';
 
         } else {
             print " <script>
@@ -245,7 +245,7 @@ class Front {
 
             $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
 
-            include './view/front/detail_pesanan.php';
+            include './view/front/pesanan/detail_pesanan.php';
 
         } else {
             print " <script>
@@ -289,7 +289,7 @@ class Front {
             
             $direktori_upload   = "./uploads/bukti_pembayaran";
 
-            if(!$_FILES["foto"]["error"]) {
+            if(!$_FILES["foto"]["error"] && $_FILES['foto']['error'] != 4) {
 
                 $direktori_sementara= $_FILES["foto"]["tmp_name"];
                 $nama_file = basename($_FILES["foto"]["name"]);
@@ -300,7 +300,18 @@ class Front {
 
                 $this->db->query($query);
                 
-                $this->redirect->to("front/detail_pesanan/?id=$id_transaksi");
+                print " <script>
+                            window.location='$this->host/front/detail_pesanan/?id=$id_transaksi';
+                            alert('Pembayaran telah di simpan.');
+                        </script>";
+
+            } else {
+
+                print " <script>
+                            window.location='$this->host/front/verifikasi_bukti/?id=$id_transaksi';
+                            alert('Pembayaran gagal di simpan.');
+                        </script>";
+
             }
 
         } else if ($check[0] != 0 || !empty($check)) {

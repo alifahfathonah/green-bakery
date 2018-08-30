@@ -49,7 +49,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="<?=$host.'/panel'?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>G</b>B</span>
       <!-- logo for regular state and mobile devices -->
@@ -165,7 +165,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active">
+        <li>
           <a href="<?=$host;?>/panel">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
@@ -181,10 +181,23 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             <span>Transaksi</span>
           </a>
         </li>
+        <li>
+          <a href="<?=$host;?>/panel/pembayaran">
+            <i class="fa fa-folder-open"></i>
+            <span>Pembayaran</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?=$host;?>/panel/pengiriman">
+            <i class="fa fa-folder-open"></i>
+            <span>Pengiriman</span>
+          </a>
+        </li>
         <li class="header">SETTINGS</li>
         <li><a href="<?=$host;?>/panel/pengguna"><i class="fa fa-folder-open"></i> <span>Pengguna</span></a></li>
-		<li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
+        <li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
         <li><a href="<?=$host;?>/panel/kategori"><i class="fa fa-folder-open"></i> <span>Kategori</span></a></li>
+        <li><a href="<?=$host;?>/panel/laporan"><i class="fa fa-folder-open"></i> <span>Laporan</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -195,7 +208,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pelanggan
+        Kategori
         <small>Panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -211,34 +224,37 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Master Pelanggan</h3>
-              <!-- <button class="btn btn-primary btn-sm pull-right tambah" data-toggle="modal" data-target="#modal-default">Tambah</button> -->
+              <h3 class="box-title">Master Kategori</h3>
+              <button class="btn btn-primary btn-sm pull-right tambah" data-toggle="modal" data-target="#modal-default">Tambah</button>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="tablePelanggan" class="table table-bordered table-striped">
+              <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Lengkap</th>
-                  <th>email</th>
-                  <th>No. Telepon</th>
+                  <th>Nama Kategori</th>
+                  <th>Deskripsi</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                <?php while($column = mysqli_fetch_array($execute_pelanggan)){ ?>
+                <?php
+                while($row = mysqli_fetch_array($execute_get_all_kategori)){
+                  ?>
                   <tr>
-                    <td><?=$column[1];?></td>
-                    <td><?=$column[2];?></td>
-                    <td><?=$column[3];?></td>
+                    <td><?=$row[1];?></td>
+                    <td><?=$row[2];?></td>
                     <td>
-                        <button id="<?=$column[0];?>" class="btn btn-xs btn-primary edit">Edit</button>
-                        <button id="<?=$column[0];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
+                        <button id="<?=$row[0];?>" class="btn btn-xs btn-primary edit">Edit</button>
+                        <button id="<?=$row[0];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
                     </td>
                   </tr>
-                 <?php } ?>
-				 
+                  <?php
+                }
+                ?>
+
+
                 </tbody>
 
               </table>
@@ -267,6 +283,43 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <!-- /.content -->
   </div>
 
+  <div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="txtTitleModalBarang">Master Tambah Barang</h4>
+        </div>
+        <div class="modal-body">
+
+          <form role="form" id="idFormModalKategori" method="post" action="<?=$host;?>/panel/tambah_kategori" enctype="multipart/form-data">
+            <div class="box-body">
+              <div class="form-group">
+                <label>Nama Kategori</label>
+                <input type="hidden" name="id_kategori" id="idTxtKategori">
+                <input type="text" name="nama_barang" class="form-control" id="idTxtNamaBarang" placeholder="Ketikan Nama Barang">
+              </div>
+              <div class="form-group">
+                <label>Deskripsi Kategori</label>
+                <textarea name="deskripsi" class="form-control" id="idTxtDeskripsi"></textarea>
+              </div>
+            </div>
+            <!-- /.box-body -->
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+          </form>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 
   <!-- /.content-wrapper -->
   <footer class="main-footer">
@@ -276,16 +329,13 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <strong>Copyright &copy; 2018 <a href="#">Green Bakery</a>.</strong> All rights
     reserved.
   </footer>
-
-  
+  <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 
-<!-- Validator -->
-<script src="<?=$host?>/assets/front/js/jquery.form-validator.min.js"></script>
 <!-- jQuery 3 -->
 <script src="<?=$host;?>/assets/back/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -299,6 +349,23 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 <!-- DataTables -->
 <script src="<?=$host;?>/assets/back/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?=$host;?>/assets/back/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- Morris.js charts -->
+<script src="<?=$host;?>/assets/back/bower_components/raphael/raphael.min.js"></script>
+<script src="<?=$host;?>/assets/back/bower_components/morris.js/morris.min.js"></script>
+<!-- Sparkline -->
+<script src="<?=$host;?>/assets/back/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- jvectormap -->
+<script src="<?=$host;?>/assets/back/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="<?=$host;?>/assets/back/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="<?=$host;?>/assets/back/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="<?=$host;?>/assets/back/bower_components/moment/min/moment.min.js"></script>
+<script src="<?=$host;?>/assets/back/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- datepicker -->
+<script src="<?=$host;?>/assets/back/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="<?=$host;?>/assets/back/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <!-- Slimscroll -->
 <script src="<?=$host;?>/assets/back/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -311,10 +378,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
 <script>
   $(function () {
-    $('#tablePelanggan').DataTable({
-      'length': 10,
-      'lengthChange': false
-    })
+    $('#example1').DataTable()
     $('#example2').DataTable({
       'paging'      : true,
       'lengthChange': false,
@@ -329,7 +393,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     var id = this.id;
     var x = confirm("Apakah anda yakin?");
     if(x){
-      $.post('<?=$host;?>/panel/hapus_pelanggan', {id_pelanggan:id}).done(function(){
+      $.post('<?=$host;?>/panel/hapus_kategori',{id_kategori:id}).done(function(){
         alert('Berhasil');
         location.reload();
       })
@@ -337,7 +401,25 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
   })
 
-  $.validate();
+  $('.edit').click(function(){
+    var id = this.id;
+    $('#modal-default').modal();
+    $("#txtTitleModalBarang").html("Ubah Kategori");
+    $("#idFormModalKategori").attr("action", "<?=$host;?>/panel/ubah_kategori");
+    $.post("<?=$host;?>/panel/ambil_data_kategori",{id_kategori:id}).done(function(data){
+      var data = jQuery.parseJSON(data);
+      // console.log(data);
+      $("#idTxtKategori").val(data[0]);
+      $("#idTxtNamaBarang").val(data[1]);
+      $("#idTxtDeskripsi").val(data[2]);
+
+    })
+  })
+
+  $('.tambah').click(function(){
+      $("#idFormModalKategori").attr("action", "<?=$host;?>/panel/tambah_kategori");
+      $("#txtTitleModalBarang").html("Tambah Kategori");
+  })
 </script>
 
 </body>

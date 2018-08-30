@@ -31,7 +31,15 @@ class Panel {
     }
 
     function index() {
-        include './view/back/main.php';
+
+        (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
+
+        $data_transaksi = $this->db->query("SELECT COUNT(id_transaksi) FROM tbl_transaksi")->fetch_array();
+        $data_kategori  = $this->db->query("SELECT COUNT(id) FROM tbl_kategori")->fetch_array();
+        $data_pelanggan = $this->db->query("SELECT COUNT(id) FROM tbl_pelanggan")->fetch_array();
+        $data_barang    = $this->db->query("SELECT COUNT(id) FROM tbl_barang")->fetch_array(); 
+
+        include './view/back/navigasi_utama/main.php';
     }
 
 
@@ -40,13 +48,16 @@ class Panel {
                 */
 
     function barang() {
+
+        (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
+
         $query = "SELECT * FROM tbl_kategori";
         $execute = $this->db->query($query);
 
         $query_get_all_barang = "SELECT a.*,b.nama FROM tbl_barang a JOIN tbl_kategori b ON b.id=a.id_kategori";
         $execute_get_all_barang = $this->db->query($query_get_all_barang);
 
-        include './view/back/barang.php';
+        include './view/back//navigasi_utama/barang.php';
     }
 
     function tambah_barang(){
@@ -125,13 +136,16 @@ class Panel {
                     */
 
         function pengguna(){
+
+            (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
+
 			$query = "SELECT * FROM tbl_kategori";
 			$execute = $this->db->query($query);
 
 			$query_get_all_pengguna = "SELECT a.* FROM tbl_pengguna a";
 			$execute_get_all_pengguna = $this->db->query($query_get_all_pengguna);
 
-			include './view/back/pengguna.php';
+			include './view/back//setting/pengguna.php';
         }
 
         function tambah_pengguna(){
@@ -183,13 +197,16 @@ class Panel {
     MODUL PELANGGAN
                 */
 		function pelanggan(){
+
+            (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
+
 			$query_kategori = "SELECT * FROM tbl_kategori";
 			$execute = $this->db->query($query_kategori);
 
 			$query_pelanggan = "SELECT * FROM tbl_pelanggan";
 			$execute_pelanggan = $this->db->query($query_pelanggan);
 
-			include './view/back/pelanggan.php';
+			include './view/back//setting/pelanggan.php';
         }
 
 
@@ -210,13 +227,16 @@ class Panel {
                 */
 
         function kategori(){
+
+            (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
+
             $query = "SELECT * FROM tbl_kategori";
             $execute = $this->db->query($query);
 
             $query_get_all_kategori = "SELECT a.* FROM tbl_kategori a";
             $execute_get_all_kategori = $this->db->query($query_get_all_kategori);
 
-            include './view/back/kategori.php';
+            include './view/back//setting/kategori.php';
         }
 
         function tambah_kategori(){
@@ -260,17 +280,21 @@ class Panel {
 
     function transaksi(){
 
+        (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
+
         $query = "SELECT * FROM tbl_transaksi";
         $execute = $this->db->query($query);
 
         $query_get_all_transaksi = "SELECT a.* FROM tbl_transaksi a";
         $execute_get_all_transaksi  = $this->db->query($query_get_all_transaksi);
 
-        include './view/back/transaksi.php';
+        include './view/back/navigasi_utama/transaksi.php';
     }
 
 
     function ubah_transaksi(){
+
+        (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
 
         $id_transaksi = Input::post('id_transaksi');
         $status = Input::post('status');
@@ -297,13 +321,132 @@ class Panel {
     }
 
     /*
+    MODUL PEMBAYARAN
+                */
+    function pembayaran(){
+
+        (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
+        
+        $data_pembayaran = $this->db->query("SELECT * FROM tbl_pembayaran");
+
+        include './view/back/navigasi_utama/pembayaran.php';
+
+    }
+
+    function rubah_status_pembayaran(){
+
+        $id_transaksi = Input::post('id_transaksi');
+        $status_pembayaran = Input::post('status_pembayaran');
+
+        if($status_pembayaran == 0){
+            $query = "UPDATE tbl_transaksi, tbl_pembayaran SET tbl_transaksi.status_pembayaran = $status_pembayaran, tbl_transaksi.status = $status_pembayaran, tbl_pembayaran.disetujui = $status_pembayaran
+                              WHERE tbl_transaksi.id_transaksi = '$id_transaksi'";
+        } else {
+            $query = "UPDATE tbl_transaksi, tbl_pembayaran SET tbl_transaksi.status_pembayaran = $status_pembayaran, tbl_pembayaran.disetujui = $status_pembayaran 
+                              WHERE tbl_transaksi.id_transaksi = '$id_transaksi'";
+        }
+
+        $this->db->query($query);
+
+    }
+
+    function ambil_foto_bukti(){
+
+        $id    = Input::post('id_transaksi');
+        $query = "SELECT foto_bukti FROM tbl_pembayaran WHERE id_transaksi = '$id'";
+        echo json_encode($this->db->query($query)->fetch_array());
+        
+    }
+    
+    /**
+     * MODUL DETAIL TRANSAKSI
+                        */
+                       
+    function detail_transaksi(){
+
+        (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
+
+        $id_trans = Input::get('id_transaksi');
+
+        $ambil_transaksi = $this->db->query("SELECT tbl_transaksi.*, tbl_pengiriman.* FROM tbl_transaksi JOIN tbl_pengiriman ON tbl_transaksi.id_transaksi = tbl_pengiriman.id_transaksi WHERE tbl_transaksi.id_transaksi = '$id_trans'");
+
+        $ambil_detail_transaksi = $this->db->query("SELECT tbl_transaksi.*, tbl_detail_transaksi.* FROM tbl_transaksi JOIN tbl_detail_transaksi ON tbl_transaksi.id_transaksi = tbl_detail_transaksi.id_transaksi WHERE tbl_transaksi.id_transaksi = '$id_trans'");
+
+        include './view/back/navigasi_utama/detail_transaksi.php';
+    }
+
+    /*
+    MODUL PENGIRIMAN
+                */
+    function pengiriman(){
+
+        (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
+
+        $query_pengiriman = "SELECT tbl_pengiriman.*, tbl_transaksi.status FROM tbl_pengiriman JOIN tbl_transaksi 
+                            ON tbl_pengiriman.id_transaksi = tbl_transaksi.id_transaksi ORDER BY tbl_pengiriman.id_transaksi";
+        $data_pengiriman = $this->db->query($query_pengiriman);
+
+        include './view/back/navigasi_utama/pengiriman.php';
+        
+    }
+
+    function rubah_status_pengiriman(){
+
+        $id_transaksi = Input::post('id_transaksi');
+        $status = Input::post('status');
+
+        if($status == 1){
+            $this->db->query("UPDATE tbl_transaksi, tbl_pengiriman SET tbl_transaksi.status = $status, tbl_pengiriman.tanggal_dikirim = NULL
+                              WHERE tbl_transaksi.id_transaksi = '$id_transaksi'");
+        } else {
+            $this->db->query("UPDATE tbl_transaksi, tbl_pengiriman SET tbl_transaksi.status = $status, tbl_pengiriman.tanggal_dikirim = CURRENT_TIMESTAMP 
+                              WHERE tbl_transaksi.id_transaksi = '$id_transaksi'");
+        }
+        
+    }
+
+    /*
+    MODUL LAPORAN
+                */
+    function laporan() {
+        
+        include './view/back/laporan/laporan.php';
+
+    }
+    
+    function lihat_laporan(){
+        $master = Input::post('master');
+        $tanggal = explode(" - ", Input::post('tanggal'));
+
+        switch($master){
+            case 'transaksi':
+                $title = 'Laporan Transaksi';
+                $query = "SELECT tbl_transaksi.id_transaksi, tbl_pengiriman.nama_penerima, tbl_transaksi.tgl_transaksi, tbl_transaksi.total FROM tbl_transaksi JOIN tbl_pengiriman ON tbl_pengiriman.id_transaksi = tbl_transaksi.id_transaksi 
+                 WHERE tgl_transaksi BETWEEN '".trim($tanggal[0])." 01:00:00' AND '".trim($tanggal[1]." 23:59:59' ORDER BY tbl_transaksi.id_transaksi");
+                $data_laporan = $this->db->query($query);
+                include './view/back/laporan/print_laporan_transaksi.php';
+                break;
+            case 'barang':
+                $title = 'Laporan Barang';
+                $query = "SELECT `nama_barang`, `qty`, `harga` FROM tbl_barang";
+                $data_laporan = $this->db->query($query);
+                include './view/back/laporan/print_laporan_barang.php';
+                break;
+        }
+    }
+
+    /*
     MODUL LOGIN
                 */
     function login(){
-        include './view/back/login.php';
+        if(Session::exists('isLogin')){
+            $this->redirect->to('panel/');
+        }
+        include './view/back/autentikasi/login.php';
     }
 
     function do_login(){
+        
         $username = $_POST['username'];
         $password = md5($_POST['password']);
 
@@ -313,7 +456,7 @@ class Panel {
             $_SESSION["isLogin"]=TRUE;
             // header("Location: $this->host/panel");
         }else{
-        echo 'TIDAK ADA';
+            echo 'TIDAK ADA';
         }
         header("Location: $this->host/panel");
     }
@@ -321,12 +464,6 @@ class Panel {
     function do_logout(){
         session_destroy();
         header("Location: $this->host/panel");
-    }
-
-    function pengiriman(){
-
-        $nama_penerima = "Muhammad Iqbal";
-
     }
 
 }

@@ -16,8 +16,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
   <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/Ionicons/css/ionicons.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?=$host;?>/assets/back/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -49,7 +47,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="<?=$host.'/panel'?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>G</b>B</span>
       <!-- logo for regular state and mobile devices -->
@@ -165,7 +163,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active">
+        <li>
           <a href="<?=$host;?>/panel">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
@@ -181,10 +179,23 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             <span>Transaksi</span>
           </a>
         </li>
+        <li>
+          <a href="<?=$host;?>/panel/pembayaran">
+            <i class="fa fa-folder-open"></i>
+            <span>Pembayaran</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?=$host;?>/panel/pengiriman">
+            <i class="fa fa-folder-open"></i>
+            <span>Pengiriman</span>
+          </a>
+        </li>
         <li class="header">SETTINGS</li>
         <li><a href="<?=$host;?>/panel/pengguna"><i class="fa fa-folder-open"></i> <span>Pengguna</span></a></li>
-		<li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
+		    <li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
         <li><a href="<?=$host;?>/panel/kategori"><i class="fa fa-folder-open"></i> <span>Kategori</span></a></li>
+        <li><a href="<?=$host;?>/panel/laporan"><i class="fa fa-folder-open"></i> <span>Laporan</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -195,7 +206,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Barang
+        Dashboard
         <small>Panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -208,56 +219,65 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-lg-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Master Barang</h3>
-              <button class="btn btn-primary btn-sm pull-right tambah" data-toggle="modal" data-target="#modal-default">Tambah</button>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3><?=$data_transaksi[0];?></h3>
+
+              <p>Penjualan</p>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Nama Barang</th>
-                  <th>Kategori</th>
-                  <th>Foto</th>
-                  <th>QTY</th>
-                  <th>Harga Satuan</th>
-                  <th>Aksi</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <?php
-                while($row = mysqli_fetch_array($execute_get_all_barang)){
-                  ?>
-                  <tr>
-                    <td><?=$row[2];?></td>
-                    <td><?=$row[7];?></td>
-                    <td><img width="100px;" src="<?=$host;?>/uploads/<?=$row[5];?>"></td>
-                    <td><span class="label label-primary"><?=$row[3];?></span></td>
-                    <td><?=$row[4];?></td>
-                    <td>
-                        <button id="<?=$row[0];?>" class="btn btn-xs btn-primary edit">Edit</button>
-                        <button id="<?=$row[0];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
-                    </td>
-                  </tr>
-                  <?php
-                }
-                ?>
-
-
-                </tbody>
-
-              </table>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
             </div>
-            <!-- /.box-body -->
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
-          <!-- /.box -->
         </div>
         <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3><?=$data_kategori[0];?></h3>
 
+              <p>Kategori</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-android-clipboard"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3><?=$data_pelanggan[0];?></h3>
+
+              <p>Pelanggan</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-android-contacts"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3><?=$data_barang[0];?></h3>
+
+              <p>Total Barang</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-clipboard"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
         <!-- ./col -->
       </div>
       <!-- /.row -->
@@ -275,65 +295,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     </section>
     <!-- /.content -->
   </div>
-
-  <div class="modal fade" id="modal-default">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="txtTitleModalBarang">Master Tambah Barang</h4>
-        </div>
-        <div class="modal-body">
-
-          <form role="form" id="idFormModalBarang" method="post" action="<?=$host;?>/panel/tambah_barang" enctype="multipart/form-data">
-            <div class="box-body">
-              <div class="form-group">
-                  <label>Pilih Kategori</label>
-                  <select class="form-control" name="kategori" id="idSelectKategori">
-                    <?php
-                    while($row = mysqli_fetch_array($execute)){
-                      echo '<option value="'.$row[0].'">'.$row[1].'</option>';
-                    }
-                    ?>
-                  </select>
-                </div>
-              <div class="form-group">
-                <label>Nama Barang</label>
-                <input type="hidden" name="id_barang" id="idTxtBarang">
-                <input type="text" name="nama_barang" class="form-control" id="idTxtNamaBarang" placeholder="Ketikan Nama Barang">
-              </div>
-              <div class="form-group">
-                <label>QTY</label>
-                <input type="number" name="qty" class="form-control" id="idTxtQTY" placeholder="Masukkan Jumlah Barang">
-              </div>
-              <div class="form-group">
-                <label>Harga Satuan</label>
-                <input type="number" name="harga_satuan" class="form-control" id="idTxtHargaSatuan" placeholder="Masukkan Harga Satuan Barang">
-              </div>
-              <div class="form-group">
-                <label>Foto Barang</label>
-                <input type="file" name="file">
-                <p class="help-block">*Pilih file gambar jpg/jpeg/png</p>
-              </div>
-
-            </div>
-            <!-- /.box-body -->
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-          </form>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -549,9 +510,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 </script>
 <!-- Bootstrap 3.3.7 -->
 <script src="<?=$host;?>/assets/back/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="<?=$host;?>/assets/back/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="<?=$host;?>/assets/back/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- Morris.js charts -->
 <script src="<?=$host;?>/assets/back/bower_components/raphael/raphael.min.js"></script>
 <script src="<?=$host;?>/assets/back/bower_components/morris.js/morris.min.js"></script>
@@ -575,56 +533,9 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 <script src="<?=$host;?>/assets/back/bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="<?=$host;?>/assets/back/dist/js/adminlte.min.js"></script>
-
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="<?=$host;?>/assets/back/dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?=$host;?>/assets/back/dist/js/demo.js"></script>
-
-<script>
-  $(function () {
-    $('#example1').DataTable()
-    $('#example2').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    })
-  })
-
-  $(".hapus").click(function(){
-    var id = this.id;
-    var x = confirm("Apakah anda yakin?");
-    if(x){
-      $.post('<?=$host;?>/panel/hapus_barang',{id_barang:id}).done(function(){
-        alert('Berhasil');
-        location.reload();
-      })
-    }
-
-  })
-
-  $('.edit').click(function(){
-    var id = this.id;
-    $('#modal-default').modal();
-    $("#txtTitleModalBarang").html("Ubah Barang");
-    $("#idFormModalBarang").attr("action", "<?=$host;?>/panel/ubah_barang");
-    $.post("<?=$host;?>/panel/ambil_data_barang",{id_barang: id}).done(function(data){
-      var data = jQuery.parseJSON(data);
-      // console.log(data);
-      $("#idTxtBarang").val(data[0]);
-      $("#idTxtNamaBarang").val(data[2]);
-      $("#idTxtQTY").val(data[3]);
-      $("#idTxtHargaSatuan").val(data[4]);
-      $("#idSelectKategori").val(data[1]).change();
-    })
-  })
-
-  $('.tambah').click(function(){
-      $("#idFormModalBarang").attr("action", "<?=$host;?>/panel/tambah_barang");
-      $("#txtTitleModalBarang").html("Tambah Barang");
-  })
-</script>
-
 </body>
 </html>

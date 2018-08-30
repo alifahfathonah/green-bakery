@@ -14,6 +14,8 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
   <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/Ionicons/css/ionicons.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
   <!-- Theme style -->
@@ -21,9 +23,16 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="<?=$host;?>/assets/back/dist/css/skins/_all-skins.min.css">
+  <!-- Morris chart -->
+  <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/morris.js/morris.css">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/jvectormap/jquery-jvectormap.css">
   <!-- Date Picker -->
   <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="<?=$host;?>/assets/back/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,7 +49,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="<?=$host.'/panel'?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>G</b>B</span>
       <!-- logo for regular state and mobile devices -->
@@ -156,7 +165,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active">
+        <li>
           <a href="<?=$host;?>/panel">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
@@ -172,10 +181,23 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             <span>Transaksi</span>
           </a>
         </li>
+        <li>
+          <a href="<?=$host;?>/panel/pembayaran">
+            <i class="fa fa-folder-open"></i>
+            <span>Pembayaran</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?=$host;?>/panel/pengiriman">
+            <i class="fa fa-folder-open"></i>
+            <span>Pengiriman</span>
+          </a>
+        </li>
         <li class="header">SETTINGS</li>
         <li><a href="<?=$host;?>/panel/pengguna"><i class="fa fa-folder-open"></i> <span>Pengguna</span></a></li>
-		<li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
+		    <li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
         <li><a href="<?=$host;?>/panel/kategori"><i class="fa fa-folder-open"></i> <span>Kategori</span></a></li>
+        <li><a href="<?=$host;?>/panel/laporan"><i class="fa fa-folder-open"></i> <span>Laporan</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -186,7 +208,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Transaksi
+        Pengguna
         <small>Panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -202,49 +224,38 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Master Transaksi</h3>
-              <!--
-                <button class="btn btn-primary btn-sm pull-right tambah" data-toggle="modal" data-target="#modal-default">Tambah</button>
-              -->
+              <h3 class="box-title">Master Pengguna</h3>
+              <button class="btn btn-primary btn-sm pull-right tambah" data-toggle="modal" data-target="#modal-default">Tambah</button>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="transaksi" class="table table-bordered table-striped">
+              <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Id Transaksi</th>
-                  <th>Tgl Transaksi</th>
-                  <th>ID Pelanggan</th>
-                  <th>Status</th>
+                  <th>Nama Lengkap</th>
+                  <th>Username</th>
+                  <th>Hak Akses</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
 
                 <?php
-                while($row = $execute_get_all_transaksi->fetch_assoc()){
+                while($row = mysqli_fetch_array($execute_get_all_pengguna)){
                   ?>
                   <tr>
-                    <td><?=$row['id_transaksi'];?></td>
-                    <td><?=$row['tgl_transaksi'];?></td>
-                    <td><?=$row['id_pelanggan'];?></td>
+                    <td><?=$row[2];?></td>
+                    <td><?=$row[3];?></td>
+                    <td><span class="label label-primary"><?=$row[1];?></span></td>
                     <td>
-                        <?php
-                        if($row['status']==0){
-                          echo '<span class="label label-default">Belum Di Proses</span>';
-                        }else if($row['status']==1){
-                          echo '<span class="label label-primary">Sedang Di Proses</span>';
-                        } else {
-                          echo '<span class="label label-danger">Selesai</span>';
-                        }
-                        ?>
-                    </td>
-                    <td>
-                        <button id="<?=$row['id_transaksi'];?>" class="btn btn-xs btn-primary edit">Edit</button>
-                        <button id="<?=$row['id_transaksi'];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
+                        <button id="<?=$row[0];?>" class="btn btn-xs btn-primary edit">Edit</button>
+                        <button id="<?=$row[0];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
                     </td>
                   </tr>
-                  <?php } ?>
+                  <?php
+                }
+                ?>
+
 
                 </tbody>
 
@@ -275,26 +286,38 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
   </div>
 
   <div class="modal fade" id="modal-default">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="txtTitleModalTransaksi">Edit Transaksi</h4>
+          <h4 class="modal-title" id="txtTitleModalBarang">Master Tambah Pengguna</h4>
         </div>
         <div class="modal-body">
 
-          <form role="form" id="idFormModalTransaksi" method="POST" action="<?=$host;?>/panel/ubah_transaksi">
+          <form role="form" id="idFormModalPengguna" method="post" action="<?=$host;?>/panel/tambah_pengguna" enctype="multipart/form-data">
             <div class="box-body">
               <div class="form-group">
-                <input type="hidden" name="id_transaksi" id="idTxtIDTransaksi">
-                  <label>Pilih Status</label>
-                  <select class="form-control" name="status" id="idSelectStatus">
-                      <option value="0">Belum Di Proses</option>
-                      <option value="1">Sedang Di Proses</option>
-                      <option value="2">Selesai Di Proses</option>
+                  <label>Pilih Kategori</label>
+                  <select class="form-control" name="kategori" id="idSelectKategori">
+                    <option value="operator">Operator</option>
+                    <option value="administrator">Administrator</option>
                   </select>
+                </div>
+              <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="hidden" name="id_pengguna" id="idTxtPengguna">
+                <input type="text" name="nama_lengkap" class="form-control" id="idTxtNamaPengguna" placeholder="Ketikan Nama Lengkap">
               </div>
+              <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" class="form-control" id="idTxtUsername" placeholder="Masukkan Username">
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" id="idTxtPassword" placeholder="Masukkan Password">
+              </div>
+
             </div>
             <!-- /.box-body -->
 
@@ -319,7 +342,11 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     </div>
     <strong>Copyright &copy; 2018 <a href="#">Green Bakery</a>.</strong> All rights
     reserved.
-  </footer>
+  </footer> 
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 
@@ -348,14 +375,22 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
 <script>
   $(function () {
-    $('#transaksi').DataTable()
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
   })
 
   $(".hapus").click(function(){
     var id = this.id;
     var x = confirm("Apakah anda yakin?");
     if(x){
-      $.post('<?=$host;?>/panel/hapus_transaksi',{id_transaksi:id}).done(function(){
+      $.post('<?=$host;?>/panel/hapus_pengguna', {id_pengguna:id}).done(function(){
         alert('Berhasil');
         location.reload();
       })
@@ -366,9 +401,22 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
   $('.edit').click(function(){
     var id = this.id;
     $('#modal-default').modal();
-    $("#txtTitleModalTransaksi").html("Ubah Barang");
-    $("#idFormModalTransaksi").attr("action", "<?=$host;?>/panel/ubah_transaksi");
-    $("#idTxtIDTransaksi").val(id);
+    $("#txtTitleModalBarang").html("Ubah Pengguna");
+    $("#idFormModalPengguna").attr("action", "<?=$host;?>/panel/ubah_pengguna");
+    $.post("<?=$host;?>/panel/ambil_data_pengguna", {id_pengguna:id}).done(function(data){
+      var data = jQuery.parseJSON(data);
+      // console.log(data);
+      $("#idTxtPengguna").val(data[0]);
+      $("#idTxtNamaPengguna").val(data[2]);
+      $("#idTxtUsername").val(data[3]);
+
+      $("#idSelectKategori").val(data[1]).change();
+    })
+  })
+
+  $('.tambah').click(function(){
+      $("#idFormModalPengguna").attr("action", "<?=$host;?>/panel/tambah_pengguna");
+      $("#txtTitleModalBarang").html("Tambah Pengguna");
   })
 </script>
 

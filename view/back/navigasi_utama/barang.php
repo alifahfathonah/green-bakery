@@ -49,7 +49,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="<?=$host.'/panel'?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>G</b>B</span>
       <!-- logo for regular state and mobile devices -->
@@ -165,7 +165,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active">
+        <li>
           <a href="<?=$host;?>/panel">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
@@ -181,10 +181,23 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             <span>Transaksi</span>
           </a>
         </li>
+        <li>
+          <a href="<?=$host;?>/panel/pembayaran">
+            <i class="fa fa-folder-open"></i>
+            <span>Pembayaran</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?=$host;?>/panel/pengiriman">
+            <i class="fa fa-folder-open"></i>
+            <span>Pengiriman</span>
+          </a>
+        </li>
         <li class="header">SETTINGS</li>
         <li><a href="<?=$host;?>/panel/pengguna"><i class="fa fa-folder-open"></i> <span>Pengguna</span></a></li>
-		<li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
+		    <li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
         <li><a href="<?=$host;?>/panel/kategori"><i class="fa fa-folder-open"></i> <span>Kategori</span></a></li>
+        <li><a href="<?=$host;?>/panel/laporan"><i class="fa fa-folder-open"></i> <span>Laporan</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -195,7 +208,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pengguna
+        Barang
         <small>Panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -211,7 +224,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Master Pengguna</h3>
+              <h3 class="box-title">Master Barang</h3>
               <button class="btn btn-primary btn-sm pull-right tambah" data-toggle="modal" data-target="#modal-default">Tambah</button>
             </div>
             <!-- /.box-header -->
@@ -219,21 +232,25 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Lengkap</th>
-                  <th>Username</th>
-                  <th>Hak Akses</th>
+                  <th>Nama Barang</th>
+                  <th>Kategori</th>
+                  <th>Foto</th>
+                  <th>QTY</th>
+                  <th>Harga Satuan</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
 
                 <?php
-                while($row = mysqli_fetch_array($execute_get_all_pengguna)){
+                while($row = mysqli_fetch_array($execute_get_all_barang)){
                   ?>
                   <tr>
                     <td><?=$row[2];?></td>
-                    <td><?=$row[3];?></td>
-                    <td><span class="label label-primary"><?=$row[1];?></span></td>
+                    <td><?=$row[7];?></td>
+                    <td><img width="100px;" src="<?=$host;?>/uploads/<?=$row[5];?>"></td>
+                    <td><span class="label label-primary"><?=$row[3];?></span></td>
+                    <td><?=$row[4];?></td>
                     <td>
                         <button id="<?=$row[0];?>" class="btn btn-xs btn-primary edit">Edit</button>
                         <button id="<?=$row[0];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
@@ -278,31 +295,39 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="txtTitleModalBarang">Master Tambah Pengguna</h4>
+          <h4 class="modal-title" id="txtTitleModalBarang">Master Tambah Barang</h4>
         </div>
         <div class="modal-body">
 
-          <form role="form" id="idFormModalPengguna" method="post" action="<?=$host;?>/panel/tambah_pengguna" enctype="multipart/form-data">
+          <form role="form" id="idFormModalBarang" method="post" action="<?=$host;?>/panel/tambah_barang" enctype="multipart/form-data">
             <div class="box-body">
               <div class="form-group">
                   <label>Pilih Kategori</label>
                   <select class="form-control" name="kategori" id="idSelectKategori">
-                    <option value="operator">Operator</option>
-                    <option value="administrator">Administrator</option>
+                    <?php
+                    while($row = mysqli_fetch_array($execute)){
+                      echo '<option value="'.$row[0].'">'.$row[1].'</option>';
+                    }
+                    ?>
                   </select>
                 </div>
               <div class="form-group">
-                <label>Nama Lengkap</label>
-                <input type="hidden" name="id_pengguna" id="idTxtPengguna">
-                <input type="text" name="nama_lengkap" class="form-control" id="idTxtNamaPengguna" placeholder="Ketikan Nama Lengkap">
+                <label>Nama Barang</label>
+                <input type="hidden" name="id_barang" id="idTxtBarang">
+                <input type="text" name="nama_barang" class="form-control" id="idTxtNamaBarang" placeholder="Ketikan Nama Barang">
               </div>
               <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" id="idTxtUsername" placeholder="Masukkan Username">
+                <label>QTY</label>
+                <input type="number" name="qty" class="form-control" id="idTxtQTY" placeholder="Masukkan Jumlah Barang">
               </div>
               <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" id="idTxtPassword" placeholder="Masukkan Password">
+                <label>Harga Satuan</label>
+                <input type="number" name="harga_satuan" class="form-control" id="idTxtHargaSatuan" placeholder="Masukkan Harga Satuan Barang">
+              </div>
+              <div class="form-group">
+                <label>Foto Barang</label>
+                <input type="file" name="file">
+                <p class="help-block">*Pilih file gambar jpg/jpeg/png</p>
               </div>
 
             </div>
@@ -329,7 +354,197 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     </div>
     <strong>Copyright &copy; 2018 <a href="#">Green Bakery</a>.</strong> All rights
     reserved.
-  </footer> 
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Home tab content -->
+      <div class="tab-pane" id="control-sidebar-home-tab">
+        <h3 class="control-sidebar-heading">Recent Activity</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
+                <p>Will be 23 on April 24th</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-user bg-yellow"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+
+                <p>New phone +1(800)555-1234</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+
+                <p>nora@example.com</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-file-code-o bg-green"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+
+                <p>Execution time 5 seconds</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Custom Template Design
+                <span class="label label-danger pull-right">70%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Update Resume
+                <span class="label label-success pull-right">95%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Laravel Integration
+                <span class="label label-warning pull-right">50%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <h4 class="control-sidebar-subheading">
+                Back End Framework
+                <span class="label label-primary pull-right">68%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+      </div>
+      <!-- /.tab-pane -->
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-settings-tab">
+        <form method="post">
+          <h3 class="control-sidebar-heading">General Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Report panel usage
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Some information about this general settings option
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Allow mail redirect
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Other sets of options are available
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Expose author name in posts
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Allow the user to show his name in blog posts
+            </p>
+          </div>
+          <!-- /.form-group -->
+
+          <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Show me as online
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Turn off notifications
+              <input type="checkbox" class="pull-right">
+            </label>
+          </div>
+          <!-- /.form-group -->
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Delete chat history
+              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+            </label>
+          </div>
+          <!-- /.form-group -->
+        </form>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+  </aside>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
@@ -350,6 +565,23 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 <!-- DataTables -->
 <script src="<?=$host;?>/assets/back/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?=$host;?>/assets/back/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- Morris.js charts -->
+<script src="<?=$host;?>/assets/back/bower_components/raphael/raphael.min.js"></script>
+<script src="<?=$host;?>/assets/back/bower_components/morris.js/morris.min.js"></script>
+<!-- Sparkline -->
+<script src="<?=$host;?>/assets/back/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- jvectormap -->
+<script src="<?=$host;?>/assets/back/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="<?=$host;?>/assets/back/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="<?=$host;?>/assets/back/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="<?=$host;?>/assets/back/bower_components/moment/min/moment.min.js"></script>
+<script src="<?=$host;?>/assets/back/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- datepicker -->
+<script src="<?=$host;?>/assets/back/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="<?=$host;?>/assets/back/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <!-- Slimscroll -->
 <script src="<?=$host;?>/assets/back/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -377,33 +609,32 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     var id = this.id;
     var x = confirm("Apakah anda yakin?");
     if(x){
-      $.post('<?=$host;?>/panel/hapus_pengguna', {id_pengguna:id}).done(function(){
+      $.post('<?=$host;?>/panel/hapus_barang',{id_barang:id}).done(function(){
         alert('Berhasil');
         location.reload();
       })
     }
-
   })
 
   $('.edit').click(function(){
     var id = this.id;
     $('#modal-default').modal();
-    $("#txtTitleModalBarang").html("Ubah Pengguna");
-    $("#idFormModalPengguna").attr("action", "<?=$host;?>/panel/ubah_pengguna");
-    $.post("<?=$host;?>/panel/ambil_data_pengguna", {id_pengguna:id}).done(function(data){
+    $("#txtTitleModalBarang").html("Ubah Barang");
+    $("#idFormModalBarang").attr("action", "<?=$host;?>/panel/ubah_barang");
+    $.post("<?=$host;?>/panel/ambil_data_barang",{id_barang: id}).done(function(data){
       var data = jQuery.parseJSON(data);
       // console.log(data);
-      $("#idTxtPengguna").val(data[0]);
-      $("#idTxtNamaPengguna").val(data[2]);
-      $("#idTxtUsername").val(data[3]);
-
+      $("#idTxtBarang").val(data[0]);
+      $("#idTxtNamaBarang").val(data[2]);
+      $("#idTxtQTY").val(data[3]);
+      $("#idTxtHargaSatuan").val(data[4]);
       $("#idSelectKategori").val(data[1]).change();
     })
   })
 
   $('.tambah').click(function(){
-      $("#idFormModalPengguna").attr("action", "<?=$host;?>/panel/tambah_pengguna");
-      $("#txtTitleModalBarang").html("Tambah Pengguna");
+      $("#idFormModalBarang").attr("action", "<?=$host;?>/panel/tambah_barang");
+      $("#txtTitleModalBarang").html("Tambah Barang");
   })
 </script>
 
