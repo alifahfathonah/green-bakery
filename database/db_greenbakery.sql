@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 26, 2018 at 03:29 PM
+-- Generation Time: Aug 30, 2018 at 01:53 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -45,7 +45,7 @@ CREATE TABLE `tbl_barang` (
 INSERT INTO `tbl_barang` (`id`, `id_kategori`, `nama_barang`, `qty`, `harga`, `foto`, `status`) VALUES
 (8, 1, 'Lemper', 5, 5000, 'lemper.jpg', 1),
 (9, 1, 'Kue Lapis Pelangi', 30, 2500, 'kue-lapis.jpg', 1),
-(10, 1, 'Brownies Kukus', 30, 4000, 'brownies-kukus.jpg', 2),
+(10, 1, 'Brownies Kukus', 60, 4000, 'brownies-kukus.jpg', 2),
 (11, 2, 'Kue Nastar', 60, 500, 'kue-nastar.jpg', 2),
 (12, 2, 'Kue Putri Salju', 22, 2000, 'putri-salju.jpg', 1),
 (13, 2, 'Kue Semprit', 44, 2000, 'kue-semprit.jpg', 1),
@@ -70,10 +70,7 @@ CREATE TABLE `tbl_detail_transaksi` (
 
 INSERT INTO `tbl_detail_transaksi` (`id_transaksi`, `nama_barang`, `qty`, `subtotal`) VALUES
 ('TRX-180825-1', 'Kue Lapis Pelangi', 5, 12500),
-('TRX-180825-1', 'Brownies Kukus', 10, 40000),
-('TRX-180825-2', 'Kue Putri Salju', 4, 8000),
-('TRX-180825-2', 'Kue Putri Salju', 4, 8000),
-('TRX-180825-3', 'Kue Nastar', 5, 2500);
+('TRX-180825-1', 'Brownies Kukus', 10, 40000);
 
 -- --------------------------------------------------------
 
@@ -139,8 +136,16 @@ INSERT INTO `tbl_pelanggan` (`id`, `nama_lengkap`, `email`, `no_telp`, `password
 CREATE TABLE `tbl_pembayaran` (
   `id_transaksi` varchar(20) NOT NULL,
   `foto_bukti` varchar(50) NOT NULL,
+  `tgl_dikirim` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `disetujui` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_pembayaran`
+--
+
+INSERT INTO `tbl_pembayaran` (`id_transaksi`, `foto_bukti`, `tgl_dikirim`, `disetujui`) VALUES
+('TRX-180825-1', 'struk.jpg', '2018-08-28 19:11:56', 1);
 
 -- --------------------------------------------------------
 
@@ -176,7 +181,7 @@ CREATE TABLE `tbl_pengiriman` (
   `nama_penerima` varchar(50) NOT NULL,
   `alamat` text NOT NULL,
   `no_telp` varchar(18) NOT NULL,
-  `email` varchar(20) NOT NULL,
+  `email` varchar(30) NOT NULL,
   `catatan` text,
   `tanggal_dikirim` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -186,7 +191,7 @@ CREATE TABLE `tbl_pengiriman` (
 --
 
 INSERT INTO `tbl_pengiriman` (`id_pengiriman`, `id_transaksi`, `nama_penerima`, `alamat`, `no_telp`, `email`, `catatan`, `tanggal_dikirim`) VALUES
-('KPN-180825-1', 'TRX-180825-1', 'Lukman hakim', 'Pal, Depok', '+62 081-3947-2392', 'lukman.hakim@email.c', 'Di Kirim ke bu efi', NULL);
+('KPN-180825-1', 'TRX-180825-1', 'Lukman hakim', 'Pal, Depok', '+62 081-3947-2392', 'lukman.hakim@email.com', 'Di Kirim ke bu efi', NULL);
 
 -- --------------------------------------------------------
 
@@ -208,9 +213,7 @@ CREATE TABLE `tbl_transaksi` (
 --
 
 INSERT INTO `tbl_transaksi` (`id_transaksi`, `id_pelanggan`, `tgl_transaksi`, `total`, `status`, `status_pembayaran`) VALUES
-('TRX-180825-1', 1, '2018-08-25 11:10:56', 67500, 0, 0),
-('TRX-180825-2', 1, '2018-08-25 11:19:13', 23000, 0, 0),
-('TRX-180825-3', 1, '2018-08-25 11:28:39', 17500, 0, 0);
+('TRX-180825-1', 1, '2018-08-25 11:10:56', 67500, 1, 1);
 
 --
 -- Indexes for dumped tables
