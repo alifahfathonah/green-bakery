@@ -11,18 +11,19 @@
         
         <link rel="icon" href="img/fav-icon.png" type="image/x-icon" />
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>Green Bakery</title>
+        <title>green-bakery</title>
 
         <!-- Icon css link -->
         <link href="<?=$host."/assets/front/";?>css/font-awesome.min.css" rel="stylesheet">
         <link href="<?=$host."/assets/front/";?>vendors/line-icon/css/simple-line-icons.css" rel="stylesheet">
         <link href="<?=$host."/assets/front/";?>vendors/elegant-icon/style.css" rel="stylesheet">
-
         <!-- Bootstrap -->
         <link href="<?=$host."/assets/front/";?>css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Data tables-->
-        <link href="<?=$host."/assets/front/";?>vendors/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+        
+        <!-- Rev slider css -->
+        <link href="vendors/revolution/css/settings.css" rel="stylesheet">
+        <link href="vendors/revolution/css/layers.css" rel="stylesheet">
+        <link href="vendors/revolution/css/navigation.css" rel="stylesheet">
         
         <!-- Extra plugin css -->
         <link href="<?=$host."/assets/front/";?>vendors/jquery-ui/jquery-ui.css" rel="stylesheet">
@@ -36,11 +37,10 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <style> .top_right li.cart a::before { content: "<?=$keranjang['pesanan'];?>"; } </style>
     </head>
     <body>
-
-        <!--================Top Header Area =================-->
+        
+        <!--================Menu Area =================-->
         <div class="header_top_area">
             <div class="container">
                 <div class="row">
@@ -73,9 +73,9 @@
                                 <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
                             </ul>
                             <ul class="top_right">
-                                <?php if (Session::exists('email')): ?>
+                                <?php if (Session::exists('email')) { ?>
                                     <li class="cart"><a href="<?=$host."/keranjang";?>"><i class="icon-handbag icons"></i></a></li>
-                                <?php endif ?>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>
@@ -101,16 +101,16 @@
                                 Kategori Kue <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                <?php while($column = $kategori->fetch_array()) : ?>
+                                <?php while($column = mysqli_fetch_array($kategori)) { ?>
                                     <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
-                                <?php endwhile ?>
+                                <?php } ?>
                                 </ul>
                             </li>
                             <?php if(Session::exists('id_pelanggan')) : ?>
                                 <li class="nav-item"><a class="nav-link" href="<?=$host.'/front/pesanan';?>">Pesanan</a></li>
                             <?php endif ?>
                         </ul>
-                        <?php if (!Session::exists('id_pelanggan')) { ?>
+                        <?php if (!Session::exists('email')) { ?>
                             <ul class="navbar-nav navbar-right ml-auto mr-2">
                                 <li class="nav-item"><a href="<?=$host?>/front/login" class="nav-link"> Masuk</a></li>
                             </ul>
@@ -121,7 +121,7 @@
                                     <?php echo Session::get('nama_pelanggan');?> <i class="fa fa-angle-down" aria-hidden="true"></i>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item"><a class="nav-link" href="<?=$host?>/front/ganti_password">Ganti Password</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?=$host."/front/ganti_password"?>">Ganti Password</a></li>
                                         <li class="nav-item"><a class="nav-link" href="<?=$host?>/front/logout">Logout</a></li>
                                     </ul>
                                 </li>
@@ -133,55 +133,36 @@
         </header>
         <!--================End Menu Area =================-->
         
-         <!--================Shopping Cart Area =================-->
-         <section class="shopping_cart_area mb-5" style="padding-top: 50px;">
+        <!--================Track Area =================-->
+        <section class="track_area p_100">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                    <h3>Daftar Pesanan Anda</h3><hr>
-                        <table id="list_pesanan" class="display table">
-                            <thead>
-                                <tr>
-                                    <th>ID Transaksi</th>
-                                    <th>Tanggal Transaksi</th>
-                                    <th>Nama Penerima</th>
-                                    <th>Status</th>
-                                    <th>Total Biaya</th>
-                                    <th>Status Pembayaran</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php while ($column = $list_pemesanan->fetch_assoc()) : ?>
-                                <tr>
-                                    <td><a href="<?=$host.'/front/detail_pesanan/?id='.$column['id_transaksi'];?>"><?=$column['id_transaksi'];?></a></td>
-                                    <td><?=$column['tgl_transaksi'];?></td>
-                                    <td><?=$column['nama_penerima'];?></td>
-                                    <td>
-                                        <?php if($column['status'] == 0) : ?>
-                                            <span class="badge badge-secondary">Belum DI Proses</span>
-                                        <?php elseif ($column['status'] == 1) :?>
-                                            <span class="badge badge-primary">Sedang DI Proses</span>
-                                        <?php else : ?>
-                                            <span class="badge badge-warning">Telah DI Kirim</span>
-                                        <?php endif ?>
-                                    </td>
-                                    <td>IDR <?=$column['total'];?></td>
-                                    <td>
-                                        <?php if($column['status_pembayaran'] == 0) : ?>
-                                            <span class="badge badge-secondary">Belum Terverifikasi</span>
-                                        <?php else : ?>
-                                            <span class="badge badge-success">Terverifikasi</span>
-                                        <?php endif ?>
-                                    </td>
-                                </tr>
-                                <?php endwhile ?>
-                            </tbody>
-                        </table>
+                <div class="track_inner">
+                    <div class="track_title">
+                        <h2>Ganti Password</h2>
+                        <p> Masukan password baru anda yang mudah anda ingat, jika anda ingin merubahnya. </p>
                     </div>
+                    <form action="<?=$host?>/front/proses_gantipassword" method="POST" id="regis" class="login_form row">
+                        
+                        <div class="col-lg-6 form-group">
+                            <input class="form-control" type="password" name="password_lama" data-validation="required custom" data-validation-regexp="^([a-zA-Z\s]+)$" placeholder="password lama">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <input class="form-control" type="password" name="password_baru" data-validation="required custom"  placeholder="password baru">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <input class="form-control" type="password" name="konfirmasi_password" data-validation="required custom" data-validation-regexp="^([0-9\s\-\+]+)$" placeholder="konfirmasi password">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <button type="submit" value="submit" class="btn subs_btn form-control">ganti password</button>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            Jika batal dirubah ? <a href="<?=$host."/front/login"?>">Kembali keberanda</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>
-        <!--================End Shopping Cart Area =================-->
+        <!--================End Track Area =================-->
         
         <!--================Footer Area =================-->
         <footer class="footer_area">
@@ -272,25 +253,32 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         
         
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="<?=$host."/assets/front/";?>js/jquery-3.2.1.min.js"></script>
-
+        <script src="js/jquery-3.2.1.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="<?=$host."/assets/front/";?>js/popper.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>js/bootstrap.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/datatables.net/js/jquery.dataTables.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/datatables.net-bs4/js/dataTables.bootstrap4.js"></script>
-
-
-        <script src="<?=$host."/assets/front/";?>vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/image-dropdown/jquery.dd.min.js"></script>
-        <script src="<?=$host."/assets/front/";?>js/smoothscroll.js"></script>
-        <script src="<?=$host."/assets/front/";?>vendors/jquery-ui/jquery-ui.js"></script>
-    
-
-        <script>
-        $(document).ready(function(){
-            $('#list_pesanan').DataTable();
-        });     
-        </script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <!-- Rev slider js -->
+        <script src="vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
+        <script src="vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
+        <script src="vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
+        <script src="vendors/revolution/js/extensions/revolution.extension.video.min.js"></script>
+        <script src="vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+        <script src="vendors/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+        <script src="vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+        <script src="vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+        <!-- Extra plugin css -->
+        <script src="vendors/counterup/jquery.waypoints.min.js"></script>
+        <script src="vendors/counterup/jquery.counterup.min.js"></script>
+        <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+        <script src="vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
+        <script src="vendors/image-dropdown/jquery.dd.min.js"></script>
+        <script src="js/smoothscroll.js"></script>
+        <script src="vendors/isotope/imagesloaded.pkgd.min.js"></script>
+        <script src="vendors/isotope/isotope.pkgd.min.js"></script>
+        <script src="vendors/magnify-popup/jquery.magnific-popup.min.js"></script>
+        <script src="vendors/vertical-slider/js/jQuery.verticalCarousel.js"></script>
+        <script src="vendors/jquery-ui/jquery-ui.js"></script>
+        
+        <script src="js/theme.js"></script>
     </body>
 </html>
