@@ -7,7 +7,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Green Bakery</title>
+  <title>Green Bakery | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -40,7 +40,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="<?=$host;?>" class="logo">
+    <a href="<?=$host.'/panel'?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>G</b>B</span>
       <!-- logo for regular state and mobile devices -->
@@ -55,6 +55,48 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning">10</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">You have 10 notifications</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                      page and may cause design problems
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-users text-red"></i> 5 new members joined
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-user text-red"></i> You changed your username
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="footer"><a href="#">View all</a></li>
+            </ul>
+          </li>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -114,7 +156,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active">
+        <li>
           <a href="<?=$host;?>/panel">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
@@ -136,10 +178,17 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             <span>Pembayaran</span>
           </a>
         </li>
+        <li>
+          <a href="<?=$host;?>/panel/pengiriman">
+            <i class="fa fa-folder-open"></i>
+            <span>Pengiriman</span>
+          </a>
+        </li>
         <li class="header">SETTINGS</li>
         <li><a href="<?=$host;?>/panel/pengguna"><i class="fa fa-folder-open"></i> <span>Pengguna</span></a></li>
-		<li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
+		    <li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
         <li><a href="<?=$host;?>/panel/kategori"><i class="fa fa-folder-open"></i> <span>Kategori</span></a></li>
+        <li><a href="<?=$host;?>/panel/laporan"><i class="fa fa-folder-open"></i> <span>Laporan</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -150,7 +199,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Transaksi
+        Detail Transaksi
         <small>Panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -164,44 +213,74 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Master Transaksi</h3>
-              <!--
-                <button class="btn btn-primary btn-sm pull-right tambah" data-toggle="modal" data-target="#modal-default">Tambah</button>
-              -->
+          <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Data Pembeli</h3>
             </div>
             <!-- /.box-header -->
+
+      <?php
+      $row = $ambil_transaksi->fetch_assoc();
+      ?>
+      <div class="box-body">
+        <table id="example1" class="table table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>ID TRANSAKSI</th>
+            <td><?=$row['id_transaksi'];?></td>
+            <th>NO TELPON</th>
+            <td><?=$row['no_telp'];?></td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th>NAMA PENERIMA</th>
+            <td><?=$row['nama_penerima'];?></td>
+            <th>EMAIL PENERIMA</th>
+            <td><?=$row['email'];?></td>
+          </tr>
+          </tbody>
+          <thead>
+          <tr>
+            <th>ALAMAT PENERIMA</th>
+            <td><?=$row['alamat'];?></td>
+            <th>CATATAN PENERIMA</th>
+            <td><?=$row['catatan'];?></td>
+          </tr>
+          </thead>
+        </table>
+      </div>
+
+          <!-- /.box-body -->
+          <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Barang Yang Dibeli</h3>
+            </div>
+            <!-- /.box-header -->
+
             <div class="box-body">
-              <table id="transaksi" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>ID Transaksi</th>
-                  <th>Bukti Pembayaran</th>
-                  <th>Tanggal Di Kirim</th>
-                  <th>Aksi</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <?php while($row = $data_pembayaran->fetch_assoc()) : ?>
-                  <tr>
-                    <td><a href="<?=$host.'/panel/detail_transaksi/?id_transaksi='.$row['id_transaksi'];?>"><?=$row['id_transaksi'];?></a></td>
-                    <td><button type="button" id="<?=$row['id_transaksi'];?>" class="btn btn-xs btn-flat btn-success lihat-bukti">Lihat Bukti Transfer</button></td>
-                    <td><?=$row['tgl_dikirim'];?></td>
-                    <td>
-                      <?php if ($row['disetujui'] == 0) : ?>
-                        <button id="<?=$row['id_transaksi'];?>" type="button" class="btn btn-xs btn-success setujui">Setujui</button>
-                      <?php else : ?>
-                        <button id="<?=$row['id_transaksi'];?>" type="button" class="btn btn-xs btn-danger batalkan">Batalkan</button>
-                      <?php endif ?>
-                    </td>
-                  </tr>
-                  <?php endwhile ?>
-
-                </tbody>
-
-              </table>
+               <table id="example2" class="table table-bordered table-hover">
+            <thead>
+            <tr>
+              <th>NAMA BARANG</th>
+              <th>QTY</th>
+              <th>SUBTOTAL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                while($detail = $ambil_detail_transaksi->fetch_assoc()){
+                ?>
+            <tr>
+              <td><?=$detail['nama_barang'];?></td>
+              <td><?=$detail['qty'];?></td>
+              <td><?=$detail['subtotal'];?></td>
+            </tr>
+          <?php } ?>
+            </tbody>
+          </table>
             </div>
             <!-- /.box-body -->
           </div>
@@ -233,13 +312,29 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Bukti Transfer</h4>
+          <h4 class="modal-title" id="txtTitleModalTransaksi">Edit Transaksi</h4>
         </div>
         <div class="modal-body">
-            <img class="img-responsive" id="bukti" src="">
+
+          <form role="form" id="idFormModalTransaksi" method="POST" action="<?=$host;?>/panel/ubah_transaksi">
+            <div class="box-body">
+              <div class="form-group">
+                <input type="hidden" name="id_transaksi" id="idTxtIDTransaksi">
+                  <label>Pilih Status</label>
+                  <select class="form-control" name="status" id="idSelectStatus">
+                      <option value="0">Belum Di Proses</option>
+                      <option value="1">Sedang Di Proses</option>
+                      <option value="2">Selesai Di Proses</option>
+                  </select>
+              </div>
+            </div>
+            <!-- /.box-body -->
+
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
           </form>
         </div>
       </div>
@@ -288,39 +383,24 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     $('#transaksi').DataTable()
   })
 
-  $('.lihat-bukti').click(function(){
+  $(".hapus").click(function(){
+    var id = this.id;
+    var x = confirm("Apakah anda yakin?");
+    if(x){
+      $.post('<?=$host;?>/panel/hapus_transaksi',{id_transaksi:id}).done(function(){
+        alert('Berhasil');
+        location.reload();
+      })
+    }
+
+  })
+
+  $('.edit').click(function(){
     var id = this.id;
     $('#modal-default').modal();
-    $.post("<?=$host;?>/panel/ambil_foto_bukti",{id_transaksi: id}).done(function(data){
-      var data = jQuery.parseJSON(data);
-      console.log(id);
-      console.log("<?=$host;?>/uploads/bukti_pembayaran/"+data[0]);
-      $("#bukti").attr('src', "<?=$host;?>/uploads/bukti_pembayaran/"+data[0]);
-    })
-  })
-
-  $(".setujui").click(function(){
-    var id = this.id;
-    var status = 1;
-    var x = confirm("Apakah anda yakin?");
-    if(x){
-      $.post('<?=$host;?>/panel/rubah_status_pembayaran',{id_transaksi:id, status_pembayaran: status}).done(function(){
-        alert('Pembayaran telah di setujui');
-        location.reload();
-      })
-    }
-  })
-
-  $(".batalkan").click(function(){
-    var id = this.id;
-    var status = 0;
-    var x = confirm("Apakah anda yakin?");
-    if(x){
-      $.post('<?=$host;?>/panel/rubah_status_pembayaran',{id_transaksi:id, status_pembayaran: status}).done(function(){
-        alert('Pembayaran di batalkan');
-        location.reload();
-      })
-    }
+    $("#txtTitleModalTransaksi").html("Ubah Barang");
+    $("#idFormModalTransaksi").attr("action", "<?=$host;?>/panel/ubah_transaksi");
+    $("#idTxtIDTransaksi").val(id);
   })
 </script>
 

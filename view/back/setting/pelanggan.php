@@ -49,7 +49,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="<?=$host.'/panel'?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>G</b>B</span>
       <!-- logo for regular state and mobile devices -->
@@ -165,7 +165,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active">
+        <li>
           <a href="<?=$host;?>/panel">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
@@ -187,10 +187,17 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             <span>Pembayaran</span>
           </a>
         </li>
+        <li>
+          <a href="<?=$host;?>/panel/pengiriman">
+            <i class="fa fa-folder-open"></i>
+            <span>Pengiriman</span>
+          </a>
+        </li>
         <li class="header">SETTINGS</li>
         <li><a href="<?=$host;?>/panel/pengguna"><i class="fa fa-folder-open"></i> <span>Pengguna</span></a></li>
-		<li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
+		    <li><a href="<?=$host;?>/panel/pelanggan"><i class="fa fa-folder-open"></i> <span>Pelanggan</span></a></li>
         <li><a href="<?=$host;?>/panel/kategori"><i class="fa fa-folder-open"></i> <span>Kategori</span></a></li>
+        <li><a href="<?=$host;?>/panel/laporan"><i class="fa fa-folder-open"></i> <span>Laporan</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -201,7 +208,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pengguna
+        Pelanggan
         <small>Panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -217,39 +224,33 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Master Pengguna</h3>
-              <button class="btn btn-primary btn-sm pull-right tambah" data-toggle="modal" data-target="#modal-default">Tambah</button>
+              <h3 class="box-title">Master Pelanggan</h3>
+              <!-- <button class="btn btn-primary btn-sm pull-right tambah" data-toggle="modal" data-target="#modal-default">Tambah</button> -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="tablePelanggan" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Nama Lengkap</th>
-                  <th>Username</th>
-                  <th>Hak Akses</th>
+                  <th>email</th>
+                  <th>No. Telepon</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                <?php
-                while($row = mysqli_fetch_array($execute_get_all_pengguna)){
-                  ?>
+                <?php while($column = mysqli_fetch_array($execute_pelanggan)){ ?>
                   <tr>
-                    <td><?=$row[2];?></td>
-                    <td><?=$row[3];?></td>
-                    <td><span class="label label-primary"><?=$row[1];?></span></td>
+                    <td><?=$column[1];?></td>
+                    <td><?=$column[2];?></td>
+                    <td><?=$column[3];?></td>
                     <td>
-                        <button id="<?=$row[0];?>" class="btn btn-xs btn-primary edit">Edit</button>
-                        <button id="<?=$row[0];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
+                        <button id="<?=$column[0];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
                     </td>
                   </tr>
-                  <?php
-                }
-                ?>
-
-
+                 <?php } ?>
+				 
                 </tbody>
 
               </table>
@@ -278,55 +279,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     <!-- /.content -->
   </div>
 
-  <div class="modal fade" id="modal-default">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="txtTitleModalBarang">Master Tambah Pengguna</h4>
-        </div>
-        <div class="modal-body">
-
-          <form role="form" id="idFormModalPengguna" method="post" action="<?=$host;?>/panel/tambah_pengguna" enctype="multipart/form-data">
-            <div class="box-body">
-              <div class="form-group">
-                  <label>Pilih Kategori</label>
-                  <select class="form-control" name="kategori" id="idSelectKategori">
-                    <option value="operator">Operator</option>
-                    <option value="administrator">Administrator</option>
-                  </select>
-                </div>
-              <div class="form-group">
-                <label>Nama Lengkap</label>
-                <input type="hidden" name="id_pengguna" id="idTxtPengguna">
-                <input type="text" name="nama_lengkap" class="form-control" id="idTxtNamaPengguna" placeholder="Ketikan Nama Lengkap">
-              </div>
-              <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" id="idTxtUsername" placeholder="Masukkan Username">
-              </div>
-              <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" id="idTxtPassword" placeholder="Masukkan Password">
-              </div>
-
-            </div>
-            <!-- /.box-body -->
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-          </form>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
 
   <!-- /.content-wrapper -->
   <footer class="main-footer">
@@ -335,14 +287,17 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     </div>
     <strong>Copyright &copy; 2018 <a href="#">Green Bakery</a>.</strong> All rights
     reserved.
-  </footer> 
-  <!-- /.control-sidebar -->
+  </footer>
+
+  
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 
+<!-- Validator -->
+<script src="<?=$host?>/assets/front/js/jquery.form-validator.min.js"></script>
 <!-- jQuery 3 -->
 <script src="<?=$host;?>/assets/back/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -368,7 +323,10 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
 <script>
   $(function () {
-    $('#example1').DataTable()
+    $('#tablePelanggan').DataTable({
+      'length': 10,
+      'lengthChange': false
+    })
     $('#example2').DataTable({
       'paging'      : true,
       'lengthChange': false,
@@ -383,7 +341,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     var id = this.id;
     var x = confirm("Apakah anda yakin?");
     if(x){
-      $.post('<?=$host;?>/panel/hapus_pengguna', {id_pengguna:id}).done(function(){
+      $.post('<?=$host;?>/panel/hapus_pelanggan', {id_pelanggan:id}).done(function(){
         alert('Berhasil');
         location.reload();
       })
@@ -391,26 +349,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
   })
 
-  $('.edit').click(function(){
-    var id = this.id;
-    $('#modal-default').modal();
-    $("#txtTitleModalBarang").html("Ubah Pengguna");
-    $("#idFormModalPengguna").attr("action", "<?=$host;?>/panel/ubah_pengguna");
-    $.post("<?=$host;?>/panel/ambil_data_pengguna", {id_pengguna:id}).done(function(data){
-      var data = jQuery.parseJSON(data);
-      // console.log(data);
-      $("#idTxtPengguna").val(data[0]);
-      $("#idTxtNamaPengguna").val(data[2]);
-      $("#idTxtUsername").val(data[3]);
-
-      $("#idSelectKategori").val(data[1]).change();
-    })
-  })
-
-  $('.tambah').click(function(){
-      $("#idFormModalPengguna").attr("action", "<?=$host;?>/panel/tambah_pengguna");
-      $("#txtTitleModalBarang").html("Tambah Pengguna");
-  })
+  $.validate();
 </script>
 
 </body>
