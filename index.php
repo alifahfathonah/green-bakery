@@ -3,6 +3,7 @@ session_start();
 include 'config/config.php';
 $conf = new config();
 $main_url = $conf->curExpPageURL()[4];
+// echo $_SERVER['REQUEST_URI']; die;
 // print_r($conf->curExpPageURL());die;
 
 if($main_url==false){

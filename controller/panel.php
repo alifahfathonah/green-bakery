@@ -76,7 +76,7 @@ class Panel {
 
             $query = "INSERT INTO tbl_barang (id_kategori, nama_barang, qty, harga, foto, status) VALUES ('$kategori','$nama_barang','$qty','$harga_satuan','$name','1')";
             $execute = $this->db->query($query);
-            header("Location: $this->host/barang");
+            header("Location: $this->host/panel/barang");
         }else{
             //gagal upload
 
@@ -106,7 +106,7 @@ class Panel {
 
             move_uploaded_file($tmp_name, "$upload_dir/$name");
             $execute = $this->db->query($query);
-            header("Location: $this->host/barang");
+            header("Location: $this->host/panel/barang");
         }else{
 
             if($_FILES["file"]["error"] == 4){

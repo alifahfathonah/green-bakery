@@ -124,7 +124,7 @@
                                     </ul>
                                 </li>
                             </ul>
-                        <?php } ?>
+                         <?php } ?>
                     </div>
                 </nav>
             </div>
@@ -141,7 +141,7 @@
                                 <ul>	<!-- SLIDE  -->
                                     <li>
                                         <!-- MAIN IMAGE -->
-                                        <img src="<?=$host."/uploads/".$detail['foto'];?>"  alt="<?=$detail['nama_barang'];?>" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
+                                        <img src="<?=$host."/uploads/".$detail['foto'];?>"  alt="<?=$detail['nama_barang'];?>" width="270" height="320" data-bgparallax="5" class="rev-slidebg" data-no-retina>
                                         <!-- LAYERS -->
                                     </li>
                                 </ul>

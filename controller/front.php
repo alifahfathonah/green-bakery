@@ -337,49 +337,6 @@ class Front {
         }
     }
 
-
-    // function proses_gantipassword(){
-    //     $data_ok = true;
-    //     $id    = $_POST['id'];
-
-    //     $email                  = Input::post('email');
-    //     $password               = Input::post('password_lama');
-    //     $password_baru          = Input::post('password_baru');
-    //     $konfirmasi_password    = Input::post('konfirmasi_password');
-
-    //     $check_data = [$password, $password_baru, $konfirmasi_password];
-        
-    //     for($i = 0; $i < count($check_data); $i++){
-    //         if(empty($check_data[$i])){
-    //             $data_ok = false;
-    //         }
-    //     }
-
-    //     if ($data_ok){
-
-    //         $query = "UPDATE tbl_pelanggan SET password='$password', WHERE id = $id";
-
-    //         if(Input::post('password') == Input::post('re_password')){
-    //             $result = $this->db->query($query);
-            
-    //             if($result){
-                    
-    //                 print " <script>
-    //                             window.location='".$this->redirect->get_url('front/ganti_password')."';
-    //                             alert('ganti password Berhasil!');
-    //                         </script>";
-    //             } else {
-    //                 print " <script>
-    //                             window.location='".$this->redirect->get_url('front')."';
-    //                             alert('ganti password Gagal!');
-    //                         </script>";
-    //             }
-    //         } 
-    //     } 
-    // }
-
-    // proses ganti_password
-
     function proses_gantipassword(){
         $id_pelanggan           = Session::get('id_pelanggan');
         $password               = Input::post('password_lama');
