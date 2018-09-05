@@ -35,9 +35,9 @@ class Panel {
         (Session::exists('isLogin') ? True : $this->redirect->to('panel/login'));
 
         $data_transaksi = $this->db->query("SELECT COUNT(id_transaksi) FROM tbl_transaksi")->fetch_array();
-        $data_kategori  = $this->db->query("SELECT COUNT(id) FROM tbl_kategori")->fetch_array();
-        $data_pelanggan = $this->db->query("SELECT COUNT(id) FROM tbl_pelanggan")->fetch_array();
-        $data_barang    = $this->db->query("SELECT COUNT(id) FROM tbl_barang")->fetch_array(); 
+        $data_kategori  = $this->db->query("SELECT COUNT(id_kategori) FROM tbl_kategori")->fetch_array();
+        $data_pelanggan = $this->db->query("SELECT COUNT(id_pelanggan) FROM tbl_pelanggan")->fetch_array();
+        $data_barang    = $this->db->query("SELECT COUNT(id_barang) FROM tbl_barang")->fetch_array(); 
 
         include './view/back/navigasi_utama/main.php';
     }
@@ -54,7 +54,7 @@ class Panel {
         $query = "SELECT * FROM tbl_kategori";
         $execute = $this->db->query($query);
 
-        $query_get_all_barang = "SELECT a.*,b.nama FROM tbl_barang a JOIN tbl_kategori b ON b.id=a.id_kategori";
+        $query_get_all_barang = "SELECT barang.*, kategori.nama FROM tbl_barang AS barang JOIN tbl_kategori AS kategori ON kategori.id_kategori=barang.id_kategori";
         $execute_get_all_barang = $this->db->query($query_get_all_barang);
 
         include './view/back//navigasi_utama/barang.php';
@@ -121,13 +121,13 @@ class Panel {
 
     function hapus_barang(){
         $id    = $_POST['id_barang'];
-        $query = "DELETE FROM tbl_barang WHERE id=$id";
+        $query = "DELETE FROM tbl_barang WHERE id_barang=$id";
         $this->db->query($query);
     }
 
     function ambil_data_barang(){
         $id    = $_POST['id_barang'];
-        $query = "SELECT * FROM tbl_barang WHERE id=$id";
+        $query = "SELECT * FROM tbl_barang WHERE id_barang=$id";
         echo json_encode(mysqli_fetch_row($this->db->query($query)));
     }
 
@@ -142,7 +142,7 @@ class Panel {
 			$query = "SELECT * FROM tbl_kategori";
 			$execute = $this->db->query($query);
 
-			$query_get_all_pengguna = "SELECT a.* FROM tbl_pengguna a";
+			$query_get_all_pengguna = "SELECT * FROM tbl_pengguna";
 			$execute_get_all_pengguna = $this->db->query($query_get_all_pengguna);
 
 			include './view/back//setting/pengguna.php';
@@ -169,11 +169,11 @@ class Panel {
 			$username     = $_POST['username'];
 
 			if($_POST['password']==null || $_POST['password']==''){
-				$query = "UPDATE tbl_pengguna SET level='$kategori', nama_lengkap='$nama_lengkap', username='$username', status=1 WHERE id=$id_pengguna";
+				$query = "UPDATE tbl_pengguna SET level='$kategori', nama_lengkap='$nama_lengkap', username='$username', status=1 WHERE id_pengguna = $id_pengguna";
 				$execute = $this->db->query($query);
 			}else{
 				$password = md5($_POST['password']);
-				$query = "UPDATE tbl_pengguna SET level='$kategori', nama_lengkap='$nama_lengkap', username='$username', password='$password', status=1 WHERE id=$id_pengguna";
+				$query = "UPDATE tbl_pengguna SET level='$kategori', nama_lengkap='$nama_lengkap', username='$username', password='$password', status=1 WHERE id_pengguna = $id_pengguna";
 				$execute = $this->db->query($query);
 			}
 
@@ -183,13 +183,13 @@ class Panel {
 
         function hapus_pengguna(){
 			$id    = $_POST['id_pengguna'];
-			$query = "DELETE FROM tbl_pengguna WHERE id=$id";
+			$query = "DELETE FROM tbl_pengguna WHERE id_pengguna = $id";
 			$this->db->query($query);
         }
 
         function ambil_data_pengguna(){
 			$id    = $_POST['id_pengguna'];
-			$query = "SELECT * FROM tbl_pengguna WHERE id=$id";
+			$query = "SELECT * FROM tbl_pengguna WHERE id_pengguna=$id";
 			echo json_encode(mysqli_fetch_row($this->db->query($query)));
         }
 	
@@ -212,7 +212,7 @@ class Panel {
 
         function hapus_pelanggan(){
 			$id    = $_POST['id_pelanggan'];
-			$query = "DELETE FROM tbl_pelanggan WHERE id = $id";
+			$query = "DELETE FROM tbl_pelanggan WHERE id_pelanggan = $id";
 			$this->db->query($query);
         }
 
@@ -233,7 +233,7 @@ class Panel {
             $query = "SELECT * FROM tbl_kategori";
             $execute = $this->db->query($query);
 
-            $query_get_all_kategori = "SELECT a.* FROM tbl_kategori a";
+            $query_get_all_kategori = "SELECT * FROM tbl_kategori";
             $execute_get_all_kategori = $this->db->query($query_get_all_kategori);
 
             include './view/back//setting/kategori.php';
@@ -256,7 +256,7 @@ class Panel {
             $nama_barang  = $_POST['nama_barang'];
             $deskripsi    = $_POST['deskripsi'];
 
-            $query = "UPDATE tbl_kategori SET nama='$nama_barang', deskripsi='$deskripsi' WHERE id=$id_kategori";
+            $query = "UPDATE tbl_kategori SET nama='$nama_barang', deskripsi='$deskripsi' WHERE id_kategori=$id_kategori";
             $execute = $this->db->query($query);
             header("Location: $this->host/panel/kategori");
 
@@ -264,13 +264,13 @@ class Panel {
 
         function hapus_kategori(){
             $id    = $_POST['id_kategori'];
-            $query = "DELETE FROM tbl_kategori WHERE id=$id";
+            $query = "DELETE FROM tbl_kategori WHERE id_kategori=$id";
             $this->db->query($query);
         }
 
         function ambil_data_kategori(){
             $id    = $_POST['id_kategori'];
-            $query = "SELECT * FROM tbl_kategori WHERE id=$id";
+            $query = "SELECT * FROM tbl_kategori WHERE id_kategori=$id";
             echo json_encode(mysqli_fetch_row($this->db->query($query)));
         }
 
@@ -309,7 +309,7 @@ class Panel {
 
     function hapus_transaksi(){
         $id    = $_POST['id_barang'];
-        $query = "DELETE FROM tbl_barang WHERE id=$id";
+        $query = "DELETE FROM tbl_barang WHERE id_barang=$id";
         $this->db->query($query);
     }
 
@@ -340,10 +340,10 @@ class Panel {
 
         if($status_pembayaran == 0){
             $query = "UPDATE tbl_transaksi, tbl_pembayaran SET tbl_transaksi.status_pembayaran = $status_pembayaran, tbl_transaksi.status = $status_pembayaran, tbl_pembayaran.disetujui = $status_pembayaran
-                              WHERE tbl_transaksi.id_transaksi = '$id_transaksi'";
+                              WHERE tbl_transaksi.id_transaksi = '$id_transaksi' AND tbl_pembayaran.id_transaksi = '$id_transaksi'";
         } else {
             $query = "UPDATE tbl_transaksi, tbl_pembayaran SET tbl_transaksi.status_pembayaran = $status_pembayaran, tbl_pembayaran.disetujui = $status_pembayaran 
-                              WHERE tbl_transaksi.id_transaksi = '$id_transaksi'";
+                              WHERE tbl_transaksi.id_transaksi = '$id_transaksi' AND tbl_pembayaran.id_transaksi = '$id_transaksi'";
         }
 
         $this->db->query($query);

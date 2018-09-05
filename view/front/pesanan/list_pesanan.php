@@ -102,7 +102,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                 <?php while($column = $kategori->fetch_array()) : ?>
-                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
+                                <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id_kategori"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
                                 <?php endwhile ?>
                                 </ul>
                             </li>

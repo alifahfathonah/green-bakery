@@ -22,7 +22,7 @@ class Front {
     function index() {
 
         $execute_get_all_barang = $this->db->query("SELECT * FROM tbl_barang");
-        $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
+        $all_kategori = $this->db->query("SELECT nama, id_kategori FROM tbl_kategori");
 
         if(Session::exists('id_pelanggan')){
             $query = "SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan');
@@ -146,7 +146,7 @@ class Front {
         $id_kategori = Input::get('id_kategori');
 
         $data_kue = $this->db->query("SELECT * FROM tbl_barang WHERE id_kategori = '$id_kategori'");
-        $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
+        $all_kategori = $this->db->query("SELECT nama, id_kategori FROM tbl_kategori");
         if(Session::exists('id_pelanggan')){
             $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
         }
@@ -155,8 +155,8 @@ class Front {
     }
 
     function detail_kue(){
-        $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
-        $detail = $this->db->query("SELECT * FROM tbl_barang WHERE id =".Input::get("id_kue"))->fetch_assoc();
+        $all_kategori = $this->db->query("SELECT nama, id_kategori FROM tbl_kategori");
+        $detail = $this->db->query("SELECT * FROM tbl_barang WHERE id_barang =".Input::get("id_kue"))->fetch_assoc();
         if(Session::exists('id_pelanggan')){
             $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
         }
@@ -171,10 +171,10 @@ class Front {
             $id_barang = Input::get('id_kue');
             $qty = Input::post('qty');
 
-            $data = $this->db->query("SELECT harga, qty FROM tbl_barang WHERE id = $id_barang")->fetch_array();
+            $data = $this->db->query("SELECT harga, qty FROM tbl_barang WHERE id_barang = $id_barang")->fetch_array();
             
             $qty_update = $data[1] - $qty;
-            $query_update = "UPDATE tbl_barang SET qty = $qty_update WHERE id = $id_barang";
+            $query_update = "UPDATE tbl_barang SET qty = $qty_update WHERE id_barang = $id_barang";
             $update_data = $this->db->query($query_update);
 
             $data_keranjang = $this->db->query("SELECT id_barang, id_pelanggan, qty FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan')." AND id_barang = $id_barang")->fetch_assoc();
@@ -207,7 +207,7 @@ class Front {
 
         if(Session::exists('email')) {
 
-        $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
+        $kategori = $this->db->query("SELECT id_kategori, nama FROM tbl_kategori");
 
         $keranjang = $this->db->query("SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan'))->fetch_assoc();
 
@@ -243,7 +243,7 @@ class Front {
             $transaksi = $this->db->query("SELECT tbl_transaksi.*, tbl_pengiriman.* FROM tbl_transaksi JOIN tbl_pengiriman ON tbl_transaksi.id_transaksi = tbl_pengiriman.id_transaksi
                                            WHERE tbl_transaksi.id_transaksi = '$id_transaksi'")->fetch_assoc();
 
-            $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
+            $kategori = $this->db->query("SELECT id_kategori, nama FROM tbl_kategori");
 
             include './view/front/pesanan/detail_pesanan.php';
 
@@ -264,7 +264,7 @@ class Front {
 
         if ($check[0] == 0 || empty($check)) {
 
-            $kategori = $this->db->query("SELECT id, nama FROM tbl_kategori");
+            $kategori = $this->db->query("SELECT id_kategori, nama FROM tbl_kategori");
 
             include "./view/front/verifikasi_pembayaran.php";
 
@@ -344,13 +344,13 @@ class Front {
         $konfirmasi_password    = Input::post('konfirmasi_password');
 
     
-    $query = "SELECT * FROM tbl_pelanggan WHERE id = $id_pelanggan AND password = '".md5($password)."'";
+    $query = "SELECT * FROM tbl_pelanggan WHERE id_pelanggan = $id_pelanggan AND password = '".md5($password)."'";
     $result = $this->db->query($query);
 
         if ($result->num_rows > 0){
             
             if($password_baru === $konfirmasi_password){
-                $query = "UPDATE tbl_pelanggan SET password='".md5($password_baru)."' WHERE id='$id_pelanggan'";
+                $query = "UPDATE tbl_pelanggan SET password='".md5($password_baru)."' WHERE id_pelanggan ='$id_pelanggan'";
 
                 $result = $this->db->query($query);
 

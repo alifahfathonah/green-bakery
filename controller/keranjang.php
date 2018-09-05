@@ -23,11 +23,11 @@ class Keranjang {
 
             $id_pelanggan = Session::get('id_pelanggan');
 
-            $query = "SELECT tbl_keranjang.id_pelanggan, tbl_barang.qty AS stok, tbl_barang.id AS id_barang , tbl_barang.nama_barang, tbl_barang.harga, tbl_barang.foto, tbl_keranjang.qty, tbl_keranjang.subtotal 
-                    FROM tbl_keranjang INNER JOIN tbl_barang ON tbl_barang.id = tbl_keranjang.id_barang WHERE tbl_keranjang.id_pelanggan = $id_pelanggan";
+            $query = "SELECT tbl_keranjang.id_pelanggan, tbl_barang.qty AS stok, tbl_barang.id_barang AS id_barang , tbl_barang.nama_barang, tbl_barang.harga, tbl_barang.foto, tbl_keranjang.qty, tbl_keranjang.subtotal 
+                    FROM tbl_keranjang INNER JOIN tbl_barang ON tbl_barang.id_barang = tbl_keranjang.id_barang WHERE tbl_keranjang.id_pelanggan = $id_pelanggan";
 
             $data_pembelian = $this->db->query($query);
-            $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
+            $all_kategori = $this->db->query("SELECT nama, id_kategori FROM tbl_kategori");
 
             $query = "SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan');
             $keranjang = $this->db->query($query)->fetch_assoc();
@@ -41,7 +41,7 @@ class Keranjang {
 
     function update_qty(){
         
-        $data_barang = $this->db->query('SELECT qty, harga FROM tbl_barang WHERE id = '.Input::get('id_produk'))->fetch_array();
+        $data_barang = $this->db->query('SELECT qty, harga FROM tbl_barang WHERE id_barang = '.Input::get('id_produk'))->fetch_array();
         
         $qty_keranjang_awal = Input::get('qty_awal');
         $qty_keranjang_baru = Input::get('qty_baru');
@@ -50,7 +50,7 @@ class Keranjang {
 
         $update_harga = $data_barang[1] * $qty_keranjang_baru;
 
-        $this->db->query("UPDATE tbl_barang SET qty = $hitung_stok_baru WHERE id = ".Input::get('id_produk'));
+        $this->db->query("UPDATE tbl_barang SET qty = $hitung_stok_baru WHERE id_barang = ".Input::get('id_produk'));
         $this->db->query("UPDATE tbl_keranjang SET qty = $qty_keranjang_baru, subtotal = $update_harga WHERE id_barang = ".Input::get('id_produk')." AND id_pelanggan = ".Session::get('id_pelanggan'));
 
         $this->redirect->to('keranjang');
@@ -60,11 +60,11 @@ class Keranjang {
 
         $id_barang = Input::get('id_barang');
 
-        $qty_barang_awal = $this->db->query("SELECT qty FROM tbl_barang WHERE id = $id_barang")->fetch_array()[0];
+        $qty_barang_awal = $this->db->query("SELECT qty FROM tbl_barang WHERE id_barang = $id_barang")->fetch_array()[0];
 
         $update_qty = $qty_barang_awal + Input::get('qty_barang');
 
-        $update_qty = $this->db->query("UPDATE tbl_barang SET qty = $update_qty WHERE id = $id_barang");
+        $update_qty = $this->db->query("UPDATE tbl_barang SET qty = $update_qty WHERE id_barang = $id_barang");
         
         if($update_qty){
             $this->db->query("DELETE FROM tbl_keranjang WHERE id_barang = $id_barang AND id_pelanggan = ".Session::get('id_pelanggan'));
@@ -83,10 +83,10 @@ class Keranjang {
         $ongkir = 15000;
 
         $query_data_keranjang = "SELECT keranjang.*, barang.nama_barang FROM `tbl_keranjang` AS keranjang JOIN tbl_barang AS barang
-                                ON barang.id = keranjang.id_barang WHERE keranjang.id_pelanggan = ".Session::get('id_pelanggan');
+                                ON barang.id_barang = keranjang.id_barang WHERE keranjang.id_pelanggan = ".Session::get('id_pelanggan');
         $data_keranjang = $this->db->query($query_data_keranjang);
 
-        $all_kategori = $this->db->query("SELECT nama, id FROM tbl_kategori");
+        $all_kategori = $this->db->query("SELECT nama, id_kategori FROM tbl_kategori");
 
         $query = "SELECT COUNT(id_pelanggan) AS pesanan FROM tbl_keranjang WHERE id_pelanggan = ".Session::get('id_pelanggan');
         $keranjang = $this->db->query($query)->fetch_assoc();
@@ -125,7 +125,7 @@ class Keranjang {
         $this->db->query($query_trans);
 
         $keranjang = $this->db->query("SELECT tbl_keranjang.*, tbl_barang.nama_barang FROM tbl_keranjang JOIN tbl_barang 
-                                      ON tbl_barang.id = tbl_keranjang.id_barang WHERE tbl_keranjang.id_pelanggan = $id_pelanggan");
+                                      ON tbl_barang.id_barang = tbl_keranjang.id_barang WHERE tbl_keranjang.id_pelanggan = $id_pelanggan");
 
         while($value = $keranjang->fetch_assoc()){
 

@@ -40,7 +40,7 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="<?=$host.'/panel'?> class="logo">
+    <a href="<?=$host.'/panel'?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>G</b>B</span>
       <!-- logo for regular state and mobile devices -->
@@ -310,8 +310,9 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     var id = this.id;
     var status = 1;
     var x = confirm("Apakah anda yakin?");
+    console.log(id);
     if(x){
-      $.post('<?=$host;?>/panel/rubah_status_pembayaran',{id_transaksi:id, status_pembayaran: status}).done(function(){
+      $.post('<?=$host;?>/panel/rubah_status_pembayaran',{id_transaksi: id, status_pembayaran: status}).done(function(){
         alert('Pembayaran telah di setujui');
         location.reload();
       })
@@ -322,8 +323,9 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
     var id = this.id;
     var status = 0;
     var x = confirm("Apakah anda yakin?");
+    console.log(id);
     if(x){
-      $.post('<?=$host;?>/panel/rubah_status_pembayaran',{id_transaksi:id, status_pembayaran: status}).done(function(){
+      $.post('<?=$host;?>/panel/rubah_status_pembayaran',{id_transaksi: id, status_pembayaran: status}).done(function(){
         alert('Pembayaran di batalkan');
         location.reload();
       })

@@ -251,10 +251,9 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
           </thead>
         </table>
       </div>
-
-          <!-- /.box-body -->
-          <!-- general form elements -->
-          <div class="box box-primary">
+        </div>
+        <!-- ./col -->
+        <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Barang Yang Dibeli</h3>
             </div>
@@ -285,9 +284,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
-        </div>
-        <!-- ./col -->
-
         <!-- ./col -->
       </div>
       <!-- /.row -->

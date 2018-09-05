@@ -105,7 +105,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                 <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
-                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
+                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id_kategori"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
                                 <?php } ?>
                                 </ul>
                             </li>
@@ -147,6 +147,7 @@
                             <div class="table-responsive-md">
                                 <table class="table">
                                     <tbody>
+                                        <?php $i = 1; ?>
                                         <?php while($column = $data_pembelian->fetch_assoc()): ?>
                                         <tr>
                                             <th scope="row">
@@ -170,9 +171,9 @@
                                                     <div class="quantity">
                                                         <h6>Quantity</h6>
                                                         <div class="custom">
-                                                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 0) result.value--; return false;" class="reduced items-count" type="button"><i class="icon_minus-06"></i></button>
-                                                            <input type="text" name="qty" id="sst" maxlength="12" value="<?=$column['qty'];?>" title="Quantity:" class="input-text qty">
-                                                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst < <?=$column['stok'];?>) result.value++; return false;" class="increase items-count" type="button"><i class="icon_plus"></i></button>
+                                                            <button onclick="var result = document.getElementById('sst<?=$i?>'); var sst = result.value; if( !isNaN( sst ) && sst > 1) result.value--; return false;" class="reduced items-count" type="button"><i class="icon_minus-06"></i></button>
+                                                            <input type="text" name="qty" id="sst<?=$i?>" maxlength="12" value="<?=$column['qty'];?>" title="Quantity:" class="input-text qty">
+                                                            <button onclick="var result = document.getElementById('sst<?=$i?>'); var sst = result.value; if( !isNaN( sst ) && sst < <?=$column['stok'];?>) result.value++; return false;" class="increase items-count" type="button"><i class="icon_plus"></i></button>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -180,13 +181,14 @@
                                                 <td>
                                                     <div class="quantity" style="padding: 0.5em;">
                                                         <div class="custom">
-                                                            <button onclick="window.location = '<?=$host.'/keranjang/update_qty/?id_produk='.$column['id_barang'].'&qty_awal='.$column['qty'].'&qty_baru=';?>'+document.getElementById('sst').value;" style="background-color: transparent; border: none;" type="submit">Update</button>
+                                                            <button onclick="window.location = '<?=$host.'/keranjang/update_qty/?id_produk='.$column['id_barang'].'&qty_awal='.$column['qty'].'&qty_baru=';?>'+document.getElementById('sst<?=$i?>').value;" style="background-color: transparent; border: none;" type="submit">Update</button>
                                                         </div>
                                                     </div>
                                                 </td>
                                             <!-- </form> -->
                                             <?php $total += $column['subtotal']; ?>
                                         </tr>
+                                        <?php $i++; ?>
                                         <?php endwhile ?>
                                     </tbody>
                                 </table>

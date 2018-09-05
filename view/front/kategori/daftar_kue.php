@@ -105,7 +105,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                 <?php while($column = mysqli_fetch_array($all_kategori)) { ?>
-                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
+                                    <li class="nav-item"><a class="nav-link" href="<?=$host."/front/kategori/?id_kategori=".$column["id_kategori"]."&jenis_kategori=".$column['nama'];?>"><?php echo $column['nama']; ?></a></li>
                                 <?php } ?>
                                 </ul>
                             </li>
@@ -155,14 +155,14 @@
                         <div class="col-lg-3 col-sm-6">
                             <div class="l_product_item">
                                 <div class="l_p_img">
-                                    <a href="<?=$host."/front/detail_kue/?id_kue=".$column["id"]."&id_kategori=".$column["id_kategori"];?>">
+                                    <a href="<?=$host."/front/detail_kue/?id_kue=".$column["id_barang"]."&id_kategori=".$column["id_kategori"];?>">
                                         <img class="img-fluid" src="<?=$host."/uploads/".$column["foto"];?>" alt="<?=$column["nama_barang"]?>">
                                     </a>
                                 </div>
                                 <div class="l_p_text">
                                    <ul>
                                         <li class="p_icon"><a href="#"><i class="icon_piechart"></i></a></li>
-                                        <li><a class="add_cart_btn" href="<?=$host."/front/detail_kue/?id_kue=".$column["id"]."&id_kategori=".$column["id_kategori"];?>">Lihat Detail</a></li>
+                                        <li><a class="add_cart_btn" href="<?=$host."/front/detail_kue/?id_kue=".$column["id_barang"]."&id_kategori=".$column["id_kategori"];?>">Lihat Detail</a></li>
                                         <li class="p_icon"><a href="#"><i class="icon_heart_alt"></i></a></li>
                                     </ul>
                                     <h4><?=$column["nama_barang"];?></h4>
@@ -270,26 +270,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="<?=$host;?>/assets/front/js/popper.min.js"></script>
         <script src="<?=$host;?>/assets/front/js/bootstrap.min.js"></script>
-        <!-- Rev slider js -->
-        <script src="<?=$host;?>/assets/front/vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/revolution/js/extensions/revolution.extension.video.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
-        <!-- Extra plugin css -->
-        <script src="<?=$host;?>/assets/front/vendors/counterup/jquery.waypoints.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/counterup/jquery.counterup.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/owl-carousel/owl.carousel.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/bootstrap-selector/js/bootstrap-select.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/image-dropdown/jquery.dd.min.js"></script>
-        <script src="<?=$host;?>/assets/front/js/smoothscroll.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/isotope/imagesloaded.pkgd.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/isotope/isotope.pkgd.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/magnify-popup/jquery.magnific-popup.min.js"></script>
-        <script src="<?=$host;?>/assets/front/vendors/vertical-slider/js/jQuery.verticalCarousel.js"></script>
+
         <script src="<?=$host;?>/assets/front/vendors/jquery-ui/jquery-ui.js"></script>
         
         <script src="<?=$host;?>/assets/front/js/theme.js"></script>
