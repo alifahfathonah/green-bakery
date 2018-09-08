@@ -150,12 +150,11 @@ class Panel {
 
         function tambah_pengguna(){
 
-			$kategori     = $_POST['kategori'];
 			$nama_lengkap = $_POST['nama_lengkap'];
 			$username     = $_POST['username'];
 			$password     = md5($_POST['password']);
 
-			$query = "INSERT INTO tbl_pengguna (level, nama_lengkap, username, password, status) VALUES ('$kategori','$nama_lengkap','$username','$password','1')";
+			$query = "INSERT INTO tbl_pengguna (nama_lengkap, username, password) VALUES ('$nama_lengkap','$username','$password')";
 			$execute = $this->db->query($query);
 			header("Location: $this->host/panel/pengguna");
 
@@ -164,16 +163,15 @@ class Panel {
         function ubah_pengguna(){
 
 			$id_pengguna  = $_POST['id_pengguna'];
-			$kategori     = $_POST['kategori'];
 			$nama_lengkap = $_POST['nama_lengkap'];
 			$username     = $_POST['username'];
 
 			if($_POST['password']==null || $_POST['password']==''){
-				$query = "UPDATE tbl_pengguna SET level='$kategori', nama_lengkap='$nama_lengkap', username='$username', status=1 WHERE id_pengguna = $id_pengguna";
+				$query = "UPDATE tbl_pengguna SET nama_lengkap='$nama_lengkap', username='$username'WHERE id_pengguna = $id_pengguna";
 				$execute = $this->db->query($query);
 			}else{
 				$password = md5($_POST['password']);
-				$query = "UPDATE tbl_pengguna SET level='$kategori', nama_lengkap='$nama_lengkap', username='$username', password='$password', status=1 WHERE id_pengguna = $id_pengguna";
+				$query = "UPDATE tbl_pengguna SET nama_lengkap='$nama_lengkap', username='$username', password='$password' WHERE id_pengguna = $id_pengguna";
 				$execute = $this->db->query($query);
 			}
 
@@ -189,7 +187,7 @@ class Panel {
 
         function ambil_data_pengguna(){
 			$id    = $_POST['id_pengguna'];
-			$query = "SELECT * FROM tbl_pengguna WHERE id_pengguna=$id";
+			$query = "SELECT * FROM tbl_pengguna WHERE id_pengguna = $id";
 			echo json_encode(mysqli_fetch_row($this->db->query($query)));
         }
 	
@@ -308,15 +306,15 @@ class Panel {
     }
 
     function hapus_transaksi(){
-        $id    = $_POST['id_barang'];
-        $query = "DELETE FROM tbl_barang WHERE id_barang=$id";
+        $id    = input::post('id_transaksi');
+        $query = "DELETE FROM tbl_transaksi WHERE id_transaksi = '$id'";
         $this->db->query($query);
     }
 
 
     function ambil_data_transaksi(){
-        $id    = $_POST['id_transaksi'];
-        $query = "SELECT id_transaksi FROM tbl_transaksi WHERE id_transaksi=$id";
+        $id    = input::post('id_transaksi');
+        $query = "SELECT id_transaksi FROM tbl_transaksi WHERE id_transaksi= '$id'";
         echo json_encode(mysqli_fetch_row($this->db->query($query)));
     }
 
@@ -424,6 +422,8 @@ class Panel {
                 $query = "SELECT tbl_transaksi.id_transaksi, tbl_pengiriman.nama_penerima, tbl_transaksi.tgl_transaksi, tbl_transaksi.total FROM tbl_transaksi JOIN tbl_pengiriman ON tbl_pengiriman.id_transaksi = tbl_transaksi.id_transaksi 
                  WHERE tgl_transaksi BETWEEN '".trim($tanggal[0])." 01:00:00' AND '".trim($tanggal[1]." 23:59:59' ORDER BY tbl_transaksi.id_transaksi");
                 $data_laporan = $this->db->query($query);
+                $data_detail_transaksi = $this->db->query("SELECT * FROM tbl_detail_transaksi")->fetch_all();
+                // print_r($data_detail_transaksi->fetch_all()); die;
                 include './view/back/laporan/print_laporan_transaksi.php';
                 break;
             case 'barang':
@@ -450,7 +450,7 @@ class Panel {
         $username = $_POST['username'];
         $password = md5($_POST['password']);
 
-        $query = "SELECT * FROM tbl_pengguna WHERE username='$username' AND password='$password' AND level='admin'";
+        $query = "SELECT * FROM tbl_pengguna WHERE username='$username' AND password='$password'";
         $execute = $this->db->query($query);
         if(mysqli_fetch_row($execute)){
             $_SESSION["isLogin"]=TRUE;
