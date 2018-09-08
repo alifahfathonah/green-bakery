@@ -117,7 +117,7 @@ class Front {
 
                 $data_pelanggan = $login->fetch_assoc();
 
-                Session::set('id_pelanggan', $data_pelanggan['id']);
+                Session::set('id_pelanggan', $data_pelanggan['id_pelanggan']);
                 Session::set('email', $data_pelanggan['email']);
                 Session::set('nama_pelanggan', $data_pelanggan['nama_lengkap']);
 
