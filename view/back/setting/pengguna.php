@@ -25,15 +25,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
   <link rel="stylesheet" href="<?=$host;?>/assets/back/dist/css/skins/_all-skins.min.css">
   <!-- Morris chart -->
   <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/morris.js/morris.css">
-  <!-- jvectormap -->
-  <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/jvectormap/jquery-jvectormap.css">
-  <!-- Date Picker -->
-  <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="<?=$host;?>/assets/back/bower_components/bootstrap-daterangepicker/daterangepicker.css">
-  <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="<?=$host;?>/assets/back/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -234,7 +225,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
                 <tr>
                   <th>Nama Lengkap</th>
                   <th>Username</th>
-                  <th>Hak Akses</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
@@ -244,9 +234,8 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
                 while($row = mysqli_fetch_array($execute_get_all_pengguna)){
                   ?>
                   <tr>
+                    <td><?=$row[1];?></td>
                     <td><?=$row[2];?></td>
-                    <td><?=$row[3];?></td>
-                    <td><span class="label label-primary"><?=$row[1];?></span></td>
                     <td>
                         <button id="<?=$row[0];?>" class="btn btn-xs btn-primary edit">Edit</button>
                         <button id="<?=$row[0];?>" class="btn btn-xs btn-danger hapus">Hapus</button>
@@ -297,13 +286,6 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
 
           <form role="form" id="idFormModalPengguna" method="post" action="<?=$host;?>/panel/tambah_pengguna" enctype="multipart/form-data">
             <div class="box-body">
-              <div class="form-group">
-                  <label>Pilih Kategori</label>
-                  <select class="form-control" name="kategori" id="idSelectKategori">
-                    <option value="operator">Operator</option>
-                    <option value="administrator">Administrator</option>
-                  </select>
-                </div>
               <div class="form-group">
                 <label>Nama Lengkap</label>
                 <input type="hidden" name="id_pengguna" id="idTxtPengguna">
@@ -407,10 +389,8 @@ $host = 'http://'.$conf->curExpPageURL()[2].'/'.$conf->curExpPageURL()[3];
       var data = jQuery.parseJSON(data);
       // console.log(data);
       $("#idTxtPengguna").val(data[0]);
-      $("#idTxtNamaPengguna").val(data[2]);
-      $("#idTxtUsername").val(data[3]);
-
-      $("#idSelectKategori").val(data[1]).change();
+      $("#idTxtNamaPengguna").val(data[1]);
+      $("#idTxtUsername").val(data[2]);
     })
   })
 
