@@ -49,6 +49,9 @@
         <h1><?=$title?></h1><hr>
       </div>
       <!-- /.col -->
+      <div class="col-sm-12">
+      <h4>Periode : <?=$tanggal[0]?> s/d <?=$tanggal[1]?></h4>
+      </div>
     </div>
     <!-- /.row -->
     <!-- Table row -->
@@ -56,7 +59,7 @@
       <div class="col-xs-12 table-responsive">
         <table class="table table-striped">
           <thead>
-            <tr>
+            <tr style="background-color: #c1c1c1;">
                 <th>ID Transaksi</th>
                 <th>Nama Penerima</th>
                 <th>Tanggal Transaksi</th>
@@ -64,15 +67,40 @@
             </tr>
           </thead>
           <tbody>
-              <?php while ($column = $data_laporan->fetch_object()) : ?>
-                <tr>
-                    <td><?php echo $column->id_transaksi?></td>
-                    <td><?php echo $column->nama_penerima?></td>
-                    <td><?php echo $column->tgl_transaksi?></td>
-                    <td><?php echo $column->total?></td>
+            <?php $total = 0; ?>
+              <?php while($column = $data_laporan->fetch_object()) : ?>
+              <?php $id = $column->id_transaksi?>
+                <tr style="background-color: #e4e4e4a6;">
+                    <td><b><?php echo $column->id_transaksi?></b></td>
+                    <td><b><?php echo $column->nama_penerima?></b></td>
+                    <td><b><?php echo $column->tgl_transaksi?></b></td>
+                    <td><b>IDR <?php echo $column->total?></b></td>
                 </tr>
+                <tr>
+                    <th></th>
+                    <th>Nama Barang</th>
+                    <th>Subtotal</th>
+                </tr>
+                <?php foreach($data_detail_transaksi as $key => $value): ?>
+                  <?php if ($value[0] == $id):?>
+                  <tr>
+                      <td></td>
+                      <td><i><?=$value[1].' x'.$value[2]?></i></td>
+                      <td><i>IDR <?=$value[3]?></i></td>
+                  </tr>
+                  <?php endif ?>
+                <?php endforeach?>
+              <?php $total += $column->total ?>
               <?php endwhile ?>
           </tbody>
+          <tfoot>
+              <tr style="background-color: #c1c1c1;">
+                  <td></td>
+                  <td></td>
+                  <td><b>Total Keseluruhan</b></td>
+                  <td><b>IDR <?=$total?></b></td>
+              </tr>
+          </tfoot>
         </table>
       </div>
       <!-- /.col -->

@@ -49,6 +49,9 @@
         <h1><?=$title?></h1><hr>
       </div>
       <!-- /.col -->
+      <div class="col-sm-12">
+        <h4>Periode : <?=$tanggal[0]?> s/d <?=$tanggal[1]?></h4>
+      </div>
     </div>
     <!-- /.row -->
     <!-- Table row -->
@@ -56,7 +59,7 @@
       <div class="col-xs-12 table-responsive">
         <table class="table table-striped">
           <thead>
-            <tr>
+            <tr style="background-color: #c1c1c1;">
                 <th>Nama Barang</th>
                 <th>Stok</th>
                 <th>Harga</th>
